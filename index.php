@@ -1,3 +1,64 @@
+<?php
+include "connection.php";
+session_start();
+ echo '<style>#pro{ display:none;}</style>';
+
+if (isset($_SESSION['is_login'])) {
+    echo '<style>#loginbtnid{ display:none;}</style>';
+    echo '<style>#pro{ display:initial;}</style>';
+}
+//signup
+if (isset($_POST['uSignup'])) {
+    $uName = $_POST['uName'];
+    $uEmail = $_POST['uEmail'];
+    $uPassword = $_POST['uPassword'];
+
+    //check empty fields
+    if ($uName == "" || $uEmail == "" || $uPassword == "") {
+        echo '<script> alert("Error: All Fields are Required.");</script>';
+    } else {
+        //check already exist email id
+        $sql = "SELECT u_email FROM user_login WHERE u_email = '$uEmail' ";
+        $result = mysqli_query($conn, $sql);
+        if ($row = mysqli_num_rows($result) == 1) {
+            echo '<script> alert("Email ID Already Registered.");</script>';
+        } else {
+            //insert data
+            $sql = "INSERT INTO user_login(u_name, u_email, u_password) VALUES ('$uName', '$uEmail', '$uPassword') ";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                echo '<script> alert("Account Created Successfully.");</script>';
+            } else {
+                echo '<script> alert("Error: Unable to Create Account.");</script>';
+            }
+        }
+    }
+}
+
+//login
+if (isset($_POST['uLogin'])) {
+    $uEmail = trim($_POST['uEmail']);
+    $uPassword = trim($_POST['uPassword']);
+
+    $sql = "SELECT u_email, u_password FROM user_login WHERE u_email = '$uEmail' AND u_password = '$uPassword' ";
+    $result = mysqli_query($conn, $sql);
+    if ($row  = mysqli_num_rows($result) == 1) {
+        $_SESSION['is_login'] = $uEmail;
+        echo "<script> location.href='user/user-profile.php';</script>";
+        exit;
+    } else {
+        echo '<script>alert("Login Failed: Invalid Email or Password.");</script>';
+    }
+}
+
+
+
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,14 +75,6 @@
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/style.css">
-
-
-    <style>
-        /* registeration modal */
-
-       
-    </style>
-
 
 </head>
 
@@ -41,7 +94,8 @@
                 <a href="#services">services</a>
                 <a href="#reviews">Reviews</a>
                 <a href="#contact">contact</a>
-                <button onclick="open_login_modal()">login</button>
+                <button onclick="open_login_modal()" id="loginbtnid">login</button>
+                <a href ="../osms/user/user-profile.php" id="pro"> PRO</a>
                 <button onclick="open_register_modal()">register</button>
             </div>
 
@@ -325,7 +379,7 @@
                 <div class="forms">
                     <div class="form-content">
                         <div class="signup-form">
-                            <div class="back-btn"><a href="" onclick="close_register_modal()"><i class="fa-solid fa-xmark"></i></a></div>
+                            <div class="back-btn"><button onclick="close_register_modal()"><i class="fa-solid fa-xmark"></i></button></div>
                             <div class="title">Create Account</div>
 
                             <form action="" method="POST">
@@ -361,7 +415,6 @@
 
     <!-- registration  modal ends -->
 
-
     <!-- login  modal starts -->
 
 
@@ -372,7 +425,7 @@
                 <div class="forms">
                     <div class="form-content">
                         <div class="login-form">
-                            <div class="back-btn"><a href="" onclick="close_login_modal()"><i class="fa-solid fa-xmark"></i></a></div>
+                            <div class="back-btn"><button onclick="close_login_modal()"><i class="fa-solid fa-xmark"></i></button></div>
                             <div class="title">Login</div>
 
                             <form action="" method="POST">
@@ -387,7 +440,7 @@
                                         <input type="password" placeholder="Password" name="uPassword" required>
                                     </div>
                                     <div class="button input-box">
-                                        <input type="submit" value="Login" name="uSignup">
+                                        <input type="submit" value="Login" name="uLogin">
                                     </div>
                                     <div class="text login-text">Don't have an account? <button onclick="signupnow()">Signup now</button>
                                     </div>

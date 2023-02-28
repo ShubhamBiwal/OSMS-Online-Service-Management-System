@@ -1,3 +1,22 @@
+<?php
+session_start();
+if (!isset($_SESSION['is_login'])) {
+    header("Location: http://localhost/osms/");
+}
+
+?>
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -96,7 +115,7 @@
         }
 
         .wrapper .sidebar {
-             background: #dce6ee;
+            background: #dce6ee;
             position: fixed;
             top: 7rem;
             left: 0;
@@ -158,6 +177,7 @@
                 left: 22.5rem;
             }
 
+
             body.active .wrapper .section {
                 margin-left: 0;
                 width: 100%;
@@ -171,8 +191,7 @@
     <div class="wrapper">
         <div class="section">
             <div class="top_navbar">
-                <a href="#" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
-
+                <a href="http://localhost/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
                 <div class="hamburger">
                     <i class="fa-solid fa-bars"></i>
                 </div>
@@ -182,53 +201,47 @@
         <div class="sidebar">
             <ul>
                 <li>
-                    <a href="student-home.html">
+                    <a href="">
                         <span class="icon"><i class="las la-home"></i></span>
-                        <span class="item">Home</span>
+                        <span class="item">Profile</span>
                     </a>
                 </li>
                 <li>
-                    <a href="student-profile.html">
+                    <a href="">
                         <span class="icon"><i class="las la-user-circle"></i></span>
-                        <span class="item">Profile</span>
+                        <span class="item">Submit Request</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="student-notice.html">
+                    <a href="">
                         <span class="icon"><i class="las la-bell"></i></span>
-                        <span class="item">Notices</span>
+                        <span class="item">Service Status</span>
                     </a>
                 </li>
                 <li>
-                    <a href="student-schedule.html">
+                    <a href="">
                         <span class="icon"><i class="las la-calendar-alt"></i></span>
-                        <span class="item">Schedule</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="student-change-password.html">
-                        <span class="icon"><i class="las la-user-lock"></i></span>
                         <span class="item">Change Password</span>
                     </a>
                 </li>
                 <li>
-                    <a href="student-login.html">
+                    <a href="logout.php">
                         <span class="icon"><i class="las la-door-open"></i></span>
-                        <span class="item">Log out</span>
+                        <span class="item">Logout </span>
                     </a>
                 </li>
 
             </ul>
         </div>
     </div>
-<div>
-    
-</div>
+    <div>
+
+    </div>
 
     <script>
         var hamburger = document.querySelector(".hamburger");
-        hamburger.addEventListener("click", function () {
+        hamburger.addEventListener("click", function() {
             document.querySelector("body").classList.toggle("active");
         })
     </script>
