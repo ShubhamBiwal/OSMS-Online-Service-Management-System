@@ -92,6 +92,7 @@ section {
   text-transform: capitalize;
   color: var(--white);
 }
+
 .header .navbar .links a:hover,
 .links button:hover {
   color: var(--blue);
@@ -135,17 +136,17 @@ section {
 .home .content .btn-2 {
   display: inline-block;
   margin-top: 1rem;
-  padding: 1rem 3rem;
+  padding: 1.2rem 3.2rem;
   cursor: pointer;
   background: var(--blue);
   font-size: 1.7rem;
   font-weight: 500;
   text-transform: capitalize;
   color: var(--white);
-  border: 0.2rem solid var(--blue);
+  
 }
 .home .content .btn-2:hover {
-  border: none;
+  scale: 0.98;
   background-image: linear-gradient(to right, var(--black), var(--blue));
 }
 .about-us {
@@ -789,6 +790,9 @@ section {
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
     text-align: center;
   }
+  .header .navbar .links a i{
+  margin-bottom: 2rem;
+}
   .header .navbar .links.active {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
@@ -808,7 +812,7 @@ section {
     text-align: center;
   }
   .links button {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     font-size: 2rem;
     background: var(--blue);
     padding: 1rem 1.5rem;
@@ -829,7 +833,7 @@ section {
     width: 100%;
   }
   .links button {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     font-size: 2rem;
     background: var(--blue);
     padding: 1rem 1.5rem;

@@ -1,11 +1,12 @@
 <?php
 include "connection.php";
 session_start();
- echo '<style>#pro{ display:none;}</style>';
+echo '<style>#profile-icon{ display:none;}</style>';
 
 if (isset($_SESSION['is_login'])) {
     echo '<style>#loginbtnid{ display:none;}</style>';
-    echo '<style>#pro{ display:initial;}</style>';
+    echo '<style>#registerbtnid{ display:none;}</style>';
+    echo '<style>#profile-icon{ display:initial;}</style>';
 }
 //signup
 if (isset($_POST['uSignup'])) {
@@ -95,8 +96,8 @@ if (isset($_POST['uLogin'])) {
                 <a href="#reviews">Reviews</a>
                 <a href="#contact">contact</a>
                 <button onclick="open_login_modal()" id="loginbtnid">login</button>
-                <a href ="../osms/user/user-profile.php" id="pro"> PRO</a>
-                <button onclick="open_register_modal()">register</button>
+                <a href="../osms/user/user-profile.php" id="profile-icon"><i class="fa-solid fa-user"></i></a>
+                <button onclick="open_register_modal()" id="registerbtnid">register</button>
             </div>
 
             <div id="menu-btn" class="fa fa-bars"></div>
@@ -119,7 +120,8 @@ if (isset($_POST['uLogin'])) {
             <h3>Why fix it yourself? Leave it to the pros!</h3>
             <p>Your city’s best electronic appliances service provider. Bringing your home appliances back to your life.
             </p>
-            <button onclick="open_login_modal()" class="btn">login</button>
+            <button onclick="open_login_modal()" class="btn" id="loginbtnid">login</button>
+            <a href="../osms/user/submit-request.php" class="btn" id="profile-icon">Book Service </a>
             <button onclick="open_register_modal()" class="btn-2">register</button>
         </div>
 
@@ -381,7 +383,6 @@ if (isset($_POST['uLogin'])) {
                         <div class="signup-form">
                             <div class="back-btn"><button onclick="close_register_modal()"><i class="fa-solid fa-xmark"></i></button></div>
                             <div class="title">Create Account</div>
-
                             <form action="" method="POST">
                                 <div class="input-boxes">
                                     <div class="input-box">

@@ -1,24 +1,30 @@
 <?php
-session_start();
-if (!isset($_SESSION['is_login'])) {
-    header("Location: http://localhost/osms/");
+include "../connection.php";
+include "include/header-sidebar.php";
+//show data
+$uEmail = $_SESSION['is_login'];
+$sql  = "SELECT u_name, u_email FROM user_login WHERE u_email = '$uEmail'";
+
+$run = mysqli_query($conn, $sql);
+
+if ($result = mysqli_fetch_array($run)) {
+    $uName = $result['u_name'];
+    $uEmail = $result['u_email'];
+}
+//update data
+if (isset($_POST['updatebtn'])) {
+    $newname = $_POST['uname'];
+    $sql = "UPDATE user_login SET u_name = '$newname' WHERE u_email = '$uEmail'";
+    $run = mysqli_query($conn, $sql);
+    if ($run) {
+
+        echo '<script>alert("Profile Updated.");</script>';
+        echo '<script>window.location = "user-profile.php";</script>';
+    }
 }
 
 ?>
 
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -29,222 +35,80 @@ if (!isset($_SESSION['is_login'])) {
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
-    <!-- internal stylesheet -->
+    <!-- external stylesheet -->
+    <link rel="stylesheet" href="../css/user-style.css">
+
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap");
-
-        * {
-            font-family: "Montserrat", sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            outline: none;
-            border: none;
-            text-decoration: none;
-            transition: all 0.2s linear;
-        }
-
-        :root {
-            --white: #fff;
-            --blue: #2597f4;
-            --black: #334;
-        }
-
-        html {
-            font-size: 62.5%;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-            scroll-padding-top: 6rem;
-        }
-
-        html::-webkit-scrollbar {
-            width: 1rem;
-        }
-
-        html::-webkit-scrollbar-track {
-            background: var(--white);
-        }
-
-        html::-webkit-scrollbar-thumb {
-            background: var(--blue);
-            border-radius: 5rem;
-        }
-
-        body {
-            background: var(--white);
-        }
-
-        .wrapper .section {
+        .container {
+            padding: 1.6rem;
+            box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
             width: 100%;
-            transition: all 0.5s ease;
         }
 
-        .wrapper .section .top_navbar {
-            height: 7rem;
-            background: var(--black);
-            display: flex;
-            align-items: center;
-            padding: 0 3rem;
-            /* box-shadow: .2rem .2rem 1rem rgb(0, 0, 0, 0.3); */
+        label {
+            font-size: 1.5rem;
         }
 
-        .wrapper .top_navbar .logo {
-            font-size: 3rem;
-            text-transform: capitalize;
-            color: var(--blue);
-            font-weight: bolder;
-            margin-right: 3rem;
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #f4f4f4;
+            border: none;
         }
 
-        .header .navbar .logo i {
-            color: var(--blue);
+        input[type="text"]:focus {
+            outline: none;
         }
 
-        .wrapper .section .top_navbar .hamburger {
-            font-size: 2.8rem;
-            color: blueviolet;
+        #uemail {
+            background: #dfdfdf;
+        }
+
+        .updatebtn {
+            background-color: var(--blue);
+            padding: 1rem 0;
+            margin: 0.8rem 0;
             cursor: pointer;
-            background: #fff;
-            border-radius: .5rem;
-            padding: 0.5rem 1.5rem;
-            display: none;
+            border: none;
+            width: 12rem;
+            opacity: 0.8;
+            color: white;
+            font-size: 1.6rem;
+            letter-spacing: 0.1rem;
         }
 
-        .wrapper .section .top_navbar .hamburger i {
-            font-size: 4rem;
+        .updatebtn:hover {
+            opacity: 1;
         }
 
-        .wrapper .sidebar {
-            background: #dce6ee;
-            position: fixed;
-            top: 7rem;
-            left: 0;
-            width: 22.5rem;
-            height: 100%;
-            padding: 2rem 0;
-            transition: all 0.5s ease;
-            /* box-shadow: 0.2rem 0.4rem 1rem .2rem rgb(0, 0, 0, 0.2); */
-        }
-
-        .wrapper .sidebar ul li a {
-            display: block;
-            padding: 1rem 0 1rem 1.8rem;
-            color: black;
-            font-size: 1.8rem;
-            font-weight: 500;
-            position: relative;
-            text-decoration: none;
-        }
-
-        .wrapper .sidebar ul li a .icon {
-            color: black;
-            padding-right: .8rem;
-            font-size: 2.4rem;
-            display: inline-block;
-        }
-
-        .wrapper .sidebar ul li a:hover,
-        .wrapper .sidebar ul li a.active {
-            background-color: blueviolet;
-            color: #fff;
-        }
-
-        .wrapper .sidebar ul li a:hover .icon,
-        .wrapper .sidebar ul li a.active .icon {
-            color: #fff;
-        }
-
-        .wrapper .sidebar ul li a:hover:before,
-        .wrapper .sidebar ul li a.active:before {
-            display: block;
-        }
-
-
-        @media (max-width: 750px) {
-            html {
-                font-size: 55%;
-            }
-
-            .sidebar {
-                margin-left: -22.5rem;
-            }
-
-            .wrapper .section .top_navbar .hamburger {
-                display: initial;
-            }
-
-            body.active .wrapper .sidebar {
-                left: 22.5rem;
-            }
-
-
-            body.active .wrapper .section {
-                margin-left: 0;
-                width: 100%;
-            }
-
-        }
+      
     </style>
+
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="section">
-            <div class="top_navbar">
-                <a href="http://localhost/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
-                <div class="hamburger">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </div>
+    <div class="content">
+        <div class="container">
+            <form action="" method="post">
+                <label for="pemail"><b>Email</b></label>
+                <input type="text" name="uemail" id="uemail" value="<?php echo $uEmail; ?>" readonly>
+                <label for="uname"><b>Name</b></label>
+                <input type="text" name="uname" id="uname" value="<?php echo $uName; ?>">
+
+                <!-- <label for="pcontact"><b>Contact</b></label>
+                    <input type="text" name="pcontact" id="pcontact" value="">
+                    <label for="paddress"><b>Address</b></label>
+                    <input type="text" name="paddress" id="paddress" value=""> -->
+
+                <button type="submit" class="updatebtn" name="updatebtn">Update</button>
+
+            </form>
         </div>
-
-        <div class="sidebar">
-            <ul>
-                <li>
-                    <a href="">
-                        <span class="icon"><i class="las la-home"></i></span>
-                        <span class="item">Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span class="icon"><i class="las la-user-circle"></i></span>
-                        <span class="item">Submit Request</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="">
-                        <span class="icon"><i class="las la-bell"></i></span>
-                        <span class="item">Service Status</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <span class="icon"><i class="las la-calendar-alt"></i></span>
-                        <span class="item">Change Password</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="logout.php">
-                        <span class="icon"><i class="las la-door-open"></i></span>
-                        <span class="item">Logout </span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-    <div>
 
     </div>
 
-    <script>
-        var hamburger = document.querySelector(".hamburger");
-        hamburger.addEventListener("click", function() {
-            document.querySelector("body").classList.toggle("active");
-        })
-    </script>
+
 
 </body>
 
