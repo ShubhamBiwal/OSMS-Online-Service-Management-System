@@ -143,7 +143,6 @@ section {
   font-weight: 500;
   text-transform: capitalize;
   color: var(--white);
-  
 }
 .home .content .btn-2:hover {
   scale: 0.98;
@@ -387,12 +386,14 @@ section {
 .footer .box-container .box .link i {
   padding-right: 0.5rem;
   color: var(--blue);
+  transition: 0.2s ease-in-out;
 }
 .footer .box-container .box .link:hover {
   color: var(--blue);
 }
 .footer .box-container .box .link:hover i {
   padding-right: 2rem;
+  transition: 0.2s ease-in-out;
 }
 .footer .box-container .box p {
   padding: 0.5rem 0;
@@ -501,7 +502,7 @@ section {
   border-left: 0.2rem solid var(--blue);
 }
 
-.modal-content .forms .form-content .back-btn{
+.modal-content .forms .form-content .back-btn {
   text-align: right;
 }
 
@@ -514,7 +515,7 @@ section {
   border-radius: 0.4rem;
   text-align: right;
 }
-.modal-content .forms .form-content .back-btn button{
+.modal-content .forms .form-content .back-btn button {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -653,7 +654,7 @@ section {
   color: var(--black);
   border-left: 0.2rem solid var(--blue);
 }
-.login-modal-content .forms .form-content .back-btn{
+.login-modal-content .forms .form-content .back-btn {
   text-align: right;
 }
 .login-modal-content .forms .form-content .back-btn i {
@@ -665,7 +666,7 @@ section {
   border-radius: 0.4rem;
   text-align: right;
 }
-.login-modal-content .forms .form-content .back-btn button{
+.login-modal-content .forms .form-content .back-btn button {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -790,9 +791,9 @@ section {
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
     text-align: center;
   }
-  .header .navbar .links a i{
-  margin-bottom: 2rem;
-}
+  .header .navbar .links a i {
+    margin-bottom: 2rem;
+  }
   .header .navbar .links.active {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }

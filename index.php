@@ -121,7 +121,7 @@ if (isset($_POST['uLogin'])) {
             <p>Your city’s best electronic appliances service provider. Bringing your home appliances back to your life.
             </p>
             <button onclick="open_login_modal()" class="btn" id="loginbtnid">login</button>
-            <a href="../osms/user/submit-request.php" class="btn" id="profile-icon">Book Service </a>
+            <a href="../osms/user/submit-request.php" class="btn" id="profile-icon">Service Request</a>
             <button onclick="open_register_modal()" class="btn-2">register</button>
         </div>
 

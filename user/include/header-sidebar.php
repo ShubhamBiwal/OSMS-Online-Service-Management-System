@@ -2,14 +2,14 @@
 
 session_start();
 if (!isset($_SESSION['is_login'])) {
-header("Location: http://localhost/osms/");
+header("Location: /osms");
 }
 ?>
 
 
 <section class="head-sidebar">
     <div class="top_navbar">
-        <a href="http://localhost/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
+        <a href="/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
         <div class="hamburger">
             <i class="fa-solid fa-bars"></i>
         </div>
@@ -42,7 +42,7 @@ header("Location: http://localhost/osms/");
                 </a>
             </li>
             <li>
-                <a href="logout.php">
+                <a href="/osms/logout.php">
                     <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
                     <span class="item">Logout </span>
                 </a>

@@ -77,7 +77,7 @@ body {
 
 .sidebar {
   position: fixed;
-  background: #eee;
+  background: #e5e5e5;
   margin-top: 7rem;
   left: 0;
   width: 25rem;
@@ -85,7 +85,6 @@ body {
   padding: 1.5rem;
   box-shadow: 0.2rem 0.2rem 1rem rgb(0, 0, 0, 0.3);
 }
-
 .sidebar ul li a {
   display: block;
   padding: 1rem;
@@ -94,7 +93,8 @@ body {
   font-weight: 500;
   position: relative;
   text-decoration: none;
-  margin: 1rem 0;
+  margin: .5rem 0;
+  border-radius: .5rem;
 }
 
 .sidebar ul li a .icon {
@@ -106,14 +106,15 @@ body {
 
 .sidebar ul li a:hover,
 .sidebar ul li a.active {
-  color: var(--blue);
-  scale: 1.02;
+  background: var(--blue);
+  color: var(--white);
+  
 }
 
 .sidebar ul li a:hover .icon,
 .sidebar ul li a.active .icon {
-  color: var(--blue);
-  scale: 1.02;
+   background: var(--blue);
+  color: var(--white);
 }
 .content {
   margin-top: 7rem;
@@ -134,6 +135,8 @@ body {
   .content {
     width: 100%;
     margin-left: 0;
+    padding: 2rem;
+  
   }
 
   .top_navbar .hamburger {

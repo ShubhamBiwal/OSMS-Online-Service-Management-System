@@ -16,24 +16,18 @@ if (isset($_POST['submitbtn'])) {
    $rmobile = $_POST['rmobile'];
    $rdate = $_POST['rdate'];
 
-   if($rinfo == "" || $rdesc == "" || $rname == "" || $raddress1 == "" || $raddress2 == "" || $rcity == "" || $rstate == "" || $rzip == "" || $remail == "" || $rmobile == "" || $rdate == ""){
+   if ($rinfo == "" || $rdesc == "" || $rname == "" || $raddress1 == "" || $raddress2 == "" || $rcity == "" || $rstate == "" || $rzip == "" || $remail == "" || $rmobile == "" || $rdate == "") {
       echo '<script>alert("All Fields Are Required!");</script>';
-
-   }
-   else{
+   } else {
       $sql = "INSERT INTO submit_request(request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date) VALUES ('$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate')";
       $run = mysqli_query($conn, $sql);
-      if($run){
+      if ($run) {
          $genid = mysqli_insert_id($conn);
          echo '<script>alert("Request Submitted Successfully.");</script>';
          $_SESSION['myid'] = $genid;
          echo '<script>location.href = "request-submit-success.php";</script>';
-
-
-      }
-      else{
+      } else {
          echo '<script>alert("Unable to Submit Your Request.");</script>';
-
       }
    }
 }
@@ -58,6 +52,7 @@ if (isset($_POST['submitbtn'])) {
    <!-- external stylesheet -->
    <link rel="stylesheet" href="../css/user-style.css">
    <style>
+
       .container {
          padding: 1.6rem;
          box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -114,6 +109,10 @@ if (isset($_POST['submitbtn'])) {
          color: white;
          font-size: 1.6rem;
          letter-spacing: 0.1rem;
+         border-radius: .2rem;
+         font-weight: 500;
+         box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
+
       }
 
       .resetbtn {
@@ -127,6 +126,10 @@ if (isset($_POST['submitbtn'])) {
          color: white;
          font-size: 1.6rem;
          letter-spacing: 0.1rem;
+         border-radius: .2rem;
+         font-weight: 500;
+         box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
+
       }
 
       .submitbtn:hover,

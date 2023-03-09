@@ -39,6 +39,7 @@ if (isset($_POST['updatebtn'])) {
     <link rel="stylesheet" href="../css/user-style.css">
 
     <style>
+      
         .container {
             padding: 1.6rem;
             box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -76,13 +77,15 @@ if (isset($_POST['updatebtn'])) {
             color: white;
             font-size: 1.6rem;
             letter-spacing: 0.1rem;
+            border-radius: .2rem;
+            font-weight: 500;
+            box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
+
         }
 
         .updatebtn:hover {
             opacity: 1;
         }
-
-      
     </style>
 
 </head>
