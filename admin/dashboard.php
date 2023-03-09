@@ -16,6 +16,7 @@ $run = mysqli_query($conn, $sql);
             grid-gap: 3rem;
 
         }
+
         .info-data .card {
             padding: 2rem;
             border-radius: 1rem;
@@ -64,6 +65,7 @@ $run = mysqli_query($conn, $sql);
 
         .container {
             margin-top: 7rem;
+            box-shadow: 0.4rem 0.4rem 1.6rem rgba(0, 0, 0, 0.3);
 
         }
 
@@ -87,7 +89,8 @@ $run = mysqli_query($conn, $sql);
             border-bottom: .2rem solid rgba(0, 0, 0, 0.3);
         }
 
-        th , td{
+        th,
+        td {
             padding: 1.5rem;
 
         }
@@ -136,8 +139,6 @@ $run = mysqli_query($conn, $sql);
             </div>
         </a>
     </div>
-
-
     <div class="container">
         <div class="heading">
             <p>List of Requesters</p>
@@ -153,26 +154,24 @@ $run = mysqli_query($conn, $sql);
                 </thead>
                 <tbody>
                     <?php
-                while ($result = mysqli_fetch_array($run)) {
-                ?>
-                    <tr>
-                        <td>
-                            <?php echo $result['u_id']; ?>
-                        </td>
-                        <td>
-                            <?php echo $result['u_name']; ?>
-                        </td>
-                        <td>
-                            <?php echo $result['u_email']; ?>
-                        </td>
+                    while ($result = mysqli_fetch_array($run)) {
+                    ?>
+                        <tr>
+                            <td>
+                                <?php echo $result['u_id']; ?>
+                            </td>
+                            <td>
+                                <?php echo $result['u_name']; ?>
+                            </td>
+                            <td>
+                                <?php echo $result['u_email']; ?>
+                            </td>
 
-                    </tr>
+                        </tr>
 
                     <?php } ?>
                 </tbody>
             </table>
         </div>
     </div>
-
-
 </div>
