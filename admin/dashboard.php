@@ -2,7 +2,7 @@
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT u_id, u_name, u_email FROM user_login ORDER BY u_id DESC  ";
+$sql = "SELECT u_id, u_name, u_email FROM user_login ORDER BY u_id DESC";
 $run = mysqli_query($conn, $sql);
 
 ?>
