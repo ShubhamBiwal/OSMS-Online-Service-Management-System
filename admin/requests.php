@@ -1,10 +1,55 @@
 <?php
 include "../connection.php";
 include "include/header-sidebar.php";
-
+//for request card
 $sql = "SELECT request_id, request_info, request_desc, request_date FROM submit_request";
 $run = mysqli_query($conn, $sql);
 
+//show data in assign form
+if (isset($_POST['view-btn'])) {
+    $r_id = $_POST['r_id'];
+    $sql1 = "SELECT * FROM submit_request WHERE request_id = '$r_id'";
+    $run1 = mysqli_query($conn, $sql1);
+    $result1 = mysqli_fetch_array($run1);
+}
+// close btn
+if (isset($_POST['close-btn'])) {
+    $sql2 = "DELETE FROM submit_request WHERE request_id = '{$_POST['r_id']}' ";
+    $run2 = mysqli_query($conn, $sql2);
+    if ($run2) {
+        echo "<script> location.href='requests.php';</script>";
+    } else {
+        echo '<script>alert("Unable to Delete.");</script>';
+    }
+}
+//assign technician
+if (isset($_POST['assign-btn'])) {
+    if ($_POST['rid'] == "" || $_POST['rinfo'] == "" || $_POST['rdesc'] == "" || $_POST['rname'] == "" || $_POST['raddress1'] == "" || $_POST['raddress2'] == "" || $_POST['rcity'] == "" || $_POST['rstate'] == "" || $_POST['rzip'] == "" || $_POST['remail'] == "" || $_POST['rmobile'] == "" || $_POST['rtechnician'] == "" || $_POST['rdate'] == "") {
+        echo '<script> alert("Error: All Fields are Required.");</script>';
+    } else {
+        $rid = $_POST['rid'];
+        $rinfo = $_POST['rinfo'];
+        $rdesc = $_POST['rdesc'];
+        $rname = $_POST['rname'];
+        $raddress1 = $_POST['raddress1'];
+        $raddress2 = $_POST['raddress2'];
+        $rcity = $_POST['rcity'];
+        $rstate = $_POST['rstate'];
+        $rzip = $_POST['rzip'];
+        $remail = $_POST['remail'];
+        $rmobile = $_POST['rmobile'];
+        $rtechnician = $_POST['rtechnician'];
+        $rdate = $_POST['rdate'];
+
+        $sql3 = "INSERT INTO assign_work(request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, assign_tech, assign_date) VALUES ('$rid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rtechnician','$rdate')";
+        $run3 = mysqli_query($conn, $sql3);
+        if ($run3) {
+            echo '<script> alert("Work Assigned Successfully.");</script>';
+        } else {
+            echo '<script> alert("Error: Unable to Assign!!");</script>';
+        }
+    }
+}
 ?>
 
 <head>
@@ -108,13 +153,13 @@ $run = mysqli_query($conn, $sql);
             padding: 1rem;
             margin: 1.5rem 0;
             background: #fff;
+            border: .1rem solid rgba(0, 0, 0, 0.2);
         }
 
         input[type="text"]:focus,
         input[type="number"]:focus,
-        input[type="date"]:focus
-         {
-              outline: .2rem solid rgba(0, 0, 0, 0.2);
+        input[type="date"]:focus {
+            outline: .2rem solid rgba(0, 0, 0, 0.2);
 
         }
 
@@ -205,84 +250,88 @@ $run = mysqli_query($conn, $sql);
         <div class="left">
 
             <?php while ($result = mysqli_fetch_array($run)) {
-        ?>
-            <div class="request-card">
-                <div class="card-head">
-                    <p>Request ID:
-                        <?php echo $result['request_id']; ?>
-                    </p>
-                </div>
-                <div class="card-body">
-                    <h2>Request Info :
-                        <?php echo $result['request_info']; ?>
-                    </h2>
-                    <p class="request-desc">
-                        <?php echo $result['request_desc']; ?>
-                    </p>
-                    <p>Request Date:
-                        <?php echo $result['request_date']; ?>
-                    </p>
-                    <input type="submit" name="" class="close-btn" value="Close">
-                    <input type="submit" name="" class="view-btn" value="View">
+            ?>
+                <div class="request-card">
+                    <div class="card-head">
+                        <p>Request ID:
+                            <?php echo $result['request_id']; ?>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <h2>Request Info :
+                            <?php echo $result['request_info']; ?>
+                        </h2>
+                        <p class="request-desc">
+                            <?php echo $result['request_desc']; ?>
+                        </p>
+                        <p>Request Date:
+                            <?php echo $result['request_date']; ?>
+                        </p>
+                        <form action="" method="post">
+                            <input type="hidden" name="r_id" value="<?php echo $result['request_id']; ?>">
+                            <input type="submit" name="close-btn" class="close-btn" value="Close">
+                            <input type="submit" name="view-btn" class="view-btn" value="View">
+                        </form>
 
+                    </div>
                 </div>
-            </div>
             <?php } ?>
         </div>
 
         <div class="assign-work">
             <div class="container">
+
                 <h1 class="form-heading">Assign Work Order Request</h1>
                 <form action="" method="post">
                     <label for="rid"><b>Request ID</b></label>
-                    <input type="text" name="rid" id="rid" readonly>
+                    <input type="text" name="rid" id="rid" value="<?php if (isset($result1['request_id'])) echo $result1['request_id']; ?>" readonly>
                     <label for="rinfo"><b>Request Info</b></label>
-                    <input type="text" name="rinfo" id="rinfo">
+                    <input type="text" name="rinfo" id="rinfo" value="<?php if (isset($result1['request_info'])) echo $result1['request_info']; ?>">
                     <label for="rdesc"><b>Discription</b></label>
-                    <input type="text" name="rdesc" id="rdesc">
+                    <input type="text" name="rdesc" id="rdesc" value="<?php if (isset($result1['request_desc'])) echo $result1['request_desc']; ?>">
                     <label for="rname"><b>Name</b></label>
-                    <input type="text" name="rname" id="rname" value="">
+                    <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo $result1['requester_name']; ?>">
 
                     <div class="address">
                         <div class="inputbox">
                             <label for="raddress1"><b>Address Line 1</b></label>
-                            <input type="text" name="raddress1" id="raddress1">
+                            <input type="text" name="raddress1" id="raddress1" value="<?php if (isset($result1['requester_add1'])) echo $result1['requester_add1']; ?>">
                         </div>
                         <div class="inputbox">
                             <label for="raddress2"><b>Address Line 2</b></label>
-                            <input type="text" name="raddress2" id="raddress2">
+                            <input type="text" name="raddress2" id="raddress2" value="<?php if (isset($result1['requester_add2'])) echo $result1['requester_add2']; ?>">
                         </div>
                     </div>
 
                     <div class="address2">
                         <div class="inputbox2">
                             <label for="rcity"><b>City</b></label>
-                            <input type="text" name="rcity" id="rcity">
+                            <input type="text" name="rcity" id="rcity" value="<?php if (isset($result1['requester_city'])) echo $result1['requester_city']; ?>">
                         </div>
                         <div class="inputbox2">
                             <label for="rstate"><b>State</b></label>
-                            <input type="text" name="rstate" id="rstate">
+                            <input type="text" name="rstate" id="rstate" value="<?php if (isset($result1['requester_state'])) echo $result1['requester_state']; ?>">
                         </div>
 
                         <div class="inputbox2">
                             <label for="rzip"><b>Zip</b></label>
-                            <input type="number" name="rzip" id="rzip">
+                            <input type="number" name="rzip" id="rzip" value="<?php if (isset($result1['requester_zip'])) echo $result1['requester_zip']; ?>">
                         </div>
                     </div>
                     <div class="address3">
                         <div class="inputbox">
                             <label for="remail"><b>Email</b></label>
-                            <input type="text" name="remail" id="remail">
+                            <input type="text" name="remail" id="remail" value="<?php if (isset($result1['requester_email'])) echo $result1['requester_email']; ?>">
                         </div>
                         <div class="inputbox">
 
                             <label for="rmobile"><b>Mobile</b></label>
-                            <input type="number" name="rmobile" id="rmobile">
+                            <input type="number" name="rmobile" id="rmobile" value="<?php if (isset($result1['requester_mobile'])) echo $result1['requester_mobile']; ?>">
                         </div>
                     </div>
                     <div class="address3">
                         <div class="inputbox">
-                            <label for="assign-technician"><b>Assign Technician</b></label>
+                            <label for="rtechnician"><b>Assign Technician</b></label>
                             <input type="text" name="rtechnician" id="rtechnician">
                         </div>
                         <div class="inputbox">
@@ -291,11 +340,12 @@ $run = mysqli_query($conn, $sql);
                         </div>
                     </div>
                     <div class="buttons">
-                        <button type="submit" class="submitbtn" name="submitbtn">Assign</button>
+                        <button type="submit" class="submitbtn" name="assign-btn">Assign</button>
                         <button type="reset" class="resetbtn" name="resetbtn">Reset</button>
                     </div>
 
                 </form>
+
             </div>
 
         </div>
