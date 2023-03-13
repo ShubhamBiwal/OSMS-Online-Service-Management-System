@@ -2,124 +2,67 @@
 include "../connection.php";
 include "include/header-sidebar.php";
 
-echo '<style>.details{display:none;}</style>';
-
-if (isset($_POST['search-btn'])) {
-    $checkid = $_POST['checkid'];
-    if ($checkid == "") {
-        echo '<script>alert("Please Enter Request ID.");</script>';
-    } else {
-        $sql = "SELECT * FROM assign_work WHERE request_id =  '$checkid'";
-        $run = mysqli_query($conn, $sql);
-
-        if ($result = mysqli_fetch_array($run)) {
-            echo '<style>.details{display:initial;}</style>';
-
-            $rid = $result['request_id'];
-            $rinfo = $result['request_info'];
-            $rdesc = $result['request_desc'];
-            $rname = $result['requester_name'];
-            $radd1 = $result['requester_add1'];
-            $radd2 = $result['requester_add2'];
-            $rcity = $result['requester_city'];
-            $rstate = $result['requester_state'];
-            $rzip = $result['requester_zip'];
-            $remail = $result['requester_email'];
-            $rmobile = $result['requester_mobile'];
-            $radate = $result['assign_date'];
-            $ratech = $result['assign_tech'];
-        } else {
-            $msg = "";
-        }
+if (isset($_POST['view-btn'])) {
+    $r_id = $_POST['rid'];
+    $sql = "SELECT * FROM assign_work WHERE request_id = '$r_id' ";
+    $run = mysqli_query($conn, $sql);
+    if ($result =  mysqli_fetch_array($run)) {
+        $rid = $result['request_id'];
+        $rinfo = $result['request_info'];
+        $rdesc = $result['request_desc'];
+        $rname = $result['requester_name'];
+        $radd1 = $result['requester_add1'];
+        $radd2 = $result['requester_add2'];
+        $rcity = $result['requester_city'];
+        $rstate = $result['requester_state'];
+        $rzip = $result['requester_zip'];
+        $remail = $result['requester_email'];
+        $rmobile = $result['requester_mobile'];
+        $radate = $result['assign_date'];
+        $ratech = $result['assign_tech'];
     }
 }
+
+// if (isset($_POST['search-btn'])) {
+//     $checkid = $_POST['checkid'];
+//     if ($checkid == "") {
+//         echo '<script>alert("Please Enter Request ID.");</script>';
+//     } else {
+//         $sql = "SELECT * FROM assign_work WHERE request_id =  '$checkid'";
+//         $run = mysqli_query($conn, $sql);
+
+//         if ($result = mysqli_fetch_array($run)) {
+//             echo '<style>.details{display:initial;}</style>';
+
+//            
+//         } 
+//     }
+// }
 
 ?>
 
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2597f4">
-    <title>Check Status</title>
-    <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
-    <!-- external stylesheet -->
-    <link rel="stylesheet" href="../css/user-style.css">
+
+    <title>View Assign Work </title>
+
     <style>
-        .check-id {
-            display: flex;
-            gap: 1rem;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-        }
-
-        .check-id input[type="number"] {
-            background-color: #f2f2f2;
-            outline: .1rem solid rgba(0, 0, 0, 0.3);
-            padding: .5rem 1rem;
-        }
-
-        .check-id input[type="number"]:focus {
-            outline: .2rem solid rgba(0, 0, 0, 0.5);
-        }
-
-        .check-id label {
-            font-size: 1.5rem;
-            font-weight: 550;
-        }
-
-        .check-id .search-btn {
-            background: #2597f4;
-            color: white;
-            font-size: 1.6rem;
-            padding: .7rem 1rem;
-            cursor: pointer;
-            opacity: .85;
-            border-radius: .2rem;
-            box-shadow: .2rem .2rem 1rem rgba(0, 0, 0, 0.3);
-
-        }
-
-        .search-btn:hover {
-            opacity: 1;
-        }
-
         .details {
-            margin-top: 4rem;
-
+            width: 100%;
         }
 
         .details .heading {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem 0;
+            padding: 1rem 0;
             font-size: 2rem;
-            width: 70%;
-        }
-
-        #msg {
-            margin-top: 3rem;
-            padding: 1rem;
-            background: #e2effa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50%;
-            font-size: 1.6rem;
         }
 
         table {
-            width: 70%;
             border-collapse: collapse;
             text-align: left;
+            width: 100%;
         }
 
         tr,
@@ -157,19 +100,17 @@ if (isset($_POST['search-btn'])) {
             box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
 
         }
-
-        .printbtn:hover,
-        .closebtn:hover {
-            opacity: 1;
-        }
-
-        .btns {
+        .btns{
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 2rem;
             margin-top: 2rem;
-            width: 70%;
+        }
+
+        .printbtn:hover,
+        .closebtn:hover {
+            opacity: 1;
         }
 
 
@@ -178,37 +119,24 @@ if (isset($_POST['search-btn'])) {
                 width: 100%;
             }
 
-            table,
-            .msg {
+            table {
                 width: 100%;
             }
 
-            .check-id {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 
 <body>
     <div class="content">
-        <form action="" method="post">
-            <div class="check-id">
-                <label for="checkid">Enter Request ID:</label>
-                <input type="number" name="checkid">
-                <input type="submit" name="search-btn" class="search-btn" value="Search">
-            </div>
-        </form>
-
-
 
         <div class="details" id="printme">
             <h2 class="heading">Assigned Work Details</h2>
             <table>
                 <tr>
-                    <td>Request ID</td>
+                    <td><b>Request ID<b></td>
                     <td>
-                        <?php if (isset($rid)) echo $rid; ?>
+                        <b> <?php if (isset($rid)) echo $rid; ?><b>
                     </td>
                 </tr>
                 <tr>
@@ -294,7 +222,7 @@ if (isset($_POST['search-btn'])) {
             </table>
             <div class="btns">
                 <button type="submit" class="printbtn" name="printbtn" onclick="ContentPrint('printme')">Print</button>
-                <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'check-status.php';">Close</button>
+                <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'work-order.php';">Close</button>
             </div>
         </div>
 
