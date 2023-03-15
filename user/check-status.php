@@ -13,7 +13,7 @@ if (isset($_POST['search-btn'])) {
         $run = mysqli_query($conn, $sql);
 
         if ($result = mysqli_fetch_array($run)) {
-            echo '<style>.details{display:initial;}</style>';
+            echo '<style>.details{display:block;}</style>';
 
             $rid = $result['request_id'];
             $rinfo = $result['request_info'];

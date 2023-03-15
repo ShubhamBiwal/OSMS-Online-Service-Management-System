@@ -4,7 +4,22 @@ include "include/header-sidebar.php";
 
 $sql = "SELECT u_id, u_name, u_email FROM user_login ORDER BY u_id DESC";
 $run = mysqli_query($conn, $sql);
-
+//dynamic card data
+//total received requests
+$sql1 = "SELECT max(request_id) FROM submit_request";
+$run1 = mysqli_query($conn, $sql1);
+$row1 = mysqli_fetch_row($run1);
+$total_req_received = $row1[0];
+//total assigned work
+$sql2 = "SELECT max(r_no) FROM assign_work";
+$run2 = mysqli_query($conn, $sql2);
+$row2 = mysqli_fetch_row($run2);
+$total_assigned_work = $row2[0];
+//total technician
+$sql3 = "SELECT * FROM technician_tb";
+$run3 = mysqli_query($conn, $sql3);
+$row3 = mysqli_num_rows($run3);
+$total_technicians = $row3;
 ?>
 
 <head>
@@ -105,34 +120,34 @@ $run = mysqli_query($conn, $sql);
 
 <div class="content">
     <div class="info-data">
-        <a href="">
+        <a href="requests.php">
             <div class="card">
                 <div class="head">
                     <div>
                         <p>Requests Received</p>
-                        <h2>50 </h2>
+                        <h2><?php echo $total_req_received; ?> </h2>
                     </div>
                     <i class="fa-solid fa-hands-holding-circle"></i>
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="work-order.php">
             <div class="card">
                 <div class="head">
                     <div>
                         <p>Assigned Work</p>
-                        <h2>0</h2>
+                        <h2><?php echo $total_assigned_work; ?></h2>
                     </div>
                     <i class="fa-sharp fa-solid fa-handshake"></i>
                 </div>
             </div>
         </a>
-        <a href="">
+        <a href="technician.php">
             <div class="card">
                 <div class="head">
                     <div>
                         <p>Technicians</p>
-                        <h2>0</h2>
+                        <h2><?php echo $total_technicians; ?></h2>
                     </div>
                     <i class="fa-solid fa-screwdriver-wrench"></i>
                 </div>

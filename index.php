@@ -52,7 +52,21 @@ if (isset($_POST['uLogin'])) {
     }
 }
 
-
+//total assigned/requests completed
+$sql1 = "SELECT max(r_no) FROM assign_work";
+$run1 = mysqli_query($conn, $sql1);
+$row1 = mysqli_fetch_row($run1);
+$total_assigned_work = $row1[0] - 1;
+//total users
+$sql2 = "SELECT * FROM user_login";
+$run2 = mysqli_query($conn, $sql2);
+$row2 = mysqli_num_rows($run2);
+$total_users = $row2 - 1;
+//total technician
+$sql3 = "SELECT * FROM technician_tb";
+$run3 = mysqli_query($conn, $sql3);
+$row3 = mysqli_num_rows($run3);
+$total_technicians = $row3 - 1;
 
 
 
@@ -137,14 +151,14 @@ if (isset($_POST['uLogin'])) {
             <div class="box">
                 <img src="images/fun-fact-icon-1.svg" alt="">
                 <div class="info">
-                    <h3>1000+</h3>
+                    <h3><?php echo $total_assigned_work; ?>+</h3>
                     <p>Request Competed</p>
                 </div>
             </div>
             <div class="box">
                 <img src="images/fun-fact-icon-2.svg" alt="">
                 <div class="info">
-                    <h3>400+</h3>
+                    <h3><?php echo $total_users; ?>+</h3>
                     <p>Happy Clients</p>
                 </div>
             </div>
@@ -152,7 +166,7 @@ if (isset($_POST['uLogin'])) {
             <div class="box">
                 <img src="images/fun-fact-icon-3.svg" alt="">
                 <div class="info">
-                    <h3>20+</h3>
+                    <h3><?php echo $total_technicians; ?>+</h3>
                     <p>Active Workers</p>
                 </div>
             </div>

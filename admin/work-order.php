@@ -23,6 +23,10 @@ if (isset($_POST['delete-btn'])) {
 <head>
     <title>Work Order</title>
     <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
         .container {
             box-shadow: rgba(60, 64, 67, 0.3) 0 .1rem .2rem 0, rgba(60, 64, 67, 0.15) 0 .2rem .6rem .2rem;
         }
