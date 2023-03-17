@@ -1,4 +1,5 @@
 <?php
+$page = "sellreport";
 include "../connection.php";
 include "include/header-sidebar.php";
 echo '<style>.table{display:none;}</style>';
@@ -93,13 +94,7 @@ if (isset($_POST['search-btn'])) {
 
         }
 
-        #msg {
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: 600;
-            padding: 1rem 0;
-            color: red;
-        }
+     
 
         .print-btn {
             position: fixed;
@@ -134,11 +129,28 @@ if (isset($_POST['search-btn'])) {
             .search-btn {
                 width: 100%;
             }
+            .content{
+                padding: 1.5rem;
+            }
+        }
+
+        @media print {
+        .table{
+            margin-top: -5rem;
+        }
+        .table-data{
+            overflow: hidden;
+        }
+            .head-sidebar, .form-container,
+            .printbtn,
+            .print-btn {
+                display: none;
+            }
         }
     </style>
 </head>
 <div class="content">
-    <span class="print-btn" onclick="ContentPrint('printme')"><i class="fa-solid fa-print"></i></span>
+    <span class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i></span>
 
     <form action="" method="post">
         <div class="form-container">
@@ -148,7 +160,7 @@ if (isset($_POST['search-btn'])) {
             <input type="submit" value="Search" name="search-btn" class="search-btn">
         </div>
     </form>
-    <div class="table" id="printme">
+    <div class="table">
 
         <div class="heading">
             <p>Sell Details</p>
@@ -202,21 +214,7 @@ if (isset($_POST['search-btn'])) {
                     <?php } ?>
                 </tbody>
             </table>
-            <p id="msg"><?php if (isset($msg)) echo $msg; ?></p>
 
         </div>
     </div>
 </div>
-<script>
-    function ContentPrint(divId) {
-        var printContents = document.getElementById(divId).innerHTML;
-        var originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
-
-        window.print();
-
-        document.body.innerHTML = originalContents;
-
-    }
-</script>

@@ -26,7 +26,7 @@ if (isset($_POST['updatebtn'])) {
     $p_total = $_POST['ptotal'];
     $p_org = $_POST['porg'];
     $p_sell = $_POST['psell'];
-    if ($p_id == "" || $p_name == "" || $p_dop == "" || $p_avail == "" ||  $p_total == "" || $p_org == ""|| $p_sell =="" ){
+    if ($p_id == "" || $p_name == "" || $p_dop == "" || $p_avail == "" ||  $p_total == "" || $p_org == "" || $p_sell == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
         $sql = "UPDATE assets_tb SET pname= '$p_name', pdop = '$p_dop', pavail = '$p_avail', ptotal = '$p_total', porg_cost = '$p_org', psell_cost = '$p_sell' WHERE pid ='$p_id' ";
@@ -47,6 +47,7 @@ if (isset($_POST['updatebtn'])) {
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
         }
+
         .container {
             padding: 1.6rem;
             box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -71,16 +72,24 @@ if (isset($_POST['updatebtn'])) {
             width: 100%;
             padding: 1rem;
             margin: 1.5rem 0;
-            background: #f4f4f4;
-            border: none;
+            background: #f8f8ff;
+            border: .1rem solid rgba(0, 0, 0, 0.05);
         }
 
-        input[type="text"]:focus {
-            outline: none;
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus {
+            outline: .1rem solid rgba(0, 0, 0, 0.4);
+
         }
 
         #pid {
-            background: #dfdfdf;
+            background: var(--blue);
+            color: white;
+            box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
+            outline: none;
+            font-weight: bold;
+            border: none;
         }
 
         .updatebtn {
@@ -128,6 +137,11 @@ if (isset($_POST['updatebtn'])) {
             .container {
                 width: 100%;
             }
+
+                .content {
+                    padding: 1.5rem;
+                }
+            
         }
     </style>
 </head>

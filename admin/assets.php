@@ -1,4 +1,5 @@
 <?php
+$page = "assets";
 include "../connection.php";
 include "include/header-sidebar.php";
 
@@ -295,7 +296,12 @@ if (isset($_POST['uSubmit'])) {
             .modal-content .forms .form-content .input-box label {
                 width: 100%;
             }
+        }
 
+        @media(max-width:750px) {
+            .content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>

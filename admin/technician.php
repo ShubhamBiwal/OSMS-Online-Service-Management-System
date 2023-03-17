@@ -1,4 +1,5 @@
 <?php
+$page = "technician";
 include "../connection.php";
 include "include/header-sidebar.php";
 
@@ -231,67 +232,71 @@ if (isset($_POST['uSubmit'])) {
             text-transform: none;
         }
 
-            .modal-content .form-content .input-box input:focus {
-                border-color: var(--black);
+        .modal-content .form-content .input-box input:focus {
+            border-color: var(--black);
+        }
+
+        .modal-content .form-content .input-box i {
+            position: absolute;
+            color: var(--blue);
+            font-size: 1.6rem;
+        }
+
+        .modal-content .forms .form-content .text {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .modal-content .forms .form-content .text button {
+            text-decoration: none;
+            color: var(--blue);
+            background: transparent;
+            cursor: pointer;
+            font-size: 1.7rem;
+        }
+
+        .modal-content .forms .form-content .text button:hover {
+            text-decoration: underline;
+        }
+
+        .modal-content .forms .form-content .button {
+            color: #fff;
+            margin-top: 2.5rem;
+            height: 5rem;
+        }
+
+        .modal-content .forms .form-content .button input {
+            color: #fff;
+            background: var(--blue);
+            border-radius: 0.4rem;
+            cursor: pointer;
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.05rem;
+            transition: all 0.4s ease;
+        }
+
+        .modal-content .forms .form-content .button input:hover {
+            background: #1276c8;
+        }
+
+
+
+
+        @media (max-width: 850px) {
+            .table-data {
+                overflow-x: scroll;
             }
 
-            .modal-content .form-content .input-box i {
-                position: absolute;
-                color: var(--blue);
-                font-size: 1.6rem;
+            .modal-content {
+                width: 90%;
             }
 
-            .modal-content .forms .form-content .text {
-                font-size: 1rem;
-                font-weight: 500;
-                color: #333;
+                .content {
+                    padding: 1.5rem;
             }
-
-            .modal-content .forms .form-content .text button {
-                text-decoration: none;
-                color: var(--blue);
-                background: transparent;
-                cursor: pointer;
-                font-size: 1.7rem;
-            }
-
-            .modal-content .forms .form-content .text button:hover {
-                text-decoration: underline;
-            }
-
-            .modal-content .forms .form-content .button {
-                color: #fff;
-                margin-top: 2.5rem;
-                height: 5rem;
-            }
-
-            .modal-content .forms .form-content .button input {
-                color: #fff;
-                background: var(--blue);
-                border-radius: 0.4rem;
-                cursor: pointer;
-                font-size: 2rem;
-                font-weight: 500;
-                letter-spacing: 0.05rem;
-                transition: all 0.4s ease;
-            }
-
-            .modal-content .forms .form-content .button input:hover {
-                background: #1276c8;
-            }
-
-
-
-
-            @media (max-width: 850px) {
-                .table-data {
-                    overflow-x: scroll;
-                }
-
-                .modal-content {
-                    width: 90%;
-                }
-            }
+        }
     </style>
 </head>
 <div class="content">

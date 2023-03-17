@@ -23,22 +23,6 @@ if (isset($_POST['view-btn'])) {
     }
 }
 
-// if (isset($_POST['search-btn'])) {
-//     $checkid = $_POST['checkid'];
-//     if ($checkid == "") {
-//         echo '<script>alert("Please Enter Request ID.");</script>';
-//     } else {
-//         $sql = "SELECT * FROM assign_work WHERE request_id =  '$checkid'";
-//         $run = mysqli_query($conn, $sql);
-
-//         if ($result = mysqli_fetch_array($run)) {
-//             echo '<style>.details{display:initial;}</style>';
-
-//            
-//         } 
-//     }
-// }
-
 ?>
 
 
@@ -48,21 +32,22 @@ if (isset($_POST['view-btn'])) {
 
     <style>
         .details {
-            width: 100%;
+            width: 70%;
         }
 
         .details .heading {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem 0;
-            font-size: 2rem;
+            padding: 2rem 0;
+            font-size: 1.3rem;
+            width: 100%;
         }
 
         table {
+            width: 100%;
             border-collapse: collapse;
             text-align: left;
-            width: 100%;
         }
 
         tr,
@@ -100,29 +85,60 @@ if (isset($_POST['view-btn'])) {
             box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
 
         }
-        .btns{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
 
         .printbtn:hover,
         .closebtn:hover {
             opacity: 1;
         }
 
+        .btns {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem;
+            width: 100%;
+
+        }
+
+        @media(max-width:950px) {
+            .details {
+                width: 100%;
+            }
+
+        }
 
         @media(max-width:750px) {
             .details .heading {
                 width: 100%;
             }
 
-            table {
+            .content {
+                padding: 1.5rem;
+            }
+
+            .details {
                 width: 100%;
             }
 
+            table {
+                width: 100%;
+                font-size: 1.3rem;
+            }
+
+
+        }
+
+        @media print {
+            .details {
+                margin-top: -10rem;
+            }
+
+            .head-sidebar,
+            .btns,
+            .check-id {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -130,8 +146,10 @@ if (isset($_POST['view-btn'])) {
 <body>
     <div class="content">
 
-        <div class="details" id="printme">
-            <h2 class="heading">Assigned Work Details</h2>
+        <div class="details">
+            <div class="heading">
+                <h2>Assigned Work Details</h2>
+            </div>
             <table>
                 <tr>
                     <td><b>Request ID<b></td>
@@ -221,7 +239,7 @@ if (isset($_POST['view-btn'])) {
                 </tr>
             </table>
             <div class="btns">
-                <button type="submit" class="printbtn" name="printbtn" onclick="ContentPrint('printme')">Print</button>
+                <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
                 <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'work-order.php';">Close</button>
             </div>
         </div>
@@ -229,20 +247,6 @@ if (isset($_POST['view-btn'])) {
         <?php if (isset($msg)) echo '<div id="msg">Your Request is Still Pending...</div>'; ?>
     </div>
 
-
-    <script>
-        function ContentPrint(divId) {
-            var printContents = document.getElementById(divId).innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
-
-        }
-    </script>
 
 </body>
 

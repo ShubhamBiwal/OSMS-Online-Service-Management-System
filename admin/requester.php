@@ -1,4 +1,5 @@
 <?php
+$page = "requester";
 include "../connection.php";
 include "include/header-sidebar.php";
 
@@ -23,14 +24,11 @@ if (isset($_POST['uSubmit'])) {
 
     $sql = "INSERT INTO user_login (u_name, u_email, u_password) VALUES('$u_name', '$u_email', '$u_pass')";
     $run = mysqli_query($conn, $sql);
-    if($run){
+    if ($run) {
         echo '<script>alert("Added Successfully");</script>';
         echo '<script>location.href="requester.php";</script>';
-
-
-    }else{
+    } else {
         echo '<script>alert("Unable to Add!");</script>';
-
     }
 }
 
@@ -283,6 +281,11 @@ if (isset($_POST['uSubmit'])) {
             .modal-content {
                 width: 90%;
             }
+
+                .content {
+                    padding: 1.5rem;
+                }
+            
         }
     </style>
 </head>

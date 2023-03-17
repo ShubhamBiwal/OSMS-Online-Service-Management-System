@@ -1,8 +1,23 @@
 <?php
+$page = "submitrequest";
+
 include "../connection.php";
 include "include/header-sidebar.php";
+//show profile data
+$uEmail = $_SESSION['is_login'];
+$sql  = "SELECT * FROM user_login WHERE u_email = '$uEmail'";
+$run = mysqli_query($conn, $sql);
+if ($result = mysqli_fetch_array($run)) {
+   $uname = $result['u_name'];
+   $uadd1 = $result['u_add1'];
+   $uadd2 = $result['u_add2'];
+   $ucity = $result['u_city'];
+   $ustate = $result['u_state'];
+   $uzip = $result['u_zip'];
+   $umobile = $result['u_mobile'];
+}
 
-
+//insert data
 if (isset($_POST['submitbtn'])) {
    $rinfo = $_POST['rinfo'];
    $rdesc = $_POST['rdesc'];
@@ -25,7 +40,7 @@ if (isset($_POST['submitbtn'])) {
          $genid = mysqli_insert_id($conn);
          echo '<script>alert("Request Submitted Successfully.");</script>';
          $_SESSION['myid'] = $genid;
-         echo '<script>location.href = "request-submit-success.php";</script>';
+         echo '<script>location.href = "my-requests.php";</script>';
       } else {
          echo '<script>alert("Unable to Submit Your Request.");</script>';
       }
@@ -52,7 +67,6 @@ if (isset($_POST['submitbtn'])) {
    <!-- external stylesheet -->
    <link rel="stylesheet" href="../css/user-style.css">
    <style>
-
       .container {
          padding: 1.6rem;
          box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -70,11 +84,16 @@ if (isset($_POST['submitbtn'])) {
          width: 100%;
          padding: 1rem;
          margin: 1.5rem 0;
-         background: #e5e5e5;
+         background: #f8f8ff;
+         border: .1rem solid rgba(0, 0, 0, 0.05);
+
       }
 
-      input[type="text"]:focus {
-         outline: none;
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="date"]:focus{
+         outline: .1rem solid rgba(0, 0, 0, 0.4);
+
       }
 
       .address,
@@ -149,6 +168,10 @@ if (isset($_POST['submitbtn'])) {
          .inputbox2 {
             width: 100%;
          }
+
+         .content {
+            padding: 2rem;
+         }
       }
    </style>
 </head>
@@ -163,43 +186,43 @@ if (isset($_POST['submitbtn'])) {
             <label for="rdesc"><b>Discription</b></label>
             <input type="text" name="rdesc" id="rdesc" placeholder="Write Discription">
             <label for="rname"><b>Name</b></label>
-            <input type="text" name="rname" id="rname" value="">
+            <input type="text" name="rname" id="rname" value="<?php echo $uname; ?>">
 
             <div class="address">
                <div class="inputbox">
                   <label for="raddress1"><b>Address Line 1</b></label>
-                  <input type="text" name="raddress1" id="raddress1" placeholder="House No. / Street">
+                  <input type="text" name="raddress1" id="raddress1" placeholder="House No. / Street" value="<?php echo $uadd1; ?>">
                </div>
                <div class="inputbox">
                   <label for="raddress2"><b>Address Line 2</b></label>
-                  <input type="text" name="raddress2" id="raddress2" placeholder="Area / Villege">
+                  <input type="text" name="raddress2" id="raddress2" placeholder="Area / Villege" value="<?php echo $uadd2; ?>">
                </div>
             </div>
 
             <div class="address2">
                <div class="inputbox2">
                   <label for="rcity"><b>City</b></label>
-                  <input type="text" name="rcity" id="rcity">
+                  <input type="text" name="rcity" id="rcity" value="<?php echo $ucity; ?>">
                </div>
                <div class="inputbox2">
                   <label for="rstate"><b>State</b></label>
-                  <input type="text" name="rstate" id="rstate">
+                  <input type="text" name="rstate" id="rstate" value="<?php echo $ustate; ?>">
                </div>
 
                <div class="inputbox2">
                   <label for="rzip"><b>Zip</b></label>
-                  <input type="number" name="rzip" id="rzip">
+                  <input type="number" name="rzip" id="rzip" value="<?php echo $uzip; ?>">
                </div>
             </div>
             <div class="address3">
                <div class="inputbox2">
                   <label for="remail"><b>Email</b></label>
-                  <input type="text" name="remail" id="remail">
+                  <input type="text" name="remail" id="remail" value="<?php echo $uEmail ?>">
                </div>
                <div class="inputbox2">
 
                   <label for="rmobile"><b>Mobile</b></label>
-                  <input type="number" name="rmobile" id="rmobile">
+                  <input type="number" name="rmobile" id="rmobile" value="<?php echo $umobile ?>">
                </div>
                <div class="inputbox2">
 
@@ -215,7 +238,14 @@ if (isset($_POST['submitbtn'])) {
       </div>
 
    </div>
-
+   <script>
+      var zip = document.getElementById("rzip").value;
+      var mobile = document.getElementById("rmobile").value;
+      if (zip == 0 || mobile == 0) {
+         document.getElementById("rzip").value = "";
+         document.getElementById("rmobile").value = "";
+      }
+   </script>
 </body>
 
 </html>

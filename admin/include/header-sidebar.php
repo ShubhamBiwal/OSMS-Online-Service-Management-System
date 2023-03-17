@@ -14,7 +14,7 @@ if (!isset($_SESSION['is_adminlogin'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
     <!-- external stylesheet -->
-    <link rel="stylesheet" href= "../css/admin-style.css">
+    <link rel="stylesheet" href="../css/admin-style.css">
 </head>
 
 <section class="head-sidebar">
@@ -27,62 +27,62 @@ if (!isset($_SESSION['is_adminlogin'])) {
     <div class="sidebar">
         <ul class="links">
             <li>
-                <a href="dashboard.php" class="activ">
+                <a href="dashboard.php" class="<?php if ($page == "dashboard") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-gauge"></i></span>
                     <span class="item">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="work-order.php">
+                <a href="work-order.php" class="<?php if ($page == "workorder") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-brands fa-accessible-icon"></i></span>
                     <span class="item">Work Order</span>
                 </a>
             </li>
 
             <li>
-                <a href="requests.php">
+                <a href="requests.php" class="<?php if ($page == "requests") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-align-center"></i></span>
                     <span class="item">Requests</span>
                 </a>
             </li>
             <li>
-                <a href="assets.php">
+                <a href="assets.php" class="<?php if ($page == "assets") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
                     <span class="item">Assets</span>
                 </a>
             </li>
             <li>
-                <a href="technician.php">
+                <a href="technician.php" class="<?php if ($page == "technician") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-headset"></i></span>
                     <span class="item">Technician</span>
                 </a>
             </li>
             <li>
-                <a href="requester.php">
+                <a href="requester.php" class="<?php if ($page == "requester") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-users"></i></span>
                     <span class="item">Requester</span>
                 </a>
             </li>
             <li>
-                <a href="sold-product-report.php">
+                <a href="sold-product-report.php" class="<?php if ($page == "sellreport") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-sharp fa-solid fa-file-invoice"></i></span>
                     <span class="item">Sell Report</span>
                 </a>
             </li>
             <li>
-                <a href="work-report.php">
+                <a href="work-report.php" class="<?php if ($page == "workreport") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-file-word"></i></i></span>
                     <span class="item">Work Report</span>
                 </a>
             </li>
             <li>
-                <a href="change-password.php">
+                <a href="change-password.php" class="<?php if ($page == "changepassword") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-key"></i></span>
                     <span class="item">Change Password</span>
                 </a>
             </li>
             <li>
-                <a href="logout.php">
+                <a href="logout.php" class="<?php if ($page == "logout") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
                     <span class="item">Logout</span>
                 </a>

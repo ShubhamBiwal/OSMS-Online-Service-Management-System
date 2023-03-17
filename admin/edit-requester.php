@@ -14,24 +14,20 @@ if (isset($_POST['edit-btn'])) {
     }
 }
 //upadate data
-if(isset($_POST['updatebtn'])){
+if (isset($_POST['updatebtn'])) {
     $uid = $_POST['rid'];
     $uname = $_POST['rname'];
     $uemail = $_POST['remail'];
-    if($uid == "" || $uname == "" || $uemail == ""){
+    if ($uid == "" || $uname == "" || $uemail == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
-    }
-    else{
+    } else {
         $sql = "UPDATE user_login SET u_name= '$uname', u_email = '$uemail' WHERE u_id ='$uid' ";
         $run = mysqli_query($conn, $sql);
-        if($run){
+        if ($run) {
             echo '<script> alert("Data Updated Successfully.");</script>';
             echo '<script>location.href="requester.php";</script>';
-
-        }
-        else{
+        } else {
             echo '<script> alert("Error: Unable to Update!");</script>';
-
         }
     }
 }
@@ -62,16 +58,22 @@ if(isset($_POST['updatebtn'])){
             width: 100%;
             padding: 1rem;
             margin: 1.5rem 0;
-            background: #f4f4f4;
-            border: none;
+            background: #f8f8ff;
+            border: .1rem solid rgba(0, 0, 0, 0.05);
         }
 
         input[type="text"]:focus {
-            outline: none;
+            outline: .1rem solid rgba(0, 0, 0, 0.4);
+
         }
 
         #rid {
-            background: #dfdfdf;
+            background: var(--blue);
+            color: white;
+            box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
+            outline: none;
+            font-weight: bold;
+            border: none;
         }
 
         .updatebtn {
@@ -119,6 +121,10 @@ if(isset($_POST['updatebtn'])){
             .container {
                 width: 100%;
             }
+
+                .content {
+                    padding: 1.5rem;
+                }
         }
     </style>
 </head>

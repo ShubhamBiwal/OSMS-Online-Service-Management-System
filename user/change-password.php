@@ -1,4 +1,6 @@
 <?php
+$page = "changepass";
+
 include "../connection.php";
 include "include/header-sidebar.php";
 $remail = $_SESSION['is_login'];
@@ -16,10 +18,8 @@ if (isset($_POST['updatebtn'])) {
             $run = mysqli_query($conn, $sql);
             if ($run) {
                 echo '<script>alert("Password Updated Succesfully.");</script>';
-            }
-            else{
+            } else {
                 echo '<script>alert("Error: Unable to Update.");</script>';
-
             }
         } else {
             echo '<script>alert("Password Fields Must be Equal!");</script>';
@@ -60,16 +60,22 @@ if (isset($_POST['updatebtn'])) {
             width: 100%;
             padding: 1rem;
             margin: 1.5rem 0;
-            background: #f4f4f4;
-            border: none;
+            background: #f8f8ff;
+            border: .1rem solid rgba(0, 0, 0, 0.05);
         }
 
         input[type="text"]:focus {
-            outline: none;
+            outline: .1rem solid rgba(0, 0, 0, 0.4);
+
         }
 
         #uemail {
-            background: #dfdfdf;
+            background: var(--blue);
+            color: white;
+            box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
+            outline: none;
+            border: none;
+            font-weight: bold;
         }
 
         .updatebtn {
@@ -111,6 +117,14 @@ if (isset($_POST['updatebtn'])) {
 
         .updatebtn:hover {
             opacity: 1;
+        }
+
+        @media(max-width:750px) {
+
+            .content {
+                padding: 2rem;
+            }
+
         }
     </style>
 </head>

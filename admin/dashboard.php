@@ -1,4 +1,5 @@
 <?php
+$page ="dashboard";
 include "../connection.php";
 include "include/header-sidebar.php";
 
@@ -113,6 +114,9 @@ $total_technicians = $row3;
         @media (max-width: 750px) {
             .table-data {
                 overflow-x: scroll;
+            }
+            .content{
+                padding: 1.5rem;
             }
         }
     </style>

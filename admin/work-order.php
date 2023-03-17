@@ -1,4 +1,5 @@
 <?php
+$page = "workorder";
 include "../connection.php";
 include "include/header-sidebar.php";
 
@@ -88,6 +89,12 @@ if (isset($_POST['delete-btn'])) {
         thead {
             background: #1275c6;
             color: white;
+        }
+
+        @media(max-width:750px) {
+            .content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>

@@ -55,8 +55,15 @@ body {
   background: var(--black);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 3rem;
   box-shadow: 0.2rem 0.2rem 1rem rgb(0, 0, 0, 0.3);
+}
+.top_navbar .pheading {
+  color: white;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .top_navbar .logo {
@@ -68,10 +75,12 @@ body {
 }
 
 .top_navbar .hamburger {
-  font-size: 2.5rem;
+  font-size: 3rem;
   color: var(--white);
   cursor: pointer;
-  padding: 0 2rem;
+  padding: 1rem 2rem;
+  background: var(--blue);
+  border-radius: 1rem;
   display: none;
 }
 
@@ -95,6 +104,7 @@ body {
   position: relative;
   text-decoration: none;
   margin: 1rem 0;
+  border-radius: 0.5rem;
 }
 
 .sidebar ul li a .icon {
@@ -104,21 +114,30 @@ body {
   padding: 0 0.5rem 0 0;
 }
 
-.sidebar ul li a:hover,
-.sidebar ul li a.active {
+.sidebar ul li a:hover:not(.nav-active) {
   color: var(--blue);
   scale: 1.02;
+}
+.sidebar ul li a.nav-active {
+  background: var(--blue);
+  color: white;
 }
 
-.sidebar ul li a:hover .icon,
-.sidebar ul li a.active .icon {
+.sidebar ul li a:hover:not(.nav-active) .icon {
   color: var(--blue);
   scale: 1.02;
 }
+.sidebar ul li a.nav-active .icon {
+  background: var(--blue);
+  color: white;
+}
+.sidebar h2 {
+  display: none;
+}
 .content {
-  margin-top: 7rem;
   margin-left: 25rem;
   padding: 4rem;
+  margin-top: 7rem;
 }
 
 @media (max-width: 750px) {
@@ -146,5 +165,12 @@ body {
 
   body.active .content {
     width: 100%;
+  }
+  .top_navbar .pheading {
+    display: none;
+  }
+  .sidebar h2{
+    display: initial;
+    color: var(--black);
   }
 }

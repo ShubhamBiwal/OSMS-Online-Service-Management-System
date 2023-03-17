@@ -75,16 +75,30 @@ if (isset($_POST['donebtn'])) {
             width: 100%;
             padding: 1rem;
             margin: 1.5rem 0;
-            background: #f4f4f4;
-            border: none;
+            background: #f8f8ff;
+            border: .1rem solid rgba(0, 0, 0, 0.05);
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus {
+            outline: .1rem solid rgba(0, 0, 0, 0.4);
+
+        }
+
+        #pavail,
+        #pname,
+        #psell {
             outline: none;
         }
 
         #pid {
-            background: #dfdfdf;
+            background: var(--blue);
+            color: white;
+            box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
+            outline: none;
+            font-weight: bold;
+            border: none;
         }
 
         .donebtn {
@@ -132,6 +146,10 @@ if (isset($_POST['donebtn'])) {
             .container {
                 width: 100%;
             }
+
+                .content {
+                    padding: 1.5rem;
+                }
         }
     </style>
 </head>
@@ -174,7 +192,7 @@ if (isset($_POST['donebtn'])) {
         var q = document.getElementById("pquantity").value;
         var p = document.getElementById("psell").value;
         if (q > a) {
-            alert("Maximum Quantity is"+ " : "+a);
+            alert("Maximum Quantity is" + " : " + a);
             document.getElementById("pquantity").value = a;
         } else {
 

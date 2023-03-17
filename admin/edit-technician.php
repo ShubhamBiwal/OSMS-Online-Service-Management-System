@@ -22,7 +22,7 @@ if (isset($_POST['updatebtn'])) {
     $t_city = $_POST['tcity'];
     $t_mobile = $_POST['tmobile'];
     $t_email = $_POST['temail'];
-    if ($t_id == "" || $t_name == "" || $t_city=="" || $t_mobile == "" ||  $t_email == "") {
+    if ($t_id == "" || $t_name == "" || $t_city == "" || $t_mobile == "" ||  $t_email == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
         $sql = "UPDATE technician_tb SET tech_name= '$t_name', tech_city = '$t_city', tech_mobile = '$t_mobile', tech_email = '$t_email' WHERE tech_id ='$t_id' ";
@@ -40,6 +40,10 @@ if (isset($_POST['updatebtn'])) {
 <head>
     <title>Edit Technician</title>
     <style>
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
         .container {
             padding: 1.6rem;
             box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -58,20 +62,28 @@ if (isset($_POST['updatebtn'])) {
             font-size: 1.5rem;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
             padding: 1rem;
             margin: 1.5rem 0;
-            background: #f4f4f4;
-            border: none;
+            background: #f8f8ff;
+            border: .1rem solid rgba(0, 0, 0, 0.05);
         }
 
-        input[type="text"]:focus {
-            outline: none;
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: .1rem solid rgba(0, 0, 0, 0.4);
+
         }
 
         #tid {
-            background: #dfdfdf;
+            background: var(--blue);
+            color: white;
+            box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
+            outline: none;
+            font-weight: bold;
+            border: none;
         }
 
         .updatebtn {
@@ -119,6 +131,12 @@ if (isset($_POST['updatebtn'])) {
             .container {
                 width: 100%;
             }
+
+        
+                .content {
+                    padding: 1.5rem;
+                }
+            
         }
     </style>
 </head>
@@ -135,7 +153,7 @@ if (isset($_POST['updatebtn'])) {
             <label for="tcity"><b>City</b></label>
             <input type="text" name="tcity" id="tcity" value="<?php if (isset($t_city)) echo $t_city; ?>">
             <label for="tmobile"><b>Mobile</b></label>
-            <input type="text" name="tmobile" id="tmobile" value="<?php if (isset($t_mobile)) echo $t_mobile; ?>">
+            <input type="number" name="tmobile" id="tmobile" value="<?php if (isset($t_mobile)) echo $t_mobile; ?>">
             <label for="temail"><b>Email</b></label>
             <input type="text" name="temail" id="temail" value="<?php if (isset($t_email)) echo $t_email; ?>">
             <button type="submit" class="updatebtn" name="updatebtn">Update</button>

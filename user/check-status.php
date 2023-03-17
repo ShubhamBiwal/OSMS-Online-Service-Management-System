@@ -1,4 +1,6 @@
 <?php
+$page = "checkstatus";
+
 include "../connection.php";
 include "include/header-sidebar.php";
 
@@ -6,9 +8,25 @@ echo '<style>.details{display:none;}</style>';
 
 if (isset($_POST['search-btn'])) {
     $checkid = $_POST['checkid'];
+
+
+
+
+
     if ($checkid == "") {
         echo '<script>alert("Please Enter Request ID.");</script>';
     } else {
+
+        $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$checkid'";
+        $runs = mysqli_query($conn, $sqls);
+
+        if (mysqli_num_rows($runs) > 0) {
+            $msg = "";
+        } else {
+            echo '<script>alert("This Request ID is not Exist.");</script>';
+        }
+
+
         $sql = "SELECT * FROM assign_work WHERE request_id =  '$checkid'";
         $run = mysqli_query($conn, $sql);
 
@@ -28,8 +46,6 @@ if (isset($_POST['search-btn'])) {
             $rmobile = $result['requester_mobile'];
             $radate = $result['assign_date'];
             $ratech = $result['assign_tech'];
-        } else {
-            $msg = "";
         }
     }
 }
@@ -71,7 +87,7 @@ if (isset($_POST['search-btn'])) {
         }
 
         .check-id label {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 550;
         }
 
@@ -93,7 +109,7 @@ if (isset($_POST['search-btn'])) {
 
         .details {
             margin-top: 4rem;
-
+            width: 70%;
         }
 
         .details .heading {
@@ -101,8 +117,8 @@ if (isset($_POST['search-btn'])) {
             justify-content: center;
             align-items: center;
             padding: 2rem 0;
-            font-size: 2rem;
-            width: 70%;
+            font-size: 1.3rem;
+            width: 100%;
         }
 
         #msg {
@@ -117,7 +133,7 @@ if (isset($_POST['search-btn'])) {
         }
 
         table {
-            width: 70%;
+            width: 100%;
             border-collapse: collapse;
             text-align: left;
         }
@@ -168,23 +184,63 @@ if (isset($_POST['search-btn'])) {
             align-items: center;
             justify-content: center;
             gap: 2rem;
-            margin-top: 2rem;
-            width: 70%;
+            margin: 2rem;
+            width: 100%;
+
         }
 
+        @media(max-width:950px) {
+            .details {
+                width: 100%;
+            }
+
+            #msg {
+                width: 100%;
+            }
+        }
 
         @media(max-width:750px) {
             .details .heading {
                 width: 100%;
             }
 
-            table,
-            .msg {
+            #msg {
                 width: 100%;
             }
 
             .check-id {
                 flex-direction: column;
+            }
+
+            .content {
+                padding: 2rem;
+            }
+
+            .details {
+                width: 100%;
+            }
+
+            table {
+                width: 100%;
+                font-size: 1.3rem;
+            }
+
+            .check-id input[type="number"] {
+                width: 80%;
+                padding: 1rem;
+            }
+
+        }
+
+        @media print {
+            .details {
+                margin-top: -10rem;
+            }
+
+            .head-sidebar,
+            .btns,
+            .check-id {
+                display: none;
             }
         }
     </style>
@@ -202,13 +258,15 @@ if (isset($_POST['search-btn'])) {
 
 
 
-        <div class="details" id="printme">
-            <h2 class="heading">Assigned Work Details</h2>
+        <div class="details">
+            <div class="heading">
+                <h2>Assigned Work Details</h2>
+            </div>
             <table>
                 <tr>
-                    <td>Request ID</td>
+                    <td><b>Request ID<b></td>
                     <td>
-                        <?php if (isset($rid)) echo $rid; ?>
+                        <b> <?php if (isset($rid)) echo $rid; ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -293,7 +351,7 @@ if (isset($_POST['search-btn'])) {
                 </tr>
             </table>
             <div class="btns">
-                <button type="submit" class="printbtn" name="printbtn" onclick="ContentPrint('printme')">Print</button>
+                <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
                 <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'check-status.php';">Close</button>
             </div>
         </div>
@@ -301,20 +359,6 @@ if (isset($_POST['search-btn'])) {
         <?php if (isset($msg)) echo '<div id="msg">Your Request is Still Pending...</div>'; ?>
     </div>
 
-
-    <script>
-        function ContentPrint(divId) {
-            var printContents = document.getElementById(divId).innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
-
-        }
-    </script>
 
 </body>
 

@@ -333,7 +333,6 @@ $total_technicians = $row3 - 1;
             <?php include('contactform.php'); ?>
 
             <!-- contact form ends -->
-
         </div>
 
     </section>

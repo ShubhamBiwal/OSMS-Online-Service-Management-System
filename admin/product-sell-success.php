@@ -109,8 +109,18 @@ if ($result =  mysqli_fetch_array($run)) {
             .details {
                 width: 100%;
             }
+        }
 
-
+        @media print {
+            .heading {
+                background: #2597f4;
+                color: #fff;
+            }
+            .head-sidebar,
+            .printbtn,
+            .closebtn {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -118,7 +128,7 @@ if ($result =  mysqli_fetch_array($run)) {
 <body>
     <div class="content">
 
-        <div class="details" id="printme">
+        <div class="details">
             <h2 class="heading">Customer Bill</h2>
             <table>
                 <tr>
@@ -171,7 +181,7 @@ if ($result =  mysqli_fetch_array($run)) {
                 </tr>
             </table>
             <div class="btns">
-                <button type="submit" class="printbtn" name="printbtn" onclick="ContentPrint('printme')">Print</button>
+                <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
                 <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'assets.php';">Close</button>
             </div>
         </div>
@@ -179,19 +189,6 @@ if ($result =  mysqli_fetch_array($run)) {
     </div>
 
 
-    <script>
-        function ContentPrint(divId) {
-            var printContents = document.getElementById(divId).innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
-
-        }
-    </script>
 
 </body>
 
