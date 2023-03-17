@@ -3,6 +3,11 @@ session_start();
 if (!isset($_SESSION['is_adminlogin'])) {
     header("Location: /osms/admin");
 }
+$aEmail = $_SESSION['is_adminlogin'];
+$sql = "SELECT a_name FROM admin_login WHERE a_email = '$aEmail'";
+$run = mysqli_query($conn, $sql);
+$result = mysqli_fetch_array($run);
+$aname = $result['a_name'];
 ?>
 
 <head>
@@ -15,6 +20,30 @@ if (!isset($_SESSION['is_adminlogin'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
     <!-- external stylesheet -->
     <link rel="stylesheet" href="../css/admin-style.css">
+    <style>
+        .pheading {
+            color: white;
+            font-size: 1.7rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .sidebar h2 {
+            display: none;
+            margin: 1rem 0;
+
+        }
+
+        @media(max-width:750px) {
+            .sidebar h2 {
+                display: block;
+            }
+
+            .pheading {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <section class="head-sidebar">
@@ -23,8 +52,11 @@ if (!isset($_SESSION['is_adminlogin'])) {
         <div class="hamburger">
             <i class="fa-solid fa-bars"></i>
         </div>
+        <span class="pheading">Hey! <?php echo $aname; ?></span>
     </div>
     <div class="sidebar">
+        <h2>Hey! <?php echo $aname; ?></h2>
+
         <ul class="links">
             <li>
                 <a href="dashboard.php" class="<?php if ($page == "dashboard") echo 'nav-active'; ?>">

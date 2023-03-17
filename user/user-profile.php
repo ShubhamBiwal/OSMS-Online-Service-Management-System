@@ -279,8 +279,10 @@ if (isset($_POST['updatebtn'])) {
     <script>
         var zip = document.getElementById("uzip").value;
         var mobile = document.getElementById("umobile").value;
-        if (zip == 0 || mobile == 0) {
+        if (zip == 0) {
             document.getElementById("uzip").value = "";
+        }
+        if (mobile == 0) {
             document.getElementById("umobile").value = "";
         }
     </script>

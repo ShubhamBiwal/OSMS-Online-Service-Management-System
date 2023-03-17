@@ -90,8 +90,7 @@ if (isset($_POST['submitbtn'])) {
       }
 
       input[type="text"]:focus,
-      input[type="number"]:focus,
-      input[type="date"]:focus{
+      input[type="number"]:focus {
          outline: .1rem solid rgba(0, 0, 0, 0.4);
 
       }
@@ -182,52 +181,52 @@ if (isset($_POST['submitbtn'])) {
       <div class="container">
          <form action="" method="post">
             <label for="rinfo"><b>Request Info</b></label>
-            <input type="text" name="rinfo" id="rinfo" placeholder="Enter Issue">
+            <input type="text" name="rinfo" id="rinfo" placeholder="Enter Issue" required>
             <label for="rdesc"><b>Discription</b></label>
-            <input type="text" name="rdesc" id="rdesc" placeholder="Write Discription">
+            <input type="text" name="rdesc" id="rdesc" placeholder="Write Discription" required>
             <label for="rname"><b>Name</b></label>
-            <input type="text" name="rname" id="rname" value="<?php echo $uname; ?>">
+            <input type="text" name="rname" id="rname" value="<?php echo $uname; ?>" required>
 
             <div class="address">
                <div class="inputbox">
                   <label for="raddress1"><b>Address Line 1</b></label>
-                  <input type="text" name="raddress1" id="raddress1" placeholder="House No. / Street" value="<?php echo $uadd1; ?>">
+                  <input type="text" name="raddress1" id="raddress1" placeholder="House No. / Street" value="<?php echo $uadd1; ?>" required>
                </div>
                <div class="inputbox">
                   <label for="raddress2"><b>Address Line 2</b></label>
-                  <input type="text" name="raddress2" id="raddress2" placeholder="Area / Villege" value="<?php echo $uadd2; ?>">
+                  <input type="text" name="raddress2" id="raddress2" placeholder="Area / Villege" value="<?php echo $uadd2; ?>" required>
                </div>
             </div>
 
             <div class="address2">
                <div class="inputbox2">
                   <label for="rcity"><b>City</b></label>
-                  <input type="text" name="rcity" id="rcity" value="<?php echo $ucity; ?>">
+                  <input type="text" name="rcity" id="rcity" value="<?php echo $ucity; ?>" required>
                </div>
                <div class="inputbox2">
                   <label for="rstate"><b>State</b></label>
-                  <input type="text" name="rstate" id="rstate" value="<?php echo $ustate; ?>">
+                  <input type="text" name="rstate" id="rstate" value="<?php echo $ustate; ?>" required>
                </div>
 
                <div class="inputbox2">
                   <label for="rzip"><b>Zip</b></label>
-                  <input type="number" name="rzip" id="rzip" value="<?php echo $uzip; ?>">
+                  <input type="number" name="rzip" id="rzip" value="<?php echo $uzip; ?>" required>
                </div>
             </div>
             <div class="address3">
                <div class="inputbox2">
                   <label for="remail"><b>Email</b></label>
-                  <input type="text" name="remail" id="remail" value="<?php echo $uEmail ?>">
+                  <input type="text" name="remail" id="remail" value="<?php echo $uEmail ?>" required>
                </div>
                <div class="inputbox2">
 
                   <label for="rmobile"><b>Mobile</b></label>
-                  <input type="number" name="rmobile" id="rmobile" value="<?php echo $umobile ?>">
+                  <input type="number" name="rmobile" id="rmobile" value="<?php echo $umobile ?>" required>
                </div>
                <div class="inputbox2">
 
                   <label for="rdate"><b>Date</b></label>
-                  <input type="date" name="rdate" id="rdate">
+                  <input type="date" name="rdate" id="rdate" value="<?php echo date('Y-m-d'); ?>" required readonly>
                </div>
             </div>
 
@@ -241,8 +240,10 @@ if (isset($_POST['submitbtn'])) {
    <script>
       var zip = document.getElementById("rzip").value;
       var mobile = document.getElementById("rmobile").value;
-      if (zip == 0 || mobile == 0) {
+      if (zip == 0) {
          document.getElementById("rzip").value = "";
+      }
+      if (mobile == 0) {
          document.getElementById("rmobile").value = "";
       }
    </script>

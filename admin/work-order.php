@@ -5,6 +5,10 @@ include "include/header-sidebar.php";
 
 $sql = "SELECT * FROM assign_work";
 $run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
+if($rows == 0){
+    $msg ="No Result Found";
+}
 
 //delete data
 if (isset($_POST['delete-btn'])) {
@@ -26,6 +30,14 @@ if (isset($_POST['delete-btn'])) {
     <style>
         ::-webkit-scrollbar {
             display: none;
+        }
+
+        #msg {
+            text-align: center;
+            font-size: 1.7rem;
+            padding: 1rem 0;
+            font-weight: bold;
+            color: var(--blue);
         }
 
         .container {
@@ -162,6 +174,7 @@ if (isset($_POST['delete-btn'])) {
                     <?php } ?>
                 </tbody>
             </table>
+            <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
         </div>
     </div>
 </div>

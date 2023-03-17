@@ -1,10 +1,14 @@
 <?php
-$page ="dashboard";
+$page = "dashboard";
 include "../connection.php";
 include "include/header-sidebar.php";
 
 $sql = "SELECT u_id, u_name, u_email FROM user_login ORDER BY u_id DESC";
 $run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
+if ($rows == 0) {
+    $msg = "No Result Found";
+}
 //dynamic card data
 //total received requests
 $sql1 = "SELECT max(request_id) FROM submit_request";
@@ -111,11 +115,20 @@ $total_technicians = $row3;
 
         }
 
+        #msg {
+            text-align: center;
+            font-size: 1.7rem;
+            padding: 1rem 0;
+            font-weight: bold;
+            color: var(--blue);
+        }
+
         @media (max-width: 750px) {
             .table-data {
                 overflow-x: scroll;
             }
-            .content{
+
+            .content {
                 padding: 1.5rem;
             }
         }
@@ -191,6 +204,7 @@ $total_technicians = $row3;
                     <?php } ?>
                 </tbody>
             </table>
+            <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
         </div>
     </div>
 </div>

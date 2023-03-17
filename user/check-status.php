@@ -9,23 +9,9 @@ echo '<style>.details{display:none;}</style>';
 if (isset($_POST['search-btn'])) {
     $checkid = $_POST['checkid'];
 
-
-
-
-
     if ($checkid == "") {
         echo '<script>alert("Please Enter Request ID.");</script>';
     } else {
-
-        $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$checkid'";
-        $runs = mysqli_query($conn, $sqls);
-
-        if (mysqli_num_rows($runs) > 0) {
-            $msg = "";
-        } else {
-            echo '<script>alert("This Request ID is not Exist.");</script>';
-        }
-
 
         $sql = "SELECT * FROM assign_work WHERE request_id =  '$checkid'";
         $run = mysqli_query($conn, $sql);
@@ -46,6 +32,14 @@ if (isset($_POST['search-btn'])) {
             $rmobile = $result['requester_mobile'];
             $radate = $result['assign_date'];
             $ratech = $result['assign_tech'];
+        } else {
+            $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$checkid'";
+            $runs = mysqli_query($conn, $sqls);
+            if (mysqli_num_rows($runs) > 0) {
+                $msg = "";
+            } else {
+                echo '<script>alert("This Request ID is not Exist.");</script>';
+            }
         }
     }
 }
@@ -251,7 +245,7 @@ if (isset($_POST['search-btn'])) {
         <form action="" method="post">
             <div class="check-id">
                 <label for="checkid">Enter Request ID:</label>
-                <input type="number" name="checkid">
+                <input type="number" name="checkid" required>
                 <input type="submit" name="search-btn" class="search-btn" value="Search">
             </div>
         </form>

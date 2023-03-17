@@ -56,17 +56,17 @@ if (isset($_POST['uLogin'])) {
 $sql1 = "SELECT max(r_no) FROM assign_work";
 $run1 = mysqli_query($conn, $sql1);
 $row1 = mysqli_fetch_row($run1);
-$total_assigned_work = $row1[0] - 1;
+$total_assigned_work = $row1[0];
 //total users
 $sql2 = "SELECT * FROM user_login";
 $run2 = mysqli_query($conn, $sql2);
 $row2 = mysqli_num_rows($run2);
-$total_users = $row2 - 1;
+$total_users = $row2;
 //total technician
 $sql3 = "SELECT * FROM technician_tb";
 $run3 = mysqli_query($conn, $sql3);
 $row3 = mysqli_num_rows($run3);
-$total_technicians = $row3 - 1;
+$total_technicians = $row3;
 
 
 

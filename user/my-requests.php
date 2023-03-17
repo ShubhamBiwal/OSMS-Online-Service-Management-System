@@ -7,9 +7,18 @@ $uemail = $_SESSION['is_login'];
 
 $sql  = "SELECT * FROM submit_request WHERE requester_email = '$uemail' ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
 
 $sql2  = "SELECT * FROM assign_work WHERE requester_email = '$uemail' ORDER BY request_id DESC";
 $run2 = mysqli_query($conn, $sql2);
+$rows2 = mysqli_num_rows($run2);
+
+if($rows==0 AND $rows2 == 0){
+    $msg ="No Request Found";
+}
+
+
+
 
 
 ?>
@@ -62,16 +71,26 @@ $run2 = mysqli_query($conn, $sql2);
             margin: 1rem;
 
         }
-        .pspan{
+
+        .pspan {
             color: #2597f4;
             font-size: 1.6rem;
             font-style: italic;
             font-weight: 600;
         }
-        .aspan{
+
+        .aspan {
             color: green;
             font-size: 1.7rem;
             font-weight: bolder;
+        }
+
+        #msg {
+            text-align: center;
+            font-size: 1.7rem;
+            padding: 1rem 0;
+            font-weight: bold;
+            color: var(--blue);
         }
 
         button:hover {
@@ -134,7 +153,7 @@ $run2 = mysqli_query($conn, $sql2);
                     </tr>
                 </table>
                 <button type="submit" name="printbtn" class="printbtn" onclick="window.print()">Print</button>
-                <span  class="pspan">Pending...</span>
+                <span class="pspan">Pending...</span>
 
 
             </div>
@@ -171,7 +190,7 @@ $run2 = mysqli_query($conn, $sql2);
 
             </div>
         <?php } ?>
-
+        <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
     </div>
 
 

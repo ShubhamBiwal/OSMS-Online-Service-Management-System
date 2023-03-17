@@ -5,6 +5,11 @@ include "include/header-sidebar.php";
 //for request card
 $sql = "SELECT request_id, request_info, request_desc, request_date FROM submit_request";
 $run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
+if ($rows == 0) {
+    $msg = "No Request Found";
+}
+
 
 //show data in assign form
 if (isset($_POST['view-btn'])) {
@@ -23,6 +28,10 @@ if (isset($_POST['close-btn'])) {
         echo '<script>alert("Unable to Delete.");</script>';
     }
 }
+//select technician names
+$sqlt =  "SELECT tech_name FROM technician_tb";
+$runt = mysqli_query($conn, $sqlt);
+
 //assign technician
 if (isset($_POST['assign-btn'])) {
     if ($_POST['rid'] == "" || $_POST['rinfo'] == "" || $_POST['rdesc'] == "" || $_POST['rname'] == "" || $_POST['raddress1'] == "" || $_POST['raddress2'] == "" || $_POST['rcity'] == "" || $_POST['rstate'] == "" || $_POST['rzip'] == "" || $_POST['remail'] == "" || $_POST['rmobile'] == "" || $_POST['rtechnician'] == "" || $_POST['rdate'] == "") {
@@ -61,6 +70,14 @@ if (isset($_POST['assign-btn'])) {
 <head>
     <title>Requests</title>
     <style>
+        #msg {
+            text-align: center;
+            font-size: 1.7rem;
+            padding: 1rem 0;
+            font-weight: bold;
+            color: var(--black);
+        }
+
         .left::-webkit-scrollbar {
             width: .5rem;
         }
@@ -206,6 +223,17 @@ if (isset($_POST['assign-btn'])) {
             border: .1rem solid rgba(0, 0, 0, 0.07);
         }
 
+        #atech {
+            width: 100%;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            background: #f8f8ff;
+            border: .1rem solid rgba(0, 0, 0, 0.07);
+            cursor: pointer;
+            text-transform: capitalize;
+        }
+       
+
         input[type="text"]:focus,
         input[type="number"]:focus,
         input[type="date"]:focus {
@@ -328,31 +356,33 @@ if (isset($_POST['assign-btn'])) {
 
             <?php while ($result = mysqli_fetch_array($run)) {
             ?>
-            <div class="request-card">
-                <div class="card-head">
-                    <p>Request ID:
-                        <?php echo $result['request_id']; ?>
-                    </p>
-                </div>
-                <div class="card-body">
-                    <h2>Request Info :
-                        <?php echo $result['request_info']; ?>
-                    </h2>
-                    <p class="request-desc">
-                        <?php echo $result['request_desc']; ?>
-                    </p>
-                    <p>Request Date:
-                        <?php echo $result['request_date']; ?>
-                    </p>
-                    <form action="" method="post">
-                        <input type="hidden" name="r_id" value="<?php echo $result['request_id']; ?>">
-                        <input type="submit" name="close-btn" class="close-btn" value="Close">
-                        <input type="submit" name="view-btn" class="view-btn" value="View">
-                    </form>
+                <div class="request-card">
+                    <div class="card-head">
+                        <p>Request ID:
+                            <?php echo $result['request_id']; ?>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <h2>Request Info :
+                            <?php echo $result['request_info']; ?>
+                        </h2>
+                        <p class="request-desc">
+                            <?php echo $result['request_desc']; ?>
+                        </p>
+                        <p>Request Date:
+                            <?php echo $result['request_date']; ?>
+                        </p>
+                        <form action="" method="post">
+                            <input type="hidden" name="r_id" value="<?php echo $result['request_id']; ?>">
+                            <input type="submit" name="close-btn" class="close-btn" value="Close">
+                            <input type="submit" name="view-btn" class="view-btn" value="View">
+                        </form>
 
+                    </div>
                 </div>
-            </div>
             <?php } ?>
+            <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
+
         </div>
 
         <div class="assign-work">
@@ -361,66 +391,60 @@ if (isset($_POST['assign-btn'])) {
                 <h1 class="form-heading">Assign Work Order Request</h1>
                 <form action="" method="post">
                     <label for="rid"><b>Request ID</b></label>
-                    <input type="text" name="rid" id="rid"
-                        value="<?php if (isset($result1['request_id'])) echo $result1['request_id']; ?>" readonly>
+                    <input type="text" name="rid" id="rid" value="<?php if (isset($result1['request_id'])) echo $result1['request_id']; ?>" readonly>
                     <label for="rinfo"><b>Request Info</b></label>
-                    <input type="text" name="rinfo" id="rinfo"
-                        value="<?php if (isset($result1['request_info'])) echo $result1['request_info']; ?>">
+                    <input type="text" name="rinfo" id="rinfo" value="<?php if (isset($result1['request_info'])) echo $result1['request_info']; ?>">
                     <label for="rdesc"><b>Discription</b></label>
-                    <input type="text" name="rdesc" id="rdesc"
-                        value="<?php if (isset($result1['request_desc'])) echo $result1['request_desc']; ?>">
+                    <input type="text" name="rdesc" id="rdesc" value="<?php if (isset($result1['request_desc'])) echo $result1['request_desc']; ?>">
                     <label for="rname"><b>Name</b></label>
-                    <input type="text" name="rname" id="rname"
-                        value="<?php if (isset($result1['requester_name'])) echo $result1['requester_name']; ?>">
+                    <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo $result1['requester_name']; ?>">
 
                     <div class="address">
                         <div class="inputbox">
                             <label for="raddress1"><b>Address Line 1</b></label>
-                            <input type="text" name="raddress1" id="raddress1"
-                                value="<?php if (isset($result1['requester_add1'])) echo $result1['requester_add1']; ?>">
+                            <input type="text" name="raddress1" id="raddress1" value="<?php if (isset($result1['requester_add1'])) echo $result1['requester_add1']; ?>">
                         </div>
                         <div class="inputbox">
                             <label for="raddress2"><b>Address Line 2</b></label>
-                            <input type="text" name="raddress2" id="raddress2"
-                                value="<?php if (isset($result1['requester_add2'])) echo $result1['requester_add2']; ?>">
+                            <input type="text" name="raddress2" id="raddress2" value="<?php if (isset($result1['requester_add2'])) echo $result1['requester_add2']; ?>">
                         </div>
                     </div>
 
                     <div class="address2">
                         <div class="inputbox2">
                             <label for="rcity"><b>City</b></label>
-                            <input type="text" name="rcity" id="rcity"
-                                value="<?php if (isset($result1['requester_city'])) echo $result1['requester_city']; ?>">
+                            <input type="text" name="rcity" id="rcity" value="<?php if (isset($result1['requester_city'])) echo $result1['requester_city']; ?>">
                         </div>
                         <div class="inputbox2">
                             <label for="rstate"><b>State</b></label>
-                            <input type="text" name="rstate" id="rstate"
-                                value="<?php if (isset($result1['requester_state'])) echo $result1['requester_state']; ?>">
+                            <input type="text" name="rstate" id="rstate" value="<?php if (isset($result1['requester_state'])) echo $result1['requester_state']; ?>">
                         </div>
 
                         <div class="inputbox2">
                             <label for="rzip"><b>Zip</b></label>
-                            <input type="number" name="rzip" id="rzip"
-                                value="<?php if (isset($result1['requester_zip'])) echo $result1['requester_zip']; ?>">
+                            <input type="number" name="rzip" id="rzip" value="<?php if (isset($result1['requester_zip'])) echo $result1['requester_zip']; ?>">
                         </div>
                     </div>
                     <div class="address3">
                         <div class="inputbox">
                             <label for="remail"><b>Email</b></label>
-                            <input type="text" name="remail" id="remail"
-                                value="<?php if (isset($result1['requester_email'])) echo $result1['requester_email']; ?>">
+                            <input type="text" name="remail" id="remail" value="<?php if (isset($result1['requester_email'])) echo $result1['requester_email']; ?>">
                         </div>
                         <div class="inputbox">
 
                             <label for="rmobile"><b>Mobile</b></label>
-                            <input type="number" name="rmobile" id="rmobile"
-                                value="<?php if (isset($result1['requester_mobile'])) echo $result1['requester_mobile']; ?>">
+                            <input type="number" name="rmobile" id="rmobile" value="<?php if (isset($result1['requester_mobile'])) echo $result1['requester_mobile']; ?>">
                         </div>
                     </div>
                     <div class="address3">
                         <div class="inputbox">
                             <label for="rtechnician"><b>Assign Technician</b></label>
-                            <input type="text" name="rtechnician" id="rtechnician" required>
+                            <select id="atech" name="rtechnician" required>
+                                <option value="">None</option>
+                                <?php while ($resultt = mysqli_fetch_array($runt)) { ?>
+                                    <option value="<?php echo $resultt['tech_name']; ?>"><?php echo $resultt['tech_name']; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                         <div class="inputbox">
                             <label for="rdate"><b>Date</b></label>

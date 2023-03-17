@@ -94,7 +94,13 @@ if (isset($_POST['search-btn'])) {
 
         }
 
-     
+        #msg {
+            text-align: center;
+            font-size: 1.7rem;
+            padding: 1rem 0;
+            font-weight: bold;
+            color: var(--blue);
+        }
 
         .print-btn {
             position: fixed;
@@ -129,19 +135,23 @@ if (isset($_POST['search-btn'])) {
             .search-btn {
                 width: 100%;
             }
-            .content{
+
+            .content {
                 padding: 1.5rem;
             }
         }
 
         @media print {
-        .table{
-            margin-top: -5rem;
-        }
-        .table-data{
-            overflow: hidden;
-        }
-            .head-sidebar, .form-container,
+            .table {
+                margin-top: -5rem;
+            }
+
+            .table-data {
+                overflow: hidden;
+            }
+
+            .head-sidebar,
+            .form-container,
             .printbtn,
             .print-btn {
                 display: none;
@@ -214,7 +224,7 @@ if (isset($_POST['search-btn'])) {
                     <?php } ?>
                 </tbody>
             </table>
-
+            <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
         </div>
     </div>
 </div>

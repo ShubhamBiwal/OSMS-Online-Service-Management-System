@@ -5,6 +5,10 @@ include "include/header-sidebar.php";
 
 $sql = "SELECT * FROM assets_tb";
 $run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
+if($rows ==0){
+    $msg = "No Result Found";
+}
 
 //delete data
 if (isset($_POST['delete-btn'])) {
@@ -136,6 +140,14 @@ if (isset($_POST['uSubmit'])) {
 
         .add-btn:hover {
             background: #1275c6;
+        }
+
+        #msg {
+            text-align: center;
+            font-size: 1.7rem;
+            padding: 1rem 0;
+            font-weight: bold;
+            color: var(--blue);
         }
 
         .overlay {
@@ -376,6 +388,8 @@ if (isset($_POST['uSubmit'])) {
                     <?php } ?>
                 </tbody>
             </table>
+            <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
+
         </div>
     </div>
 </div>

@@ -147,9 +147,9 @@ if (isset($_POST['donebtn'])) {
                 width: 100%;
             }
 
-                .content {
-                    padding: 1.5rem;
-                }
+            .content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -191,13 +191,10 @@ if (isset($_POST['donebtn'])) {
         var a = document.getElementById("pavail").value;
         var q = document.getElementById("pquantity").value;
         var p = document.getElementById("psell").value;
-        if (q > a) {
-            alert("Maximum Quantity is" + " : " + a);
-            document.getElementById("pquantity").value = a;
-        } else {
 
-            var c = q * p;
-            document.getElementById("ptotalcost").value = c;
-        }
+
+        var c = q * p;
+        document.getElementById("ptotalcost").value = c;
+
     }
 </script>
