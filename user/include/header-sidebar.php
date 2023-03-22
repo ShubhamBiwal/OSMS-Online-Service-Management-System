@@ -25,7 +25,7 @@ $uname = $result['u_name'];
 
         <ul class="links">
             <li>
-                <a href="user-profile.php" class="<?php if ($page == "userprofile") echo 'nav-active'; ?>">
+                <a href="index.php" class="<?php if ($page == "userprofile") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-user"></i></span>
                     <span class="item">Profile</span>
                 </a>
@@ -56,7 +56,7 @@ $uname = $result['u_name'];
                 </a>
             </li>
             <li>
-                <a href="/osms/logout.php" class="<?php if ($page == "logout") echo 'nav-active'; ?>">
+                <a href="logout.php" class="<?php if ($page == "logout") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-right-from-bracket"></i></span>
                     <span class="item">Logout </span>
                 </a>

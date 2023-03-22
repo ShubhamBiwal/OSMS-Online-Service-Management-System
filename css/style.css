@@ -376,6 +376,10 @@ section {
   color: var(--black);
   padding: 1rem 0;
 }
+.footer .box-container .box button{
+  cursor: pointer;
+  background: transparent;
+}
 .footer .box-container .box .link {
   display: block;
   padding: 0.5rem 0;
@@ -721,7 +725,9 @@ section {
   text-decoration: none;
   color: var(--blue);
 }
-
+.login-modal-content .forms .form-content .text a:hover{
+  text-decoration: underline;
+}
 .login-modal-content .forms .form-content .text button:hover {
   text-decoration: underline;
 }

@@ -1,13 +1,13 @@
 <?php
 session_start();
-if (!isset($_SESSION['is_adminlogin'])) {
-    header("Location: /osms/admin");
+if (!isset($_SESSION['is_techlogin'])) {
+    header("Location: /osms/technician");
 }
-$aEmail = $_SESSION['is_adminlogin'];
-$sql = "SELECT a_name FROM admin_login WHERE a_email = '$aEmail'";
+$tEmail = $_SESSION['is_techlogin'];
+$sql = "SELECT tech_name FROM technician_tb WHERE tech_email = '$tEmail'";
 $run = mysqli_query($conn, $sql);
 $result = mysqli_fetch_array($run);
-$aname = $result['a_name'];
+$tname = $result['tech_name'];
 ?>
 
 <head>
@@ -19,7 +19,7 @@ $aname = $result['a_name'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
     <!-- external stylesheet -->
-    <link rel="stylesheet" href="../css/admin-style.css">
+    <link rel="stylesheet" href="/css/technician-style.css">
     <style>
         .pheading {
             color: white;
@@ -55,21 +55,16 @@ $aname = $result['a_name'];
         <span class="pheading">Hey! <?php echo $aname; ?></span>
     </div>
     <div class="sidebar">
-        <h2>Hey! <?php echo $aname; ?></h2>
+        <h2>Hey! <?php echo $tname; ?></h2>
 
         <ul class="links">
             <li>
-                <a href="dashboard.php" class="<?php if ($page == "dashboard") echo 'nav-active'; ?>">
+                <a href="profile.php" class="<?php if ($page == "tech-profile") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-gauge"></i></span>
                     <span class="item">Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="work-order.php" class="<?php if ($page == "workorder") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-brands fa-accessible-icon"></i></span>
-                    <span class="item">Work Order</span>
-                </a>
-            </li>
+        
 
             <li>
                 <a href="requests.php" class="<?php if ($page == "requests") echo 'nav-active'; ?>">
@@ -77,36 +72,8 @@ $aname = $result['a_name'];
                     <span class="item">Requests</span>
                 </a>
             </li>
-            <li>
-                <a href="assets.php" class="<?php if ($page == "assets") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
-                    <span class="item">Assets</span>
-                </a>
-            </li>
-            <li>
-                <a href="technician.php" class="<?php if ($page == "technician") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-headset"></i></span>
-                    <span class="item">Technician</span>
-                </a>
-            </li>
-            <li>
-                <a href="requester.php" class="<?php if ($page == "requester") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-users"></i></span>
-                    <span class="item">Requester</span>
-                </a>
-            </li>
-            <li>
-                <a href="sold-product-report.php" class="<?php if ($page == "sellreport") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-sharp fa-solid fa-file-invoice"></i></span>
-                    <span class="item">Sell Report</span>
-                </a>
-            </li>
-            <li>
-                <a href="work-report.php" class="<?php if ($page == "workreport") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-file-word"></i></i></span>
-                    <span class="item">Work Report</span>
-                </a>
-            </li>
+          
+            
             <li>
                 <a href="profile.php" class="<?php if ($page == "admin-profile") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-user"></i></span>

@@ -11,7 +11,7 @@ if (isset($_SESSION['is_login'])) {
 //signup
 if (isset($_POST['uSignup'])) {
     $uName = $_POST['uName'];
-    $uEmail = $_POST['uEmail'];
+    $uEmail = strtolower($_POST['uEmail']);
     $uPassword = $_POST['uPassword'];
 
     //check empty fields
@@ -29,6 +29,8 @@ if (isset($_POST['uSignup'])) {
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 echo '<script> alert("Account Created Successfully.");</script>';
+                $_SESSION['is_login'] = $uEmail;
+                echo "<script> location.href='user/';</script>";
             } else {
                 echo '<script> alert("Error: Unable to Create Account.");</script>';
             }
@@ -38,14 +40,14 @@ if (isset($_POST['uSignup'])) {
 
 //login
 if (isset($_POST['uLogin'])) {
-    $uEmail = trim($_POST['uEmail']);
+    $uEmail = strtolower(trim($_POST['uEmail']));
     $uPassword = trim($_POST['uPassword']);
 
     $sql = "SELECT u_email, u_password FROM user_login WHERE u_email = '$uEmail' AND u_password = '$uPassword' ";
     $result = mysqli_query($conn, $sql);
     if ($row  = mysqli_num_rows($result) == 1) {
         $_SESSION['is_login'] = $uEmail;
-        echo "<script> location.href='user/user-profile.php';</script>";
+        echo "<script> location.href='user/';</script>";
         exit;
     } else {
         echo '<script>alert("Login Failed: Invalid Email or Password.");</script>';
@@ -110,7 +112,7 @@ $total_technicians = $row3;
                 <a href="#reviews">Reviews</a>
                 <a href="#contact">contact</a>
                 <button onclick="open_login_modal()" id="loginbtnid">login</button>
-                <a href="../osms/user/user-profile.php" id="profile-icon"><i class="fa-solid fa-user"></i></a>
+                <a href="../osms/user/" id="profile-icon"><i class="fa-solid fa-user"></i></a>
                 <button onclick="open_register_modal()" id="registerbtnid">register</button>
             </div>
 
@@ -347,9 +349,9 @@ $total_technicians = $row3;
                 <a class="link" href="#home"> <i class="fas fa-angle-right"></i> Home</a>
                 <a class="link" href="#about"> <i class="fas fa-angle-right"></i> About</a>
                 <a class="link" href="#services"> <i class="fas fa-angle-right"></i> Services</a>
-                <a class="link" href="#"> <i class="fas fa-angle-right"></i> Contact</a>
-                <a class="link" href="#"> <i class="fas fa-angle-right"></i> Login</a>
-                <a class="link" href="#"> <i class="fas fa-angle-right"></i> Register</a>
+                <a class="link" href="#contact"> <i class="fas fa-angle-right"></i> Contact</a>
+                <button onclick="open_login_modal()" class="link"> <i class="fas fa-angle-right"></i> Login</button>
+                <button class="link" onclick="open_register_modal()"> <i class="fas fa-angle-right"></i> Register</button>
             </div>
             <div class="box">
                 <h3>opening hours</h3>
@@ -457,8 +459,9 @@ $total_technicians = $row3;
                                         <input type="submit" value="Login" name="uLogin">
                                     </div>
                                     <div class="text login-text">Don't have an account? <button onclick="signupnow()">Signup now</button>
+                                        <div class="text login-text"> <a href="password-reset.php">Forgot Password? </a>
+                                        </div>
                                     </div>
-                                </div>
 
                             </form>
                         </div>

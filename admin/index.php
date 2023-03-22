@@ -8,7 +8,7 @@ if(isset($_SESSION['is_adminlogin'])){
 }
 
 if (isset($_POST['aLogin'])) {
-    $aEmail = trim($_POST['aEmail']);
+    $aEmail = strtolower(trim($_POST['aEmail']));
     $aPassword = trim($_POST['aPassword']);
 
     //check empty fields
@@ -170,6 +170,7 @@ if (isset($_POST['aLogin'])) {
                             <div class="button input-box">
                                 <input type="submit" value="Login" name="aLogin">
                             </div>
+                           <a href="password-reset.php">Forgot Password?</a>
                         </div>
                 </div>
 
