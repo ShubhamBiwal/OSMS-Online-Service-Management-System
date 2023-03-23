@@ -54,7 +54,7 @@ if (isset($_POST['updatebtn'])) {
             $run = mysqli_query($conn, $sql);
             if ($run) {
                 echo '<script>alert("Profile Updated Successfully.")</script>';
-                echo '<script>window.location = "user-profile.php";</script>';
+                header("Refresh:0");
             }
         } else {
             echo '<script>alert("not supported");</script>';
@@ -65,7 +65,8 @@ if (isset($_POST['updatebtn'])) {
         if ($run) {
 
             echo '<script>alert("Profile Updated.");</script>';
-            echo '<script>window.location = "user-profile.php";</script>';
+            header("Refresh:0");
+
         }
     }
 }

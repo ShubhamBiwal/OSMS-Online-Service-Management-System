@@ -19,7 +19,7 @@ $tname = $result['tech_name'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
     <!-- external stylesheet -->
-    <link rel="stylesheet" href="/css/technician-style.css">
+    <link rel="stylesheet" href="../css/technician-style.css">
     <style>
         .pheading {
             color: white;
@@ -45,14 +45,13 @@ $tname = $result['tech_name'];
         }
     </style>
 </head>
-
 <section class="head-sidebar">
     <div class="top_navbar">
         <a href="/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
         <div class="hamburger">
             <i class="fa-solid fa-bars"></i>
         </div>
-        <span class="pheading">Hey! <?php echo $aname; ?></span>
+        <span class="pheading">Hey! <?php echo $tname;  ?></span>
     </div>
     <div class="sidebar">
         <h2>Hey! <?php echo $tname; ?></h2>
@@ -60,11 +59,11 @@ $tname = $result['tech_name'];
         <ul class="links">
             <li>
                 <a href="profile.php" class="<?php if ($page == "tech-profile") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-gauge"></i></span>
-                    <span class="item">Dashboard</span>
+                    <span class="icon"><i class="fa-solid fa-user"></i></span>
+                    <span class="item">Profile</span>
                 </a>
             </li>
-        
+
 
             <li>
                 <a href="requests.php" class="<?php if ($page == "requests") echo 'nav-active'; ?>">
@@ -72,12 +71,18 @@ $tname = $result['tech_name'];
                     <span class="item">Requests</span>
                 </a>
             </li>
-          
-            
+
+
             <li>
-                <a href="profile.php" class="<?php if ($page == "admin-profile") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-user"></i></span>
-                    <span class="item">Profile</span>
+                <a href="pending-work.php" class="<?php if ($page == "pending-work") echo 'nav-active'; ?>">
+                    <span class="icon"><i class="fa-solid fa-hourglass-half"></i></span>
+                    <span class="item">Pending Work</span>
+                </a>
+            </li>
+            <li>
+                <a href="completed-work.php" class="<?php if ($page == "completed-work") echo 'nav-active'; ?>">
+                    <span class="icon"><i class="fa-solid fa-file-circle-check"></i></span>
+                    <span class="item">Completed Work</span>
                 </a>
             </li>
             <li>

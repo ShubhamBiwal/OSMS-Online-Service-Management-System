@@ -1,48 +1,42 @@
 <?php
-$page = "checkstatus";
 
 include "../connection.php";
 include "include/header-sidebar.php";
 
-echo '<style>.details{display:none;}</style>';
+$csid = $_POST['csid'];
+if (isset($csid)) {
+    $sql = "SELECT * FROM assign_work WHERE request_id =  '$csid'";
+    $run = mysqli_query($conn, $sql);
 
-if (isset($_POST['search-btn'])) {
-    $checkid = $_POST['checkid'];
+    if ($result = mysqli_fetch_array($run)) {
 
-    if ($checkid == "") {
-        echo '<script>alert("Please Enter Request ID.");</script>';
+        $rid = $result['request_id'];
+        $rinfo = $result['request_info'];
+        $rdesc = $result['request_desc'];
+        $rname = $result['requester_name'];
+        $radd1 = $result['requester_add1'];
+        $radd2 = $result['requester_add2'];
+        $rcity = $result['requester_city'];
+        $rstate = $result['requester_state'];
+        $rzip = $result['requester_zip'];
+        $remail = $result['requester_email'];
+        $rmobile = $result['requester_mobile'];
+        $radate = $result['assign_date'];
+        $rcode = $result['request_code'];
+        $ratech = $result['assign_tech'];
+        $techmobile = $result['tech_mobile'];
     } else {
-
-        $sql = "SELECT * FROM assign_work WHERE request_id =  '$checkid'";
-        $run = mysqli_query($conn, $sql);
-
-        if ($result = mysqli_fetch_array($run)) {
-            echo '<style>.details{display:block;}</style>';
-
-            $rid = $result['request_id'];
-            $rinfo = $result['request_info'];
-            $rdesc = $result['request_desc'];
-            $rname = $result['requester_name'];
-            $radd1 = $result['requester_add1'];
-            $radd2 = $result['requester_add2'];
-            $rcity = $result['requester_city'];
-            $rstate = $result['requester_state'];
-            $rzip = $result['requester_zip'];
-            $remail = $result['requester_email'];
-            $rmobile = $result['requester_mobile'];
-            $radate = $result['assign_date'];
-            $ratech = $result['assign_tech'];
-        } else {
-            $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$checkid'";
-            $runs = mysqli_query($conn, $sqls);
-            if (mysqli_num_rows($runs) > 0) {
-                $msg = "";
-            } else {
-                echo '<script>alert("This Request ID is not Exist.");</script>';
-            }
+        $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$csid'";
+        $runs = mysqli_query($conn, $sqls);
+        if (mysqli_num_rows($runs) > 0) {
+            echo '<style>.details{display:none;}</style>';
+            echo '<script>alert("Your Request is Still Pending...")</script>';
+            echo '<script>location.href="my-requests.php";</script>';
+            
         }
     }
 }
+
 
 ?>
 
@@ -59,64 +53,22 @@ if (isset($_POST['search-btn'])) {
     <!-- external stylesheet -->
     <link rel="stylesheet" href="../css/user-style.css">
     <style>
-        .check-id {
-            display: flex;
-            gap: 1rem;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-        }
-
-        .check-id input[type="number"] {
-            background-color: #f2f2f2;
-            outline: .1rem solid rgba(0, 0, 0, 0.3);
-            padding: .5rem 1rem;
-        }
-
-        .check-id input[type="number"]:focus {
-            outline: .2rem solid rgba(0, 0, 0, 0.5);
-        }
-
-        .check-id label {
-            font-size: 1.6rem;
-            font-weight: 550;
-        }
-
-        .check-id .search-btn {
-            background: #2597f4;
-            color: white;
-            font-size: 1.6rem;
-            padding: .7rem 1rem;
-            cursor: pointer;
-            opacity: .85;
-            border-radius: .2rem;
-            box-shadow: .2rem .2rem 1rem rgba(0, 0, 0, 0.3);
-
-        }
-
-        .search-btn:hover {
-            opacity: 1;
-        }
-
         .details {
-            margin-top: 4rem;
             width: 70%;
         }
 
         .details .heading {
+            padding: 1rem 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem 0;
             font-size: 1.3rem;
             width: 100%;
+            background: var(--blue);
+            color: #fff;
         }
 
         #msg {
-            margin-top: 3rem;
             padding: 1rem;
             background: #e2effa;
             display: flex;
@@ -242,19 +194,9 @@ if (isset($_POST['search-btn'])) {
 
 <body>
     <div class="content">
-        <form action="" method="post">
-            <div class="check-id">
-                <label for="checkid">Enter Request ID:</label>
-                <input type="number" name="checkid" required>
-                <input type="submit" name="search-btn" class="search-btn" value="Search">
-            </div>
-        </form>
-
-
-
         <div class="details">
             <div class="heading">
-                <h2>Assigned Work Details</h2>
+                <h2>Work Details</h2>
             </div>
             <table>
                 <tr>
@@ -324,29 +266,33 @@ if (isset($_POST['search-btn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Assigned Date</td>
+                    <td>Request Code</td>
+                    <td>
+                        <?php if (isset($rcode)) echo $rcode; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Assigned Date<b></td>
                     <td>
                         <?php if (isset($radate)) echo $radate; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td>Technician Name</td>
+                    <td><b>Technician Name<b></td>
                     <td>
                         <?php if (isset($ratech)) echo $ratech; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td>Customer Sign</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Technician Sign</td>
-                    <td></td>
+                    <td><b>Technician Mobile No.</b></td>
+                    <td>
+                        <?php if (isset($techmobile)) echo $techmobile; ?>
+                    </td>
                 </tr>
             </table>
             <div class="btns">
                 <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
-                <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'check-status.php';">Close</button>
+                <button type="submit" class="closebtn" name="closebtn" onclick="location.href = 'my-requests.php';">Close</button>
             </div>
         </div>
 

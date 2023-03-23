@@ -2,51 +2,50 @@
 $page = "tech-profile";
 include "../connection.php";
 include "include/header-sidebar.php";
-//show data
-$aEmail = $_SESSION['is_adminlogin'];
-$sql  = "SELECT * FROM admin_login WHERE a_email = '$aEmail'";
+// //show data
+$tEmail = $_SESSION['is_techlogin'];
+$sql  = "SELECT * FROM technician_tb WHERE tech_email = '$tEmail'";
 
 $run = mysqli_query($conn, $sql);
 
 if ($result = mysqli_fetch_array($run)) {
-    $aName = $result['a_name'];
-    $aContact = $result['a_contact'];
-    $aAddress = $result['a_address'];
-    $aImg = $result['a_img'];
+    $tName = $result['tech_name'];
+    $tCity = $result['tech_city'];
+    $tMobile = $result['tech_mobile'];
+    $tImg = $result['t_img'];
 }
 //update data
 if (isset($_POST['updatebtn'])) {
-    $newname = $_POST['aname'];
-    $newemail = $_POST['aemail'];
-    $newcontact = $_POST['acontact'];
-    $newaddress = $_POST['aaddress'];
+    $newname = $_POST['tname'];
+    $newcity = $_POST['tcity'];
+    $newmobile = $_POST['tmobile'];
     //upload image
     $imgname = $_FILES['pfimg']['name'];
-    $imgpath = "a_images/" . $imgname;
+    $imgpath = "tech_images/" . $imgname;
 
-    if ($imgname != "") {
-        // Get file info 
-        $fileName = basename($_FILES["pfimg"]["name"]);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
-        // Allow certain file formats 
-        $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
-        if (in_array($fileType, $allowTypes)) {
-            $tempname = $_FILES['pfimg']['tmp_name'];
+if ($imgname != "") {
+    // Get file info 
+    $fileName = basename($_FILES["pfimg"]["name"]);
+    $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+    // Allow certain file formats 
+    $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+    if (in_array($fileType, $allowTypes)) {
+        $tempname = $_FILES['pfimg']['tmp_name'];
 
-            move_uploaded_file($tempname, $imgpath);
-            //   delete old image
-            $runquery = mysqli_query($conn, "SELECT * FROM admin_login WHERE a_email = '$aEmail'");
-            if ($result = mysqli_fetch_array($runquery)) {
-                $delimage = $result['a_img'];
-                if ($imgpath != $delimage) {
-                    unlink($delimage);
-                }
+        move_uploaded_file($tempname, $imgpath);
+        //   delete old image
+        $runquery = mysqli_query($conn, "SELECT * FROM technician_tb WHERE tech_email = '$tEmail'");
+        if ($result = mysqli_fetch_array($runquery)) {
+            $delimage = $result['t_img'];
+            if ($imgpath != $delimage) {
+                unlink($delimage);
             }
+        }
 
-            $sql = "UPDATE admin_login SET a_name = '$newname', a_email = '$newemail', a_contact='$newcontact', a_address = '$newaddress', a_img = '$imgpath' WHERE a_email = '$aEmail'";
+            $sql = "UPDATE technician_tb SET tech_name = '$newname', tech_city = '$newcity', tech_mobile='$newmobile', t_img = '$imgpath' WHERE tech_email = '$tEmail'";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                $_SESSION['is_adminlogin'] = $newemail;
+                // $_SESSION['is_techlogin'] = $newemail;
                 echo '<script>alert("Profile Updated Successfully.")</script>';
                 echo '<script>window.location = "profile.php";</script>';
             }
@@ -54,10 +53,10 @@ if (isset($_POST['updatebtn'])) {
             echo '<script>alert("not supported");</script>';
         }
     } else {
-        $sql = "UPDATE admin_login SET a_name = '$newname', a_email = '$newemail', a_contact='$newcontact', a_address = '$newaddress' WHERE a_email = '$aEmail'";
+        $sql = "UPDATE technician_tb SET tech_name = '$newname', tech_city = '$newcity', tech_mobile='$newmobile' WHERE tech_email = '$tEmail'";
         $run = mysqli_query($conn, $sql);
         if ($run) {
-            $_SESSION['is_adminlogin'] = $newemail;
+            // $_SESSION['is_techlogin'] = $newemail;
             echo '<script>alert("Profile Updated.");</script>';
             echo '<script>window.location = "profile.php";</script>';
         }
@@ -122,6 +121,11 @@ if (isset($_POST['updatebtn'])) {
         input[type="email"]:focus,
         input[type="number"]:focus {
             outline: .1rem solid rgba(0, 0, 0, 0.4);
+        }
+        #temail{
+            background: lightgrey;
+            outline: none;
+
         }
 
         .updatebtn {
@@ -189,18 +193,18 @@ if (isset($_POST['updatebtn'])) {
         <div class="container">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="pimg">
-                    <img src="<?php echo $aImg; ?>">
+                    <img src="<?php echo $tImg; ?>">
                     <label class="button" for="upload">Upload File</label>
                     <input id="upload" type="file" class="primg" name="pfimg">
                 </div>
-                <label for="aname"><b>Name</b></label>
-                <input type="text" name="aname" id="aname" value="<?php echo $aName; ?>">
-                <label for="aemail"><b>Email</b></label>
-                <input type="email" name="aemail" id="aemail" value="<?php echo $aEmail; ?>">
-                <label for="acontact"><b>Contact</b></label>
-                <input type="number" name="acontact" id="acontact" value="<?php echo $aContact; ?>">
-                <label for="aaddress"><b>Address</b></label>
-                <input type="text" name="aaddress" id="aaddress" value="<?php echo $aAddress; ?>">
+                <label for="temail"><b>Email</b></label>
+                <input type="email" name="temail" id="temail"  readonly value="<?php echo $tEmail; ?>">
+                <label for="tname"><b>Name</b></label>
+                <input type="text" name="tname" id="tname" value="<?php echo $tName; ?>">
+                <label for="tcity"><b>City/Villege</b></label>
+                <input type="text" name="tcity" id="tcity" value="<?php echo $tCity; ?>">
+                <label for="tmobile"><b>Mobile</b></label>
+                <input type="number" name="tmobile" id="tmobile" value="<?php echo $tMobile; ?>">
 
                 <button type="submit" class="updatebtn" name="updatebtn">Update</button>
 

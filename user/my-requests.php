@@ -13,8 +13,8 @@ $sql2  = "SELECT * FROM assign_work WHERE requester_email = '$uemail' ORDER BY r
 $run2 = mysqli_query($conn, $sql2);
 $rows2 = mysqli_num_rows($run2);
 
-if($rows==0 AND $rows2 == 0){
-    $msg ="No Request Found";
+if ($rows == 0 and $rows2 == 0) {
+    $msg = "No Request Found";
 }
 
 
@@ -57,6 +57,11 @@ if($rows==0 AND $rows2 == 0){
             padding: 1.5rem;
         }
 
+        .rcode {
+            color: var(--blue);
+            font-weight: 500;
+        }
+
         button {
             border: none;
             color: #fff;
@@ -64,7 +69,7 @@ if($rows==0 AND $rows2 == 0){
             background: #2597f4;
             font-size: 1.6rem;
             cursor: pointer;
-            opacity: 0.9;
+            opacity: 0.8;
             font-weight: 500;
             border-radius: .2rem;
             box-shadow: .1rem .2rem .5rem rgb(0, 0, 0, 0.2);
@@ -73,14 +78,15 @@ if($rows==0 AND $rows2 == 0){
         }
 
         .pspan {
-            color: #2597f4;
+            color: #f29339;
             font-size: 1.6rem;
-            font-style: italic;
-            font-weight: 600;
+            font-style: oblique;
+            font-weight: bolder;
         }
 
         .aspan {
-            color: green;
+            color: var(--blue);
+            font-style: italic;
             font-size: 1.7rem;
             font-weight: bolder;
         }
@@ -88,14 +94,12 @@ if($rows==0 AND $rows2 == 0){
         #msg {
             text-align: center;
             font-size: 1.7rem;
-            padding: 1rem 0;
             font-weight: bold;
             color: var(--blue);
         }
 
         button:hover {
             opacity: 1;
-            border: .1rem solid #2597f4;
         }
 
         @media(max-width:950px) {
@@ -148,14 +152,15 @@ if($rows==0 AND $rows2 == 0){
                         <td><?php echo $result['request_info']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Request Description:</th>
-                        <td><?php echo $result['request_desc']; ?> </td>
+                        <th>Request Code:</th>
+                        <td class="rcode"><?php echo $result['request_code']; ?> </td>
                     </tr>
                 </table>
-                <button type="submit" name="printbtn" class="printbtn" onclick="window.print()">Print</button>
-                <span class="pspan">Pending...</span>
-
-
+                <form action="check-status.php" method="post">
+                    <input type="hidden" value="<?php echo $result['request_id']; ?>" name="csid">
+                    <button type="submit" name="viewbtn" class="viewtbtn">View</button>
+                    <span class="pspan">Pending...</span>
+                </form>
             </div>
         <?php } ?>
 
@@ -181,12 +186,15 @@ if($rows==0 AND $rows2 == 0){
                         <td><?php echo $result2['request_info']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Request Description:</th>
-                        <td><?php echo $result2['request_desc']; ?> </td>
+                        <th>Request Code:</th>
+                        <td class="rcode"><?php echo $result2['request_code']; ?> </td>
                     </tr>
                 </table>
-                <button type="submit" name="printbtn" class="printbtn" onclick="window.print()">Print</button>
-                <span class="aspan">Assigned</span>
+                <form action="check-status.php" method="post">
+                    <input type="hidden" value="<?php echo $result2['request_id']; ?>" name="csid">
+                    <button type="submit" name="viewbtn" class="viewtbtn">View</button>
+                    <span class="aspan">Assigned</span>
+                </form>
 
             </div>
         <?php } ?>

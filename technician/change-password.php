@@ -3,7 +3,7 @@ $page = "changepassword";
 
 include "../connection.php";
 include "include/header-sidebar.php";
-$aemail = $_SESSION['is_adminlogin'];
+$temail = $_SESSION['is_techlogin'];
 
 
 if (isset($_POST['updatebtn'])) {
@@ -14,7 +14,7 @@ if (isset($_POST['updatebtn'])) {
         echo '<script>alert("All Fields Are Required!");</script>';
     } else {
         if ($newpass == $confirmpass) {
-            $sql = "UPDATE admin_login SET a_password = '$newpass' WHERE a_email = '$aemail'";
+            $sql = "UPDATE technician_tb SET tech_password = '$newpass' WHERE tech_email = '$temail'";
             $run = mysqli_query($conn, $sql);
             if ($run) {
                 echo '<script>alert("Password Updated Succesfully.");</script>';
@@ -122,7 +122,7 @@ if (isset($_POST['updatebtn'])) {
         <div class="container">
             <form action="" method="post">
                 <label for="aemail"><b>Email</b></label>
-                <input type="text" name="aemail" id="aemail" value="<?php echo $aemail; ?>" readonly>
+                <input type="text" name="aemail" id="aemail" value="<?php echo $temail; ?>" readonly>
                 <label for="newpass"><b>New Password</b></label>
                 <input type="text" name="newpass" id="newpass" value="" placeholder="Enter New Password" required>
                 <label for="confirmpass"><b>Confirm Password</b></label>

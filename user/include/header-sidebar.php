@@ -42,13 +42,6 @@ $uname = $result['u_name'];
                     <span class="item">My Requests</span>
                 </a>
             </li>
-
-            <li>
-                <a href="check-status.php" class="<?php if ($page == "checkstatus") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-circle-info"></i></span>
-                    <span class="item">Service Status</span>
-                </a>
-            </li>
             <li>
                 <a href="change-password.php" class="<?php if ($page == "changepass") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-key"></i></span>

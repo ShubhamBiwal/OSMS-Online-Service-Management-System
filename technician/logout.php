@@ -5,5 +5,5 @@ session_start();
 session_unset();
 session_destroy();
 
-echo '<script>location.href = "/osms/admin";</script>';
+echo '<script>location.href = "/osms/technician";</script>';
 ?>

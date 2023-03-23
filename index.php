@@ -12,10 +12,11 @@ if (isset($_SESSION['is_login'])) {
 if (isset($_POST['uSignup'])) {
     $uName = $_POST['uName'];
     $uEmail = strtolower($_POST['uEmail']);
+    $uMobile = $_POST['uMobile'];
     $uPassword = $_POST['uPassword'];
 
     //check empty fields
-    if ($uName == "" || $uEmail == "" || $uPassword == "") {
+    if ($uName == "" || $uEmail == "" || $uMobile==""|| $uPassword == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
         //check already exist email id
@@ -25,7 +26,7 @@ if (isset($_POST['uSignup'])) {
             echo '<script> alert("Email ID Already Registered.");</script>';
         } else {
             //insert data
-            $sql = "INSERT INTO user_login(u_name, u_email, u_password) VALUES ('$uName', '$uEmail', '$uPassword') ";
+            $sql = "INSERT INTO user_login(u_name, u_email, u_mobile, u_password) VALUES ('$uName', '$uEmail','$uMobile', '$uPassword') ";
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 echo '<script> alert("Account Created Successfully.");</script>';
@@ -403,6 +404,10 @@ $total_technicians = $row3;
                                     <div class="input-box">
                                         <i class="fas fa-user"></i>
                                         <input type="text" placeholder="Name" name="uName" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <i class="fa-solid fa-phone"></i>
+                                        <input type="number" placeholder="Mobile" name="uMobile" required>
                                     </div>
                                     <div class="input-box">
                                         <i class="fas fa-envelope"></i>

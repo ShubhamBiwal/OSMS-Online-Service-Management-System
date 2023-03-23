@@ -29,17 +29,19 @@ if (isset($_POST['submitbtn'])) {
    $rzip = $_POST['rzip'];
    $remail = $_POST['remail'];
    $rmobile = $_POST['rmobile'];
-   $rdate = $_POST['rdate'];
+   $rdate = date('Y-m-d');
 
    if ($rinfo == "" || $rdesc == "" || $rname == "" || $raddress1 == "" || $raddress2 == "" || $rcity == "" || $rstate == "" || $rzip == "" || $remail == "" || $rmobile == "" || $rdate == "") {
       echo '<script>alert("All Fields Are Required!");</script>';
    } else {
-      $sql = "INSERT INTO submit_request(request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date) VALUES ('$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate')";
+      //request code
+      $r_code = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+      $sql = "INSERT INTO submit_request(request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, request_code) VALUES ('$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$r_code')";
       $run = mysqli_query($conn, $sql);
       if ($run) {
-         $genid = mysqli_insert_id($conn);
+         // $genid = mysqli_insert_id($conn);
          echo '<script>alert("Request Submitted Successfully.");</script>';
-         $_SESSION['myid'] = $genid;
+         // $_SESSION['myid'] = $genid;
          echo '<script>location.href = "my-requests.php";</script>';
       } else {
          echo '<script>alert("Unable to Submit Your Request.");</script>';
@@ -214,20 +216,16 @@ if (isset($_POST['submitbtn'])) {
                </div>
             </div>
             <div class="address3">
-               <div class="inputbox2">
+               <div class="inputbox">
                   <label for="remail"><b>Email</b></label>
                   <input type="text" name="remail" id="remail" value="<?php echo $uEmail ?>" required>
                </div>
-               <div class="inputbox2">
+               <div class="inputbox">
 
                   <label for="rmobile"><b>Mobile</b></label>
                   <input type="number" name="rmobile" id="rmobile" value="<?php echo $umobile ?>" required>
                </div>
-               <div class="inputbox2">
 
-                  <label for="rdate"><b>Date</b></label>
-                  <input type="date" name="rdate" id="rdate" value="<?php echo date('Y-m-d'); ?>" required readonly>
-               </div>
             </div>
 
             <button type="submit" class="submitbtn" name="submitbtn">Submit</button>

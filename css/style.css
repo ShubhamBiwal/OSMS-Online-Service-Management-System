@@ -13,6 +13,9 @@
   --blue: #2597f4;
   --black: #334;
 }
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
 html {
   font-size: 62.5%;
   overflow-x: hidden;

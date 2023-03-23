@@ -71,12 +71,7 @@ $aname = $result['a_name'];
                 </a>
             </li>
 
-            <li>
-                <a href="requests.php" class="<?php if ($page == "requests") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-align-center"></i></span>
-                    <span class="item">Requests</span>
-                </a>
-            </li>
+          
             <li>
                 <a href="assets.php" class="<?php if ($page == "assets") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-layer-group"></i></span>

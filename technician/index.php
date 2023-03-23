@@ -1,5 +1,9 @@
 <?php
 include"../connection.php";
+session_start();
+if (isset($_SESSION['is_techlogin'])) {
+    header("Location: requests.php");
+}
 //signup
 if (isset($_POST['tSignup'])) {
     $tName = $_POST['tName'];
@@ -24,7 +28,7 @@ if (isset($_POST['tSignup'])) {
             if ($result) {
                 echo '<script> alert("Account Created Successfully.");</script>';
                 $_SESSION['is_techlogin'] = $tEmail;
-                echo "<script> location.href='profile.php';</script>";
+                echo "<script> location.href='requests.php';</script>";
             } else {
                 echo '<script> alert("Error: Unable to Create Account.");</script>';
             }
@@ -41,7 +45,7 @@ if (isset($_POST['tLogin'])) {
     $result = mysqli_query($conn, $sql);
     if ($row  = mysqli_num_rows($result) == 1) {
         $_SESSION['is_techlogin'] = $tEmail;
-        echo "<script> location.href='tech-profile.php';</script>";
+        echo "<script> location.href='requests.php';</script>";
         exit;
     } else {
         echo '<script>alert("Login Failed: Invalid Email or Password.");</script>';
