@@ -3,11 +3,13 @@ $page = "requester";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM user_login";
+$sql = "SELECT * FROM user_login ORDER BY u_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if ($rows == 0) {
     $msg = "No Result Found";
+} else {
+    echo '<style>#msg{display:none;}</style>';
 }
 //delete data
 if (isset($_POST['delete-btn'])) {
@@ -22,19 +24,34 @@ if (isset($_POST['delete-btn'])) {
 }
 //add user
 if (isset($_POST['uSubmit'])) {
-    $u_name =  $_POST['uName'];
-    $u_email =  $_POST['uEmail'];
-    $u_pass =  $_POST['uPassword'];
+    $uName = $_POST['uName'];
+    $uEmail = strtolower($_POST['uEmail']);
+    $uMobile = $_POST['uMobile'];
+    $uPassword = trim($_POST['uPassword']);
 
-    $sql = "INSERT INTO user_login (u_name, u_email, u_password) VALUES('$u_name', '$u_email', '$u_pass')";
-    $run = mysqli_query($conn, $sql);
-    if ($run) {
-        echo '<script>alert("Added Successfully");</script>';
-        echo '<script>location.href="requester.php";</script>';
+    //check empty fields
+    if ($uName == "" || $uEmail == "" || $uMobile == "" || $uPassword == "") {
+        echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
-        echo '<script>alert("Unable to Add!");</script>';
+        //check already exist email id
+        $sql = "SELECT u_email FROM user_login WHERE u_email = '$uEmail' ";
+        $result = mysqli_query($conn, $sql);
+        if ($row = mysqli_num_rows($result) == 1) {
+            echo '<script> alert("Error : Email ID Already Registered.");</script>';
+        } else {
+            //insert data
+            $sql = "INSERT INTO user_login(u_name, u_email, u_mobile, u_password) VALUES ('$uName', '$uEmail','$uMobile', '$uPassword') ";
+            $result = mysqli_query($conn, $sql);
+            if ($result) {
+                echo '<script> alert("Added Successfully.");</script>';
+                echo '<script> location.href = "requester.php";</script>';
+            } else {
+                echo '<script> alert("Error : Unable to Add.");</script>';
+            }
+        }
     }
 }
+
 
 
 ?>
@@ -42,6 +59,10 @@ if (isset($_POST['uSubmit'])) {
 <head>
     <title>Requesters</title>
     <style>
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
         .table {
             box-shadow: 0.4rem 0.4rem 1.6rem rgba(0, 0, 0, 0.3);
 
@@ -313,6 +334,7 @@ if (isset($_POST['uSubmit'])) {
             <table>
                 <thead>
                     <tr>
+                        <th>S No</th>
                         <th>Requester ID</th>
                         <th>Name</th>
                         <th>Email</th>
@@ -321,9 +343,12 @@ if (isset($_POST['uSubmit'])) {
                 </thead>
                 <tbody>
                     <?php
+                    $count = 1;
                     while ($result = mysqli_fetch_array($run)) {
                     ?>
                         <tr>
+                            <td><?php echo $count; ?></td>
+                            <?php $count++ ?>
                             <td>
                                 <?php echo $result['u_id']; ?>
                             </td>
@@ -345,10 +370,9 @@ if (isset($_POST['uSubmit'])) {
                                     </form>
                                 </div>
                             </td>
-
                         </tr>
-
                     <?php } ?>
+
                 </tbody>
             </table>
             <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
@@ -372,19 +396,24 @@ if (isset($_POST['uSubmit'])) {
                                     <i class="fas fa-user"></i>
                                     <input type="text" placeholder="Name" name="uName" required>
                                 </div>
-                                <div class="input-box">
-                                    <i class="fas fa-envelope"></i>
-                                    <input type="email" placeholder="Email" name="uEmail" required>
-                                </div>
-                                <div class="input-box">
-                                    <i class="fas fa-lock"></i>
-                                    <input type="text" placeholder="Password" name="uPassword" required>
-                                </div>
-                                <div class="button input-box">
-                                    <input type="submit" value="Submit" name="uSubmit">
-                                </div>
+                                <div class="input-boxes">
+                                    <div class="input-box">
+                                        <i class="fa-solid fa-phone"></i>
+                                        <input type="number" placeholder="Mobile" name="uMobile" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" placeholder="Email" name="uEmail" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="text" placeholder="Password" name="uPassword" required>
+                                    </div>
+                                    <div class="button input-box">
+                                        <input type="submit" value="Submit" name="uSubmit">
+                                    </div>
 
-                            </div>
+                                </div>
 
                         </form>
                     </div>

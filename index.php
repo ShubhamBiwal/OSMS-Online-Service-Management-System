@@ -16,7 +16,7 @@ if (isset($_POST['uSignup'])) {
     $uPassword = $_POST['uPassword'];
 
     //check empty fields
-    if ($uName == "" || $uEmail == "" || $uMobile==""|| $uPassword == "") {
+    if ($uName == "" || $uEmail == "" || $uMobile == "" || $uPassword == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
         //check already exist email id
@@ -30,7 +30,12 @@ if (isset($_POST['uSignup'])) {
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 echo '<script> alert("Account Created Successfully.");</script>';
+                $sqlq = "SELECT u_id FROM user_login WHERE u_email = '$uEmail'";
+                $runq = mysqli_query($conn, $sqlq);
+                $resultq = mysqli_fetch_array($runq);
+                $uid = $resultq['u_id'];
                 $_SESSION['is_login'] = $uEmail;
+                $_SESSION['u_id'] = $uid;
                 echo "<script> location.href='user/';</script>";
             } else {
                 echo '<script> alert("Error: Unable to Create Account.");</script>';
@@ -44,10 +49,13 @@ if (isset($_POST['uLogin'])) {
     $uEmail = strtolower(trim($_POST['uEmail']));
     $uPassword = trim($_POST['uPassword']);
 
-    $sql = "SELECT u_email, u_password FROM user_login WHERE u_email = '$uEmail' AND u_password = '$uPassword' ";
-    $result = mysqli_query($conn, $sql);
-    if ($row  = mysqli_num_rows($result) == 1) {
+    $sql = "SELECT u_id, u_email, u_password FROM user_login WHERE u_email = '$uEmail' AND u_password = '$uPassword' ";
+    $run = mysqli_query($conn, $sql);
+    $result = mysqli_fetch_array($run);
+    $uid = $result['u_id'];
+    if ($row  = mysqli_num_rows($run) == 1) {
         $_SESSION['is_login'] = $uEmail;
+        $_SESSION['u_id'] = $uid;
         echo "<script> location.href='user/';</script>";
         exit;
     } else {
@@ -55,11 +63,14 @@ if (isset($_POST['uLogin'])) {
     }
 }
 
-//total assigned/requests completed
-$sql1 = "SELECT max(r_no) FROM assign_work";
+//total requests completed
+$sql1 = "SELECT max(c_id) FROM completed_work";
 $run1 = mysqli_query($conn, $sql1);
 $row1 = mysqli_fetch_row($run1);
-$total_assigned_work = $row1[0];
+$total_completed_work = $row1[0];
+if($total_completed_work==0){
+    $total_completed_work =0;
+}
 //total users
 $sql2 = "SELECT * FROM user_login";
 $run2 = mysqli_query($conn, $sql2);
@@ -104,7 +115,7 @@ $total_technicians = $row3;
 
         <nav class="navbar">
 
-            <a href="#" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
+            <a href="/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
 
             <div class="links">
                 <a href="index.php">home</a>
@@ -154,7 +165,7 @@ $total_technicians = $row3;
             <div class="box">
                 <img src="images/fun-fact-icon-1.svg" alt="">
                 <div class="info">
-                    <h3><?php echo $total_assigned_work; ?>+</h3>
+                    <h3><?php echo $total_completed_work; ?>+</h3>
                     <p>Request Competed</p>
                 </div>
             </div>

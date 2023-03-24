@@ -17,6 +17,8 @@ if (isset($_POST['search-btn'])) {
         }
         if ($row == 0) {
             $msg = "No Result Found";
+        } else {
+            echo '<style>#msg{display:none;}</style>';
         }
     }
 }

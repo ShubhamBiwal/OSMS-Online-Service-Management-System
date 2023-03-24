@@ -2,9 +2,9 @@
 include "../connection.php";
 include "include/header-sidebar.php";
 
-if (isset($_POST['view-btn'])) {
-    $r_id = $_POST['rid'];
-    $sql = "SELECT * FROM assign_work WHERE request_id = '$r_id' ";
+if (isset($_POST['viewbtn'])) {
+    $cwid = $_POST['cwid'];
+    $sql = "SELECT * FROM completed_work WHERE request_id = '$cwid'";
     $run = mysqli_query($conn, $sql);
     if ($result =  mysqli_fetch_array($run)) {
         $rid = $result['request_id'];
@@ -18,8 +18,10 @@ if (isset($_POST['view-btn'])) {
         $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
+        $rdate = $result['request_date'];
         $radate = $result['assign_date'];
         $ratech = $result['assign_tech'];
+        $wdate = $result['work_date'];
     }
 }
 
@@ -28,7 +30,7 @@ if (isset($_POST['view-btn'])) {
 
 <head>
 
-    <title>View Assign Work </title>
+    <title>View Completed Work </title>
 
     <style>
         .details {
@@ -39,9 +41,11 @@ if (isset($_POST['view-btn'])) {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem 0;
-            font-size: 1.3rem;
+            padding: 1rem 0;
+            font-size: 1.5rem;
             width: 100%;
+            color: white;
+            background: var(--blue);
         }
 
         table {
@@ -53,7 +57,7 @@ if (isset($_POST['view-btn'])) {
         tr,
         td {
             border: .1rem solid rgba(0, 0, 0, 0.2);
-            padding: 1.5rem 1rem;
+            padding: 1rem;
         }
 
         .printbtn {
@@ -131,7 +135,7 @@ if (isset($_POST['view-btn'])) {
 
         @media print {
             .details {
-                margin-top: -10rem;
+                margin-top: -7rem;
             }
 
             .head-sidebar,
@@ -148,7 +152,7 @@ if (isset($_POST['view-btn'])) {
 
         <div class="details">
             <div class="heading">
-                <h2>Assigned Work Details</h2>
+                <h3>Completed Work Details</h3>
             </div>
             <table>
                 <tr>
@@ -218,33 +222,31 @@ if (isset($_POST['view-btn'])) {
                     </td>
                 </tr>
                 <tr>
+                    <td>Request Date</td>
+                    <td>
+                        <?php if (isset($rdate)) echo $rdate; ?>
+                    </td>
+                </tr>
+                <tr>
                     <td>Assigned Date</td>
                     <td>
                         <?php if (isset($radate)) echo $radate; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td>Technician Name</td>
+                    <td>Work Date</td>
                     <td>
-                        <?php if (isset($ratech)) echo $ratech; ?>
+                        <?php if (isset($wdate)) echo $wdate; ?>
                     </td>
                 </tr>
-                <tr>
-                    <td>Customer Sign</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Technician Sign</td>
-                    <td></td>
-                </tr>
+                
             </table>
             <div class="btns">
                 <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
-                <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'work-order.php';">Close</button>
+                <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'completed-work.php';">Close</button>
             </div>
         </div>
 
-        <?php if (isset($msg)) echo '<div id="msg">Your Request is Still Pending...</div>'; ?>
     </div>
 
 

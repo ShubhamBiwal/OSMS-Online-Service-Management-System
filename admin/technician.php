@@ -3,12 +3,16 @@ $page = "technician";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM technician_tb";
+$sql = "SELECT * FROM technician_tb ORDER BY tech_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
 if ($rows == 0) {
     $msg = "No Result Found";
+}
+else{
+    echo '<style>#msg{display:none;}</style>';
+
 }
 //delete data
 if (isset($_POST['delete-btn'])) {
@@ -27,16 +31,33 @@ if (isset($_POST['uSubmit'])) {
     $t_city =  $_POST['tCity'];
     $t_mobile =  $_POST['tMobile'];
     $t_email =  $_POST['tEmail'];
+    $t_password =  $_POST['tPassword'];
 
-    $sql = "INSERT INTO technician_tb (tech_name, tech_city, tech_mobile, tech_email) VALUES('$t_name', '$t_city', '$t_mobile', '$t_email')";
-    $run = mysqli_query($conn, $sql);
-    if ($run) {
-        echo '<script>alert("Added Successfully");</script>';
-        echo '<script>location.href="technician.php";</script>';
+
+
+    //check empty fields
+    if ($t_name == "" || $t_city == "" || $t_mobile == "" || $t_email == "" || $t_password =="") {
+        echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
-        echo '<script>alert("Unable to Add!");</script>';
+        //check already exist email id
+        $sql = "SELECT tech_email FROM technician_tb WHERE tech_email = '$t_email' ";
+        $result = mysqli_query($conn, $sql);
+        if ($row = mysqli_num_rows($result) == 1) {
+            echo '<script> alert("Error : Email ID Already Registered.");</script>';
+        } else {
+            //insert data
+            $sql = "INSERT INTO technician_tb (tech_name, tech_city, tech_mobile, tech_email, tech_password) VALUES('$t_name', '$t_city', '$t_mobile', '$t_email','$t_password')";
+            $run = mysqli_query($conn, $sql);
+            if ($run) {
+                echo '<script> alert("Added Successfully.");</script>';
+                echo '<script> location.href = "technician.php";</script>';
+            } else {
+                echo '<script> alert("Error : Unable to Add.");</script>';
+            }
+        }
     }
 }
+
 
 
 ?>
@@ -324,6 +345,7 @@ if (isset($_POST['uSubmit'])) {
             <table>
                 <thead>
                     <tr>
+                        <th>S No</th>
                         <th>Tech ID</th>
                         <th>Name</th>
                         <th>City</th>
@@ -334,9 +356,14 @@ if (isset($_POST['uSubmit'])) {
                 </thead>
                 <tbody>
                     <?php
+                    $count = 1;
                     while ($result = mysqli_fetch_array($run)) {
                     ?>
                         <tr>
+                            <td>
+                                <?php echo $count; ?>
+                                <?php $count++ ?>
+                            </td>
                             <td>
                                 <?php echo $result['tech_id']; ?>
                             </td>
@@ -403,6 +430,10 @@ if (isset($_POST['uSubmit'])) {
                                 <div class="input-box">
                                     <i class="fas fa-envelope"></i>
                                     <input type="email" placeholder="Email" name="tEmail" required>
+                                </div>
+                                <div class="input-box">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="text" placeholder="Password" name="tPassword" required>
                                 </div>
 
                                 <div class="button input-box">

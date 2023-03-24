@@ -21,6 +21,7 @@ if (isset($pwid)) {
         $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
+        $rdate = $result['request_date'];
         $radate = $result['assign_date'];
         $ratech = $result['assign_tech'];
         $techmobile = $result['tech_mobile'];
@@ -32,11 +33,12 @@ if (isset($pwid)) {
 }
 if (isset($_POST['submitbtn'])) {
     $rid = $_POST['r_id'];
-    $rcode = $_POST['r_code'];
+    $rcode = trim($_POST['r_code']);
+    $wdate = $_POST['wdate'];
     $sql = "SELECT * FROM assign_work WHERE request_id = '$rid'";
     $run = mysqli_query($conn, $sql);
     $result = mysqli_fetch_array($run);
-
+    $uid = $result['u_id'];
     $rid = $result['request_id'];
     $rinfo = $result['request_info'];
     $rdesc = $result['request_desc'];
@@ -48,24 +50,30 @@ if (isset($_POST['submitbtn'])) {
     $rzip = $result['requester_zip'];
     $remail = $result['requester_email'];
     $rmobile = $result['requester_mobile'];
+    $rdate = $result['request_date'];
+    $techid = $result['tech_id'];
     $ratech = $result['assign_tech'];
     $techmobile = $result['tech_mobile'];
     $techemail = $result['tech_email'];
     $radate = $result['assign_date'];
     $r_code = $result['request_code'];
-    if ($rcode == $r_code) {
-        $sql = "INSERT INTO completed_work(request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, assign_tech, tech_mobile, tech_email, assign_date) 
-        VALUES ('$rid','$rinfo','$rdesc','$rname','$radd1','$radd2','$rcity','$rstate','$rzip','$remail','$rmobile','$ratech','$techmobile','$techemail','$radate')";
-        $run = mysqli_query($conn, $sql);
-        if ($run) {
-            $sqldel = "DELETE FROM assign_work WHERE request_id = '$rid' ";
-            $rundel  = mysqli_query($conn, $sqldel);
-            echo '<script> alert("Success: Work Completed.");</script>';
-            echo "<script> location.href = 'completed-work.php';</script>";
-        }
+    if ($wdate < $rdate) {
+        echo '<script>alert("Enter Valid Work Date!");</script>';
     } else {
-        echo '<script>alert("Incorrect Request Code.");</script>';
-        echo '<script>location.href = "pending-work.php";</script>';
+        if ($rcode == $r_code) {
+            $sql = "INSERT INTO completed_work(u_id,request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, tech_id, assign_tech, tech_mobile, tech_email, assign_date, work_date) 
+        VALUES ('$uid','$rid','$rinfo','$rdesc','$rname','$radd1','$radd2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$techid','$ratech','$techmobile','$techemail','$radate','$wdate')";
+            $run = mysqli_query($conn, $sql);
+            if ($run) {
+                $sqldel = "DELETE FROM assign_work WHERE request_id = '$rid' ";
+                $rundel  = mysqli_query($conn, $sqldel);
+                echo '<script> alert("Success: Work Completed.");</script>';
+                echo "<script> location.href = 'completed-work.php';</script>";
+            }
+        } else {
+            echo '<script>alert("Incorrect Request Code.");</script>';
+            // echo '<script>location.href = "pending-work.php";</script>';
+        }
     }
 }
 ?>
@@ -83,7 +91,7 @@ if (isset($_POST['submitbtn'])) {
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             width: 100%;
             background: var(--blue);
             color: #fff;
@@ -108,10 +116,11 @@ if (isset($_POST['submitbtn'])) {
         tr,
         td {
             border: .1rem solid rgba(0, 0, 0, 0.2);
-            padding: 1.5rem 1rem;
+            padding: 1rem;
         }
 
-        .r_codebox {
+        .r_codebox,
+        .w_datebox {
             outline: .1rem solid rgba(0, 0, 0, 0.3);
             width: 100%;
             padding: .8rem;
@@ -119,7 +128,8 @@ if (isset($_POST['submitbtn'])) {
             font-weight: 500;
         }
 
-        .r_codebox:focus {
+        .r_codebox:focus,
+        .w_datebox:hover {
             outline: .2rem solid rgb(37, 151, 244, 0.5);
         }
 
@@ -229,12 +239,13 @@ if (isset($_POST['submitbtn'])) {
 
         @media print {
             .details {
-                margin-top: -10rem;
+                margin-top: -7rem;
             }
 
             .head-sidebar,
             .btns,
             .r_codebox,
+            .w_datebox,
             .printbtn {
                 display: none;
             }
@@ -247,7 +258,7 @@ if (isset($_POST['submitbtn'])) {
         <form action="" method="post">
             <div class="details">
                 <div class="heading">
-                    <h2>Work Details</h2>
+                    <h3>Work Details</h3>
                 </div>
                 <table>
                     <tr>
@@ -320,6 +331,12 @@ if (isset($_POST['submitbtn'])) {
                         </td>
                     </tr>
                     <tr>
+                        <td><b>Request Date</b></td>
+                        <td>
+                            <b> <?php if (isset($rdate)) echo $rdate; ?></b>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><b>Assigned Date<b></td>
                         <td>
                             <b>
@@ -328,7 +345,13 @@ if (isset($_POST['submitbtn'])) {
                         </td>
                     </tr>
                     <tr>
-                        <td><b>Request Code:<b></td>
+                        <td><b>Work Date<b></td>
+                        <td>
+                            <input type="date" name="wdate" class="w_datebox" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Request Code<b></td>
                         <td>
                             <input type="text" name="r_code" class="r_codebox" placeholder="Enter Request Code" required>
                         </td>

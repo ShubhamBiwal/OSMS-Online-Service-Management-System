@@ -3,6 +3,7 @@ session_start();
 if (!isset($_SESSION['is_adminlogin'])) {
     header("Location: /osms/admin");
 }
+date_default_timezone_set("Asia/Kolkata");
 $aEmail = $_SESSION['is_adminlogin'];
 $sql = "SELECT a_name FROM admin_login WHERE a_email = '$aEmail'";
 $run = mysqli_query($conn, $sql);
@@ -71,7 +72,7 @@ $aname = $result['a_name'];
                 </a>
             </li>
 
-          
+
             <li>
                 <a href="assets.php" class="<?php if ($page == "assets") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-layer-group"></i></span>

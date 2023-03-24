@@ -3,18 +3,19 @@ $page = "workorder";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM assign_work";
+$sql = "SELECT * FROM completed_work ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
-if($rows == 0){
-    $msg ="No Result Found";
+if ($rows == 0) {
+    $msg = "No Result Found";
+} else {
+    echo '<style>#msg{display:none;}</style>';
 }
 
 //delete data
 if (isset($_POST['delete-btn'])) {
     $r_id = $_POST['rid'];
-
-    $sql = "DELETE FROM assign_work WHERE request_id = '$r_id'";
+    $sql = "DELETE FROM completed_work WHERE request_id = '$r_id'";
     $run = mysqli_query($conn, $sql);
     if ($run) {
         echo '<script>location.href="work-order.php";</script>';
@@ -45,7 +46,7 @@ if (isset($_POST['delete-btn'])) {
         }
 
         table {
-            text-align: left;
+            text-align: center;
             border-collapse: collapse;
             width: 100%;
 
@@ -57,7 +58,7 @@ if (isset($_POST['delete-btn'])) {
 
         th,
         td {
-            padding: 1rem 0.5rem 2rem 1rem;
+            padding: 1rem;
 
         }
 
@@ -116,6 +117,7 @@ if (isset($_POST['delete-btn'])) {
             <table>
                 <thead>
                     <tr>
+                        <th>S No</th>
                         <th>Req ID</th>
                         <th>Request info</th>
                         <th>Name</th>
@@ -123,15 +125,20 @@ if (isset($_POST['delete-btn'])) {
                         <th>City</th>
                         <th>Mobile</th>
                         <th>Technician</th>
-                        <th>Assigned Date</th>
+                        <th>Work Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+                    $count = 1;
                     while ($result = mysqli_fetch_array($run)) {
                     ?>
                         <tr>
+                            <td>
+                                <?php echo $count; ?>
+                                <?php $count++; ?>
+                            </td>
                             <td>
                                 <b> <?php echo $result['request_id']; ?></b>
                             </td>
@@ -154,11 +161,11 @@ if (isset($_POST['delete-btn'])) {
                                 <?php echo $result['assign_tech']; ?>
                             </td>
                             <td>
-                                <?php echo $result['assign_date']; ?>
+                                <?php echo $result['work_date']; ?>
                             </td>
                             <td>
                                 <div class="form-btn">
-                                    <form action="view-assign-work.php" method="post">
+                                    <form action="view-completed-work.php" method="post">
                                         <input type="hidden" name="rid" value="<?php echo $result['request_id']; ?>">
                                         <button type="submit" name="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                                     </form>

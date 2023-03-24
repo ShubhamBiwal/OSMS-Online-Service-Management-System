@@ -3,6 +3,7 @@ session_start();
 if (!isset($_SESSION['is_techlogin'])) {
     header("Location: /osms/technician");
 }
+date_default_timezone_set("Asia/Kolkata");
 $tEmail = $_SESSION['is_techlogin'];
 $sql = "SELECT tech_name FROM technician_tb WHERE tech_email = '$tEmail'";
 $run = mysqli_query($conn, $sql);

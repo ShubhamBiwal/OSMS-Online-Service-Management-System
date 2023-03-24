@@ -3,6 +3,7 @@ session_start();
 if (!isset($_SESSION['is_login'])) {
     header("Location: /osms");
 }
+date_default_timezone_set("Asia/Kolkata");
 $uEmail = $_SESSION['is_login'];
 $sql = "SELECT u_name FROM user_login WHERE u_email = '$uEmail'";
 $run = mysqli_query($conn, $sql);
@@ -25,7 +26,7 @@ $uname = $result['u_name'];
 
         <ul class="links">
             <li>
-                <a href="index.php" class="<?php if ($page == "userprofile") echo 'nav-active'; ?>">
+                <a href="http://localhost/osms/user/" class="<?php if ($page == "userprofile") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-user"></i></span>
                     <span class="item">Profile</span>
                 </a>

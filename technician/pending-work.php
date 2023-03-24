@@ -10,7 +10,7 @@ $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
 if ($rows == 0) {
-    $msg = "No Request Found";
+    $msg = "No Pending Request";
 }
 
 
@@ -41,7 +41,7 @@ if ($rows == 0) {
         }
 
         td {
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         button {
@@ -127,10 +127,14 @@ if ($rows == 0) {
                         <th>Request Info:</th>
                         <td><?php echo $result['request_info']; ?> </td>
                     </tr>
+                    <tr>
+                        <th>Request Date:</th>
+                        <td><?php echo $result['request_date']; ?> </td>
+                    </tr>
 
                     <tr>
-                        <th>Work Date:</th>
-                        <td><i><?php echo $result['assign_date']; ?><i> </td>
+                        <th>Assigned Date:</th>
+                        <td><b><?php echo $result['assign_date']; ?><b> </td>
                     </tr>
 
                 </table>

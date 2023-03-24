@@ -5,6 +5,9 @@ include "../connection.php";
 include "include/header-sidebar.php";
 //show profile data
 $uEmail = $_SESSION['is_login'];
+$uid = $_SESSION['u_id'];
+
+
 $sql  = "SELECT * FROM user_login WHERE u_email = '$uEmail'";
 $run = mysqli_query($conn, $sql);
 if ($result = mysqli_fetch_array($run)) {
@@ -36,7 +39,7 @@ if (isset($_POST['submitbtn'])) {
    } else {
       //request code
       $r_code = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
-      $sql = "INSERT INTO submit_request(request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, request_code) VALUES ('$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$r_code')";
+      $sql = "INSERT INTO submit_request(u_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, request_code) VALUES ('$uid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$r_code')";
       $run = mysqli_query($conn, $sql);
       if ($run) {
          // $genid = mysqli_insert_id($conn);

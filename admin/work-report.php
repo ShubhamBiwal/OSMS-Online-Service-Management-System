@@ -9,7 +9,7 @@ if (isset($_POST['search-btn'])) {
     if ($start_date == "" || $end_date == "") {
         echo '<script>alert("Please Select Start and End Date.");</script>';
     } else {
-        $sql = "SELECT * FROM assign_work WHERE assign_date BETWEEN '$start_date' AND '$end_date' ORDER BY assign_date";
+        $sql = "SELECT * FROM completed_work WHERE work_date BETWEEN '$start_date' AND '$end_date' ORDER BY work_date";
         $run = mysqli_query($conn, $sql);
         $row = mysqli_num_rows($run);
         if ($run) {
@@ -17,6 +17,8 @@ if (isset($_POST['search-btn'])) {
         }
         if ($row == 0) {
             $msg = "No Result Found";
+        } else {
+            echo '<style>#msg{display:none;}</style>';
         }
     }
 }
@@ -186,7 +188,7 @@ if (isset($_POST['search-btn'])) {
                         <th>City</th>
                         <th>Mobile</th>
                         <th>Technician</th>
-                        <th>Assigned Date</th>
+                        <th>Work Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -216,7 +218,7 @@ if (isset($_POST['search-btn'])) {
                                 <?php echo $result['assign_tech']; ?>
                             </td>
                             <td>
-                                <?php echo $result['assign_date']; ?>
+                                <?php echo $result['work_date']; ?>
                             </td>
 
                         </tr>

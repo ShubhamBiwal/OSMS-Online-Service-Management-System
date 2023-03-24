@@ -3,23 +3,30 @@ $page = "dashboard";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT u_id, u_name, u_email FROM user_login ORDER BY u_id DESC";
+$sql = "SELECT u_id, u_name, u_email FROM user_login ORDER BY u_id DESC LIMIT 10";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if ($rows == 0) {
     $msg = "No Result Found";
+} else {
+    echo '<style>#msg{display:none;}</style>';
 }
 //dynamic card data
-//total received requests
-$sql1 = "SELECT max(request_id) FROM submit_request";
+//total requester
+$sql1 = "SELECT * FROM user_login";
 $run1 = mysqli_query($conn, $sql1);
-$row1 = mysqli_fetch_row($run1);
-$total_req_received = $row1[0];
-//total assigned work
-$sql2 = "SELECT max(r_no) FROM assign_work";
+$row1 = mysqli_num_rows($run1);
+$total_requester = $row1;
+
+
+//total completed work
+$sql2 = "SELECT max(c_id) FROM completed_work";
 $run2 = mysqli_query($conn, $sql2);
 $row2 = mysqli_fetch_row($run2);
-$total_assigned_work = $row2[0];
+$total_completed_work = $row2[0];
+if($total_completed_work==0){
+    $total_completed_work = 0;
+}
 //total technician
 $sql3 = "SELECT * FROM technician_tb";
 $run3 = mysqli_query($conn, $sql3);
@@ -137,25 +144,14 @@ $total_technicians = $row3;
 
 <div class="content">
     <div class="info-data">
-        <a href="requests.php">
+        <a href="requester.php">
             <div class="card">
                 <div class="head">
                     <div>
-                        <p>Requests Received</p>
-                        <h2><?php echo $total_req_received; ?> </h2>
+                        <p>Requester</p>
+                        <h2><?php echo $total_requester; ?> </h2>
                     </div>
-                    <i class="fa-solid fa-hands-holding-circle"></i>
-                </div>
-            </div>
-        </a>
-        <a href="work-order.php">
-            <div class="card">
-                <div class="head">
-                    <div>
-                        <p>Assigned Work</p>
-                        <h2><?php echo $total_assigned_work; ?></h2>
-                    </div>
-                    <i class="fa-sharp fa-solid fa-handshake"></i>
+                    <i class="fa-solid fa-user"></i>
                 </div>
             </div>
         </a>
@@ -170,10 +166,22 @@ $total_technicians = $row3;
                 </div>
             </div>
         </a>
+        <a href="work-order.php">
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <p>Request Completed</p>
+                        <h2><?php echo $total_completed_work; ?></h2>
+                    </div>
+                    <i class="fa-sharp fa-solid fa-handshake"></i>
+                </div>
+            </div>
+        </a>
+
     </div>
     <div class="container">
         <div class="heading">
-            <p>List of Requesters</p>
+            <p>Last Registered Users</p>
         </div>
         <div class="table-data">
             <table>

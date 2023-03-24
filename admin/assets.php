@@ -7,7 +7,9 @@ $sql = "SELECT * FROM assets_tb";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if($rows ==0){
-    $msg = "No Result Found";
+    $msg = "No Product/Parts Found";
+} else {
+    echo '<style>#msg{display:none;}</style>';
 }
 
 //delete data

@@ -11,6 +11,7 @@ if (isset($_POST['edit-btn'])) {
         $r_id = $result['u_id'];
         $r_name = $result['u_name'];
         $r_email = $result['u_email'];
+        $r_mobile = $result['u_mobile'];
     }
 }
 //upadate data
@@ -18,10 +19,11 @@ if (isset($_POST['updatebtn'])) {
     $uid = $_POST['rid'];
     $uname = $_POST['rname'];
     $uemail = $_POST['remail'];
-    if ($uid == "" || $uname == "" || $uemail == "") {
+    $umobile = $_POST['rmobile'];
+    if ($uid == "" || $uname == "" || $uemail == "" || $umobile =="") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
-        $sql = "UPDATE user_login SET u_name= '$uname', u_email = '$uemail' WHERE u_id ='$uid' ";
+        $sql = "UPDATE user_login SET u_name= '$uname', u_mobile='$umobile', u_email = '$uemail' WHERE u_id ='$uid' ";
         $run = mysqli_query($conn, $sql);
         if ($run) {
             echo '<script> alert("Data Updated Successfully.");</script>';
@@ -36,6 +38,10 @@ if (isset($_POST['updatebtn'])) {
 <head>
     <title>Edit Requester</title>
     <style>
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
         .container {
             padding: 1.6rem;
             box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -54,7 +60,8 @@ if (isset($_POST['updatebtn'])) {
             font-size: 1.5rem;
         }
 
-        input[type="text"] {
+        input[type="text"],
+        input[type="number"] {
             width: 100%;
             padding: 1rem;
             margin: 1.5rem 0;
@@ -62,7 +69,8 @@ if (isset($_POST['updatebtn'])) {
             border: .1rem solid rgba(0, 0, 0, 0.05);
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus {
             outline: .1rem solid rgba(0, 0, 0, 0.4);
 
         }
@@ -122,9 +130,9 @@ if (isset($_POST['updatebtn'])) {
                 width: 100%;
             }
 
-                .content {
-                    padding: 1.5rem;
-                }
+            .content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -138,6 +146,8 @@ if (isset($_POST['updatebtn'])) {
             <input type="text" name="rid" id="rid" value="<?php if (isset($r_id)) echo $r_id; ?>" readonly>
             <label for="rname"><b>Name</b></label>
             <input type="text" name="rname" id="rname" value="<?php if (isset($r_name)) echo $r_name; ?>">
+            <label for="rmobile"><b>Mobile</b></label>
+            <input type="number" name="rmobile" id="rmobile" value="<?php if (isset($r_mobile)) echo $r_mobile; ?>">
             <label for="remail"><b>Email</b></label>
             <input type="text" name="remail" id="remail" value="<?php if (isset($r_email)) echo $r_email; ?>">
             <button type="submit" class="updatebtn" name="updatebtn">Update</button>

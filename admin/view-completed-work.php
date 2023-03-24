@@ -1,18 +1,16 @@
 <?php
-
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$csid = $_POST['csid'];
-if (isset($csid)) {
-    $sql = "SELECT * FROM assign_work WHERE request_id =  '$csid'";
+if (isset($_POST['view-btn'])) {
+    $r_id = $_POST['rid'];
+    $sql = "SELECT * FROM completed_work WHERE request_id = '$r_id'";
     $run = mysqli_query($conn, $sql);
-
-    if ($result = mysqli_fetch_array($run)) {
-
+    if ($result =  mysqli_fetch_array($run)) {
         $rid = $result['request_id'];
         $rinfo = $result['request_info'];
         $rdesc = $result['request_desc'];
+        $rid = $result['u_id'];
         $rname = $result['requester_name'];
         $radd1 = $result['requester_add1'];
         $radd2 = $result['requester_add2'];
@@ -23,60 +21,35 @@ if (isset($csid)) {
         $rmobile = $result['requester_mobile'];
         $rdate = $result['request_date'];
         $radate = $result['assign_date'];
-        $rcode = $result['request_code'];
+        $wdate = $result['work_date'];
+        $techid = $result['tech_id'];
         $ratech = $result['assign_tech'];
         $techmobile = $result['tech_mobile'];
-    } else {
-        $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$csid'";
-        $runs = mysqli_query($conn, $sqls);
-        if (mysqli_num_rows($runs) > 0) {
-            echo '<style>.details{display:none;}</style>';
-            echo '<script>alert("Your Request is Still Pending...")</script>';
-            echo '<script>location.href="my-requests.php";</script>';
-            
-        }
+        $techemail = $result['tech_email'];
     }
 }
-
 
 ?>
 
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2597f4">
-    <title>Check Status</title>
-    <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/1.4.0/css/lightgallery.min.css">
-    <!-- external stylesheet -->
-    <link rel="stylesheet" href="../css/user-style.css">
+    
+    <title>View Completed Work </title>
+
     <style>
         .details {
             width: 70%;
         }
 
         .details .heading {
-            padding: 1rem 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 1rem 0;
             font-size: 1.5rem;
             width: 100%;
+            color: white;
             background: var(--blue);
-            color: #fff;
-        }
-
-        #msg {
-            padding: 1rem;
-            background: #e2effa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50%;
-            font-size: 1.6rem;
         }
 
         table {
@@ -141,9 +114,6 @@ if (isset($csid)) {
                 width: 100%;
             }
 
-            #msg {
-                width: 100%;
-            }
         }
 
         @media(max-width:750px) {
@@ -151,16 +121,8 @@ if (isset($csid)) {
                 width: 100%;
             }
 
-            #msg {
-                width: 100%;
-            }
-
-            .check-id {
-                flex-direction: column;
-            }
-
             .content {
-                padding: 2rem;
+                padding: 1.5rem;
             }
 
             .details {
@@ -172,10 +134,6 @@ if (isset($csid)) {
                 font-size: 1.3rem;
             }
 
-            .check-id input[type="number"] {
-                width: 80%;
-                padding: 1rem;
-            }
 
         }
 
@@ -195,15 +153,16 @@ if (isset($csid)) {
 
 <body>
     <div class="content">
+
         <div class="details">
             <div class="heading">
-                <h3>Assigned Work Details</h3>
+                <h3>Completed Work Details</h3>
             </div>
             <table>
                 <tr>
                     <td><b>Request ID<b></td>
                     <td>
-                        <b> <?php if (isset($rid)) echo $rid; ?></b>
+                        <b> <?php if (isset($r_id)) echo $r_id; ?><b>
                     </td>
                 </tr>
                 <tr>
@@ -216,6 +175,12 @@ if (isset($csid)) {
                     <td>Request Description</td>
                     <td>
                         <?php if (isset($rdesc)) echo $rdesc; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Requester ID</td>
+                    <td>
+                        <?php if (isset($rid)) echo $rid; ?>
                     </td>
                 </tr>
                 <tr>
@@ -267,27 +232,39 @@ if (isset($csid)) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Request Code</td>
-                    <td>
-                        <?php if (isset($rcode)) echo $rcode; ?>
-                    </td>
-                </tr>
-                <tr>
                     <td>Request Date</td>
                     <td>
                         <?php if (isset($rdate)) echo $rdate; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td><b>Assigned Date<b></td>
+                    <td>Assigned Date</td>
                     <td>
-                       <b> <?php if (isset($radate)) echo $radate; ?></b>
+                        <?php if (isset($radate)) echo $radate; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Work Date</b></td>
+                    <td>
+                        <b><?php if (isset($wdate)) echo $wdate; ?><b>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Tech ID</b></td>
+                    <td>
+                        <b><?php if (isset($techid)) echo $techid; ?><b>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Technician Name<b></td>
                     <td>
                         <b><?php if (isset($ratech)) echo $ratech; ?></b>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Technician Email</b></td>
+                    <td>
+                        <b><?php if (isset($techemail)) echo $techemail; ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -299,11 +276,10 @@ if (isset($csid)) {
             </table>
             <div class="btns">
                 <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
-                <button type="submit" class="closebtn" name="closebtn" onclick="location.href = 'my-requests.php';">Close</button>
+                <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'work-order.php';">Close</button>
             </div>
         </div>
 
-        <?php if (isset($msg)) echo '<div id="msg">Your Request is Still Pending...</div>'; ?>
     </div>
 
 

@@ -4,6 +4,7 @@ include "../connection.php";
 include "include/header-sidebar.php";
 //show data
 $uEmail = $_SESSION['is_login'];
+$uid = $_SESSION['u_id'];
 $sql  = "SELECT * FROM user_login WHERE u_email = '$uEmail'";
 
 $run = mysqli_query($conn, $sql);

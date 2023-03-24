@@ -3,6 +3,7 @@ $page = "requests";
 include "../connection.php";
 include "include/header-sidebar.php";
 //for request card
+$tid = $_SESSION['tech_id'];
 $sql = "SELECT request_id, request_info, request_desc, request_date FROM submit_request";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
@@ -36,7 +37,7 @@ if (isset($_POST['accept-btn'])) {
     if ($_POST['rid'] == "" || $_POST['rinfo'] == "" || $_POST['rdesc'] == "" || $_POST['rname'] == "" || $_POST['raddress1'] == "" || $_POST['raddress2'] == "" || $_POST['rcity'] == "" || $_POST['rstate'] == "" || $_POST['rzip'] == "" || $_POST['remail'] == "" || $_POST['rmobile'] == "" || $_POST['wdate'] == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
-
+        $uid = $_POST['uid'];
         $rid = $_POST['rid'];
         $rinfo = $_POST['rinfo'];
         $rdesc = $_POST['rdesc'];
@@ -55,13 +56,14 @@ if (isset($_POST['accept-btn'])) {
             echo '<script> alert("Enter a Valid Date.");</script>';
         } else {
             $temail = $_SESSION['is_techlogin'];
-            $sqlt = "SELECT tech_name, tech_mobile FROM technician_tb WHERE tech_email = '$temail'";
+            $sqlt = "SELECT tech_id, tech_name, tech_mobile FROM technician_tb WHERE tech_email = '$temail'";
             $runt = mysqli_query($conn, $sqlt);
             $resultt = mysqli_fetch_array($runt);
+            $techid = $resultt['tech_id'];
             $techname = $resultt['tech_name'];
             $techmobile = $resultt['tech_mobile'];
 
-            $sql3 = "INSERT INTO assign_work(request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, assign_tech, tech_mobile, tech_email, assign_date, request_code) VALUES ('$rid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$techname','$techmobile','$temail','$rdate', '$rcode')";
+            $sql3 = "INSERT INTO assign_work(u_id, request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, tech_id, assign_tech, tech_mobile, tech_email, assign_date, request_code) VALUES ('$uid','$rid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$techid','$techname','$techmobile','$temail','$wdate', '$rcode')";
             $run3 = mysqli_query($conn, $sql3);
 
             if ($run3) {
@@ -375,9 +377,11 @@ if (isset($_POST['accept-btn'])) {
                         </p>
                     </div>
                     <div class="card-body">
-                        <p>Request Info :
-                            <b> <?php echo $result['request_info']; ?> </b>
-                        </p>
+                        <b>
+                            <p>Request Info :
+                                <?php echo $result['request_info']; ?>
+                            </p>
+                        </b>
                         <p class="request-desc">
                             <?php echo $result['request_desc']; ?>
                         </p>
@@ -410,8 +414,10 @@ if (isset($_POST['accept-btn'])) {
                     <input type="text" name="rdesc" id="rdesc" value="<?php if (isset($result1['request_desc'])) echo $result1['request_desc']; ?>" required>
                     <label for="rname"><b>Name</b></label>
                     <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo $result1['requester_name']; ?>" required>
+
                     <input type="hidden" name="rdate" id="rdate" value="<?php if (isset($result1['request_date'])) echo $result1['request_date']; ?>">
                     <input type="hidden" name="rcode" id="rcode" value="<?php if (isset($result1['request_code'])) echo $result1['request_code']; ?>">
+                    <input type="hidden" name="uid" id="uid" value="<?php if (isset($result1['u_id'])) echo $result1['u_id']; ?>">
 
                     <div class="address">
                         <div class="inputbox">
@@ -450,7 +456,7 @@ if (isset($_POST['accept-btn'])) {
                             <input type="number" name="rmobile" id="rmobile" value="<?php if (isset($result1['requester_mobile'])) echo $result1['requester_mobile']; ?>" required>
                         </div>
                         <div class="inputbox">
-                            <label for="wdate"><b>Work Date</b></label>
+                            <label for="wdate"><b>Assign Date</b></label>
                             <input type="date" name="wdate" id="wdate" required>
                         </div>
                     </div>

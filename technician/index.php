@@ -27,7 +27,12 @@ if (isset($_POST['tSignup'])) {
             $result = mysqli_query($conn, $sql);
             if ($result) {
                 echo '<script> alert("Account Created Successfully.");</script>';
+                $sqlq = "SELECT tech_id FROM technician_tb WHERE tech_email = '$tEmail'";
+                $runq = mysqli_query($conn, $sqlq);
+                $resultq = mysqli_fetch_array($runq);
+                $tid = $resultq['tech_id'];
                 $_SESSION['is_techlogin'] = $tEmail;
+                $_SESSION['tech_id'] = $tid;
                 echo "<script> location.href='requests.php';</script>";
             } else {
                 echo '<script> alert("Error: Unable to Create Account.");</script>';
@@ -41,10 +46,13 @@ if (isset($_POST['tLogin'])) {
     $tEmail = strtolower(trim($_POST['tEmail']));
     $tPassword = trim($_POST['tPassword']);
 
-    $sql = "SELECT tech_email, tech_password FROM technician_tb WHERE tech_email = '$tEmail' AND tech_password = '$tPassword' ";
-    $result = mysqli_query($conn, $sql);
-    if ($row  = mysqli_num_rows($result) == 1) {
+    $sql = "SELECT tech_id, tech_email, tech_password FROM technician_tb WHERE tech_email = '$tEmail' AND tech_password = '$tPassword' ";
+    $run = mysqli_query($conn, $sql);
+    $result = mysqli_fetch_array($run);
+    $tid = $result['tech_id'];
+    if ($row  = mysqli_num_rows($run) == 1) {
         $_SESSION['is_techlogin'] = $tEmail;
+        $_SESSION['tech_id'] = $tid;
         echo "<script> location.href='requests.php';</script>";
         exit;
     } else {

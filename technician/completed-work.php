@@ -3,15 +3,15 @@ $page = "completed-work";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-// $temail = $_SESSION['is_techlogin'];
+$tid = $_SESSION['tech_id'];
 
-// $sql  = "SELECT * FROM assign_work WHERE tech_email = '$temail' ORDER BY request_id DESC";
-// $run = mysqli_query($conn, $sql);
-// $rows = mysqli_num_rows($run);
+$sql  = "SELECT * FROM completed_work WHERE tech_id = '$tid' ORDER BY request_id DESC";
+$run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
 
-// if ($rows == 0) {
-//     $msg = "No Request Found";
-// }
+if ($rows == 0) {
+    $msg = "No Request Found";
+}
 
 
 ?>
@@ -39,7 +39,7 @@ include "include/header-sidebar.php";
         }
 
         td {
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         button {
@@ -58,17 +58,11 @@ include "include/header-sidebar.php";
         }
 
         .pspan {
-            color: #2597f4;
-            font-size: 1.6rem;
-            font-style: italic;
-            font-weight: 600;
-        }
-
-        .aspan {
             color: green;
             font-size: 1.7rem;
             font-weight: bolder;
         }
+
 
         #msg {
             text-align: center;
@@ -80,7 +74,7 @@ include "include/header-sidebar.php";
 
         button:hover {
             opacity: 1;
-            border: .1rem solid #2597f4;
+            scale: 1.01;
         }
 
         @media(max-width:950px) {
@@ -125,6 +119,10 @@ include "include/header-sidebar.php";
                         <td><?php echo $result['requester_name']; ?> </td>
                     </tr>
                     <tr>
+                        <th>Mobile No:</th>
+                        <td><?php echo $result['requester_mobile']; ?> </td>
+                    </tr>
+                    <tr>
                         <th>Email ID:</th>
                         <td><?php echo $result['requester_email']; ?> </td>
                     </tr>
@@ -133,14 +131,16 @@ include "include/header-sidebar.php";
                         <td><?php echo $result['request_info']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Request Description:</th>
-                        <td><?php echo $result['request_desc']; ?> </td>
+                        <th>Work Date:</th>
+                        <td><?php echo $result['work_date']; ?> </td>
                     </tr>
+
                 </table>
-                <button type="submit" name="printbtn" class="printbtn" onclick="window.print()">Print</button>
-                <span class="pspan">Pending...</span>
-
-
+                <form action="view-completed-work.php" method="post">
+                    <input type="hidden" name="cwid" value="<?php echo $result['request_id']; ?>">
+                    <button type="submit" name="viewbtn" class="viewbtn">View</button>
+                    <span class="pspan"><i class="fa-solid fa-circle-check"></i> Completed</span>
+                </form>
             </div>
         <?php } ?>
 
