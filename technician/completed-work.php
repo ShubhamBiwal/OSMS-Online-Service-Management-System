@@ -5,7 +5,7 @@ include "include/header-sidebar.php";
 
 $tid = $_SESSION['tech_id'];
 
-$sql  = "SELECT * FROM completed_work WHERE tech_id = '$tid' ORDER BY request_id DESC";
+$sql  = "SELECT request_id, requester_name, requester_mobile, requester_email, request_info, work_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 

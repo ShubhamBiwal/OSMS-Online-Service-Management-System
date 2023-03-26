@@ -39,7 +39,7 @@ if (isset($_POST['submitbtn'])) {
    } else {
       //request code
       $r_code = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
-      $sql = "INSERT INTO submit_request(u_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, request_code) VALUES ('$uid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$r_code')";
+      $sql = "INSERT INTO requests_tb(u_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, request_code, r_status) VALUES ('$uid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$r_code', 1)";
       $run = mysqli_query($conn, $sql);
       if ($run) {
          // $genid = mysqli_insert_id($conn);

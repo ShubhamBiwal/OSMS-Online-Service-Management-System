@@ -5,19 +5,19 @@ include "include/header-sidebar.php";
 
 $uid = $_SESSION['u_id'];
 //in submit request
-$sql  = "SELECT * FROM submit_request WHERE u_id = '$uid' ORDER BY request_id DESC";
-$run = mysqli_query($conn, $sql);
-$rows = mysqli_num_rows($run);
-//in assigned work
-$sql2  = "SELECT * FROM assign_work WHERE u_id = '$uid' ORDER BY request_id DESC";
+$sql1  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '1' ORDER BY request_id DESC";
+$run1 = mysqli_query($conn, $sql1);
+$rows1 = mysqli_num_rows($run1);
+// in assigned work
+$sql2  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '2' ORDER BY request_id DESC";
 $run2 = mysqli_query($conn, $sql2);
 $rows2 = mysqli_num_rows($run2);
 //in completed work
-$sql3  = "SELECT * FROM completed_work WHERE u_id = '$uid' ORDER BY request_id DESC";
+$sql3  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '3' ORDER BY request_id DESC";
 $run3 = mysqli_query($conn, $sql3);
 $rows3 = mysqli_num_rows($run3);
 
-if ($rows == 0 and $rows2 == 0 and $rows3 == 0) {
+if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
     $msg = "No Request Found";
 }
 
@@ -62,7 +62,20 @@ if ($rows == 0 and $rows2 == 0 and $rows3 == 0) {
             font-weight: 500;
         }
 
-        button {
+        .btns {
+            display: flex;
+            align-items: center;
+            column-gap: 3rem;
+        }
+
+        form {
+            padding: 1.5rem 5rem 1rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .viewbtn {
             border: none;
             color: #fff;
             padding: 1rem 2rem;
@@ -70,11 +83,31 @@ if ($rows == 0 and $rows2 == 0 and $rows3 == 0) {
             font-size: 1.6rem;
             cursor: pointer;
             opacity: 0.8;
-            font-weight: 500;
+            font-weight: 550;
             border-radius: .2rem;
             box-shadow: .1rem .2rem .5rem rgb(0, 0, 0, 0.2);
-            margin: 1rem;
 
+        }
+
+        .btns .cancelbtn {
+            border: none;
+            color: var(--blue);
+            border: .2rem solid var(--blue);
+            padding: .8rem 1.8rem;
+            background: #fff;
+            font-size: 1.6rem;
+            cursor: pointer;
+            font-weight: 550;
+            border-radius: .2rem;
+            box-shadow: .1rem .2rem .5rem rgb(0, 0, 0, 0.2);
+        }
+
+        .cancelbtn:hover {
+            background: var(--blue);
+            color: white;
+        }
+        .viewbtn:hover{
+            opacity: 1;
         }
 
         .pspan {
@@ -136,35 +169,40 @@ if ($rows == 0 and $rows2 == 0 and $rows3 == 0) {
     <div class="content">
 
         <!-- for submit request -->
-        <?php while ($result = mysqli_fetch_array($run)) { ?>
+        <?php while ($result1 = mysqli_fetch_array($run1)) { ?>
 
             <div class="table-data">
                 <table>
                     <tr>
                         <th>Request ID:</th>
-                        <td><?php echo $result['request_id']; ?></td>
+                        <td><?php echo $result1['request_id']; ?></td>
                     </tr>
                     <tr>
                         <th>Email ID:</th>
-                        <td><?php echo $result['requester_email']; ?> </td>
+                        <td><?php echo $result1['requester_email']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Info:</th>
-                        <td><?php echo $result['request_info']; ?> </td>
+                        <td><?php echo $result1['request_info']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Date:</th>
-                        <td><?php echo $result['request_date']; ?> </td>
+                        <td><?php echo $result1['request_date']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Code:</th>
-                        <td class="rcode"><?php echo $result['request_code']; ?> </td>
+                        <td class="rcode"><?php echo $result1['request_code']; ?> </td>
                     </tr>
                 </table>
                 <form action="check-status.php" method="post">
-                    <input type="hidden" value="<?php echo $result['request_id']; ?>" name="csid">
-                    <button type="submit" name="viewbtn" class="viewtbtn">View</button>
+                    <input type="hidden" value="<?php echo $result1['request_id']; ?>" name="csid">
+                    <div class="btns">
+                        <button type="submit" name="cancelbtn" class="cancelbtn">Cancel</button>
+                        <button type="submit" name="viewbtn" class="viewbtn">View</button>
+                    </div>
                     <span class="pspan">Pending...</span>
+
+
                 </form>
             </div>
         <?php } ?>
@@ -201,8 +239,12 @@ if ($rows == 0 and $rows2 == 0 and $rows3 == 0) {
                 </table>
                 <form action="check-status.php" method="post">
                     <input type="hidden" value="<?php echo $result2['request_id']; ?>" name="csid">
-                    <button type="submit" name="viewbtn" class="viewtbtn">View</button>
+                    <div class="btns">
+                        <button type="submit" name="cancelbtn" class="cancelbtn">Cancel</button>
+                        <button type="submit" name="viewbtn" class="viewbtn">View</button>
+                    </div>
                     <span class="aspan">Assigned</span>
+
                 </form>
 
             </div>

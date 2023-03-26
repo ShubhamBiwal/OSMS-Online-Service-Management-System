@@ -99,8 +99,14 @@ $aname = $result['a_name'];
             </li>
             <li>
                 <a href="work-report.php" class="<?php if ($page == "workreport") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-file-word"></i></i></span>
+                    <span class="icon"><i class="fa-solid fa-file-word"></i></span>
                     <span class="item">Work Report</span>
+                </a>
+            </li>
+            <li>
+                <a href="messages.php" class="<?php if ($page == "messages") echo 'nav-active'; ?>">
+                    <span class="icon"><i class="fa-solid fa-message"></i></span>
+                    <span class="item">Messages</span>
                 </a>
             </li>
             <li>

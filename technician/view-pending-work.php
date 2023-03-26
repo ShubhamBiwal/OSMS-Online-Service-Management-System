@@ -5,7 +5,7 @@ include "include/header-sidebar.php";
 
 $pwid = $_POST['pwid'];
 if (isset($pwid)) {
-    $sql = "SELECT * FROM assign_work WHERE request_id =  '$pwid'";
+    $sql = "SELECT * FROM requests_tb WHERE request_id =  '$pwid'";
     $run = mysqli_query($conn, $sql);
 
     if ($result = mysqli_fetch_array($run)) {
@@ -35,38 +35,18 @@ if (isset($_POST['submitbtn'])) {
     $rid = $_POST['r_id'];
     $rcode = trim($_POST['r_code']);
     $wdate = $_POST['wdate'];
-    $sql = "SELECT * FROM assign_work WHERE request_id = '$rid'";
+    $sql = "SELECT * FROM requests_tb WHERE request_id = '$rid'";
     $run = mysqli_query($conn, $sql);
     $result = mysqli_fetch_array($run);
-    $uid = $result['u_id'];
-    $rid = $result['request_id'];
-    $rinfo = $result['request_info'];
-    $rdesc = $result['request_desc'];
-    $rname = $result['requester_name'];
-    $radd1 = $result['requester_add1'];
-    $radd2 = $result['requester_add2'];
-    $rcity = $result['requester_city'];
-    $rstate = $result['requester_state'];
-    $rzip = $result['requester_zip'];
-    $remail = $result['requester_email'];
-    $rmobile = $result['requester_mobile'];
     $rdate = $result['request_date'];
-    $techid = $result['tech_id'];
-    $ratech = $result['assign_tech'];
-    $techmobile = $result['tech_mobile'];
-    $techemail = $result['tech_email'];
-    $radate = $result['assign_date'];
     $r_code = $result['request_code'];
     if ($wdate < $rdate) {
         echo '<script>alert("Enter Valid Work Date!");</script>';
     } else {
         if ($rcode == $r_code) {
-            $sql = "INSERT INTO completed_work(u_id,request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, tech_id, assign_tech, tech_mobile, tech_email, assign_date, work_date) 
-        VALUES ('$uid','$rid','$rinfo','$rdesc','$rname','$radd1','$radd2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$techid','$ratech','$techmobile','$techemail','$radate','$wdate')";
+            $sql = "UPDATE requests_tb SET work_date = '$wdate', r_status = '3' WHERE request_id = $rid";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                $sqldel = "DELETE FROM assign_work WHERE request_id = '$rid' ";
-                $rundel  = mysqli_query($conn, $sqldel);
                 echo '<script> alert("Success: Work Completed.");</script>';
                 echo "<script> location.href = 'completed-work.php';</script>";
             }
@@ -266,6 +246,7 @@ if (isset($_POST['submitbtn'])) {
                         <td>
                             <b>
                                 <?php if (isset($rid)) echo $rid; ?>
+                                <input type="hidden" name="r_id" value="<?php if (isset($rid)) echo $rid; ?>">
                                 <input type="hidden" name="r_id" value="<?php if (isset($rid)) echo $rid; ?>">
                             </b>
                         </td>

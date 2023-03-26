@@ -3,7 +3,7 @@ $page = "workorder";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM completed_work ORDER BY request_id DESC";
+$sql = "SELECT * FROM requests_tb WHERE r_status = '3' ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if ($rows == 0) {
@@ -15,7 +15,7 @@ if ($rows == 0) {
 //delete data
 if (isset($_POST['delete-btn'])) {
     $r_id = $_POST['rid'];
-    $sql = "DELETE FROM completed_work WHERE request_id = '$r_id'";
+    $sql = "DELETE FROM requests_tb WHERE request_id = '$r_id' AND r_status = '3'";
     $run = mysqli_query($conn, $sql);
     if ($run) {
         echo '<script>location.href="work-order.php";</script>';

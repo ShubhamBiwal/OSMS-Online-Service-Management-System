@@ -4,7 +4,7 @@ include "../connection.php";
 include "include/header-sidebar.php";
 //for request card
 $tid = $_SESSION['tech_id'];
-$sql = "SELECT request_id, request_info, request_desc, request_date FROM submit_request";
+$sql = "SELECT request_id, request_info, request_desc, request_date FROM requests_tb WHERE r_status = 1";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
@@ -16,7 +16,7 @@ if ($rows == 0) {
 //show data in assign form
 if (isset($_POST['view-btn'])) {
     $r_id = $_POST['r_id'];
-    $sql1 = "SELECT * FROM submit_request WHERE request_id = '$r_id'";
+    $sql1 = "SELECT * FROM requests_tb WHERE request_id = '$r_id'";
     $run1 = mysqli_query($conn, $sql1);
     $result1 = mysqli_fetch_array($run1);
 }
@@ -34,41 +34,26 @@ if (isset($_POST['view-btn'])) {
 
 //assign technician
 if (isset($_POST['accept-btn'])) {
-    if ($_POST['rid'] == "" || $_POST['rinfo'] == "" || $_POST['rdesc'] == "" || $_POST['rname'] == "" || $_POST['raddress1'] == "" || $_POST['raddress2'] == "" || $_POST['rcity'] == "" || $_POST['rstate'] == "" || $_POST['rzip'] == "" || $_POST['remail'] == "" || $_POST['rmobile'] == "" || $_POST['wdate'] == "") {
+    if ($_POST['rid'] == "" || $_POST['rinfo'] == "" || $_POST['rdesc'] == "" || $_POST['rname'] == "" || $_POST['raddress1'] == "" || $_POST['raddress2'] == "" || $_POST['rcity'] == "" || $_POST['rstate'] == "" || $_POST['rzip'] == "" || $_POST['remail'] == "" || $_POST['rmobile'] == "" || $_POST['adate'] == "") {
         echo '<script> alert("Error: All Fields are Required.");</script>';
     } else {
-        $uid = $_POST['uid'];
         $rid = $_POST['rid'];
-        $rinfo = $_POST['rinfo'];
-        $rdesc = $_POST['rdesc'];
-        $rname = $_POST['rname'];
-        $raddress1 = $_POST['raddress1'];
-        $raddress2 = $_POST['raddress2'];
-        $rcity = $_POST['rcity'];
-        $rstate = $_POST['rstate'];
-        $rzip = $_POST['rzip'];
-        $remail = $_POST['remail'];
-        $rmobile = $_POST['rmobile'];
-        $rcode = $_POST['rcode'];
         $rdate = $_POST['rdate'];
-        $wdate = $_POST['wdate'];
-        if ($wdate < $rdate) {
+        $adate = $_POST['adate'];
+        if ($adate < $rdate) {
             echo '<script> alert("Enter a Valid Date.");</script>';
         } else {
-            $temail = $_SESSION['is_techlogin'];
-            $sqlt = "SELECT tech_id, tech_name, tech_mobile FROM technician_tb WHERE tech_email = '$temail'";
+            $sqlt = "SELECT tech_name, tech_mobile, tech_email FROM technician_tb WHERE tech_id = '$tid'";
             $runt = mysqli_query($conn, $sqlt);
             $resultt = mysqli_fetch_array($runt);
-            $techid = $resultt['tech_id'];
             $techname = $resultt['tech_name'];
             $techmobile = $resultt['tech_mobile'];
+            $techemail = $resultt['tech_email'];
 
-            $sql3 = "INSERT INTO assign_work(u_id, request_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, tech_id, assign_tech, tech_mobile, tech_email, assign_date, request_code) VALUES ('$uid','$rid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$techid','$techname','$techmobile','$temail','$wdate', '$rcode')";
+            $sql3 = "UPDATE requests_tb SET tech_id = '$tid', assign_tech = '$techname', tech_mobile = '$techmobile', tech_email = '$techemail', assign_date = '$adate', r_status = '2' WHERE request_id = '$rid'";
             $run3 = mysqli_query($conn, $sql3);
 
             if ($run3) {
-                $sqldel = "DELETE FROM submit_request WHERE request_id = '$rid' ";
-                $rundel  = mysqli_query($conn, $sqldel);
                 echo '<script> alert("Work Accepted.");</script>';
                 echo "<script> location.href = 'pending-work.php';</script>";
             } else {
@@ -213,8 +198,6 @@ if (isset($_POST['accept-btn'])) {
         }
 
         #rid {
-            background: var(--blue);
-            color: white;
             box-shadow: .1rem .1rem .2rem rgba(0, 0, 0, 0.5);
             outline: none;
             font-weight: bold;
@@ -409,55 +392,53 @@ if (isset($_POST['accept-btn'])) {
                     <label for="rid"><b>Request ID</b></label>
                     <input type="text" name="rid" id="rid" value="<?php if (isset($result1['request_id'])) echo $result1['request_id']; ?>" readonly required>
                     <label for="rinfo"><b>Request Info</b></label>
-                    <input type="text" name="rinfo" id="rinfo" value="<?php if (isset($result1['request_info'])) echo $result1['request_info']; ?>" required>
+                    <input type="text" name="rinfo" id="rinfo" value="<?php if (isset($result1['request_info'])) echo $result1['request_info']; ?>" required readonly>
                     <label for="rdesc"><b>Discription</b></label>
-                    <input type="text" name="rdesc" id="rdesc" value="<?php if (isset($result1['request_desc'])) echo $result1['request_desc']; ?>" required>
+                    <input type="text" name="rdesc" id="rdesc" value="<?php if (isset($result1['request_desc'])) echo $result1['request_desc']; ?>" required readonly>
                     <label for="rname"><b>Name</b></label>
-                    <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo $result1['requester_name']; ?>" required>
+                    <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo $result1['requester_name']; ?>" required readonly>
 
                     <input type="hidden" name="rdate" id="rdate" value="<?php if (isset($result1['request_date'])) echo $result1['request_date']; ?>">
-                    <input type="hidden" name="rcode" id="rcode" value="<?php if (isset($result1['request_code'])) echo $result1['request_code']; ?>">
-                    <input type="hidden" name="uid" id="uid" value="<?php if (isset($result1['u_id'])) echo $result1['u_id']; ?>">
 
                     <div class="address">
                         <div class="inputbox">
                             <label for="raddress1"><b>Address Line 1</b></label>
-                            <input type="text" name="raddress1" id="raddress1" value="<?php if (isset($result1['requester_add1'])) echo $result1['requester_add1']; ?>" required>
+                            <input type="text" name="raddress1" id="raddress1" value="<?php if (isset($result1['requester_add1'])) echo $result1['requester_add1']; ?>" required readonly>
                         </div>
                         <div class="inputbox">
                             <label for="raddress2"><b>Address Line 2</b></label>
-                            <input type="text" name="raddress2" id="raddress2" value="<?php if (isset($result1['requester_add2'])) echo $result1['requester_add2']; ?>" required>
+                            <input type="text" name="raddress2" id="raddress2" value="<?php if (isset($result1['requester_add2'])) echo $result1['requester_add2']; ?>" required readonly>
                         </div>
                     </div>
 
                     <div class="address2">
                         <div class="inputbox2">
                             <label for="rcity"><b>City</b></label>
-                            <input type="text" name="rcity" id="rcity" value="<?php if (isset($result1['requester_city'])) echo $result1['requester_city']; ?>" required>
+                            <input type="text" name="rcity" id="rcity" value="<?php if (isset($result1['requester_city'])) echo $result1['requester_city']; ?>" required readonly>
                         </div>
                         <div class="inputbox2">
                             <label for="rstate"><b>State</b></label>
-                            <input type="text" name="rstate" id="rstate" value="<?php if (isset($result1['requester_state'])) echo $result1['requester_state']; ?>" required>
+                            <input type="text" name="rstate" id="rstate" value="<?php if (isset($result1['requester_state'])) echo $result1['requester_state']; ?>" required readonly>
                         </div>
 
                         <div class="inputbox2">
                             <label for="rzip"><b>Zip</b></label>
-                            <input type="number" name="rzip" id="rzip" value="<?php if (isset($result1['requester_zip'])) echo $result1['requester_zip']; ?>" required>
+                            <input type="number" name="rzip" id="rzip" value="<?php if (isset($result1['requester_zip'])) echo $result1['requester_zip']; ?>" required readonly>
                         </div>
                     </div>
                     <div class="address3">
                         <div class="inputbox">
                             <label for="remail"><b>Email</b></label>
-                            <input type="text" name="remail" id="remail" value="<?php if (isset($result1['requester_email'])) echo $result1['requester_email']; ?>" required>
+                            <input type="text" name="remail" id="remail" value="<?php if (isset($result1['requester_email'])) echo $result1['requester_email']; ?>" required readonly>
                         </div>
                         <div class="inputbox">
 
                             <label for="rmobile"><b>Mobile</b></label>
-                            <input type="number" name="rmobile" id="rmobile" value="<?php if (isset($result1['requester_mobile'])) echo $result1['requester_mobile']; ?>" required>
+                            <input type="number" name="rmobile" id="rmobile" value="<?php if (isset($result1['requester_mobile'])) echo $result1['requester_mobile']; ?>" required readonly>
                         </div>
                         <div class="inputbox">
-                            <label for="wdate"><b>Assign Date</b></label>
-                            <input type="date" name="wdate" id="wdate" required>
+                            <label for="adate"><b>Assign Date</b></label>
+                            <input type="date" name="adate" id="adate" required>
                         </div>
                     </div>
                     <div class="buttons">
@@ -471,6 +452,5 @@ if (isset($_POST['accept-btn'])) {
 
         </div>
     </div>
-
 
 </div>

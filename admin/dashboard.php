@@ -20,11 +20,11 @@ $total_requester = $row1;
 
 
 //total completed work
-$sql2 = "SELECT max(c_id) FROM completed_work";
+$sql2 = "SELECT r_status FROM requests_tb WHERE r_status = '3'";
 $run2 = mysqli_query($conn, $sql2);
-$row2 = mysqli_fetch_row($run2);
-$total_completed_work = $row2[0];
-if($total_completed_work==0){
+$row2 = mysqli_num_rows($run2);
+$total_completed_work = $row2;
+if ($total_completed_work == 0) {
     $total_completed_work = 0;
 }
 //total technician
@@ -144,6 +144,17 @@ $total_technicians = $row3;
 
 <div class="content">
     <div class="info-data">
+        <a href="work-order.php">
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <p>Request Completed</p>
+                        <h2><?php echo $total_completed_work; ?></h2>
+                    </div>
+                    <i class="fa-sharp fa-solid fa-handshake"></i>
+                </div>
+            </div>
+        </a>
         <a href="requester.php">
             <div class="card">
                 <div class="head">
@@ -166,17 +177,7 @@ $total_technicians = $row3;
                 </div>
             </div>
         </a>
-        <a href="work-order.php">
-            <div class="card">
-                <div class="head">
-                    <div>
-                        <p>Request Completed</p>
-                        <h2><?php echo $total_completed_work; ?></h2>
-                    </div>
-                    <i class="fa-sharp fa-solid fa-handshake"></i>
-                </div>
-            </div>
-        </a>
+
 
     </div>
     <div class="container">

@@ -4,7 +4,7 @@ include "include/header-sidebar.php";
 
 if (isset($_POST['view-btn'])) {
     $cwid = $_POST['cwid'];
-    $sql = "SELECT * FROM completed_work WHERE request_id = '$cwid'";
+    $sql = "SELECT * FROM requests_tb WHERE request_id = '$cwid' AND r_status = '3'";
     $run = mysqli_query($conn, $sql);
     if ($result =  mysqli_fetch_array($run)) {
         $rid = $result['request_id'];

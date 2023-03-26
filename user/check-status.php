@@ -2,10 +2,11 @@
 
 include "../connection.php";
 include "include/header-sidebar.php";
-
+echo '<style>.details{display:none;}</style>';
 $csid = $_POST['csid'];
 if (isset($csid)) {
-    $sql = "SELECT * FROM assign_work WHERE request_id =  '$csid'";
+    echo '<style>.details{display:block;}</style>';
+    $sql = "SELECT * FROM requests_tb WHERE request_id =  '$csid' AND r_status = '2' ";
     $run = mysqli_query($conn, $sql);
 
     if ($result = mysqli_fetch_array($run)) {
@@ -27,14 +28,8 @@ if (isset($csid)) {
         $ratech = $result['assign_tech'];
         $techmobile = $result['tech_mobile'];
     } else {
-        $sqls = "SELECT request_id FROM submit_request WHERE request_id = '$csid'";
-        $runs = mysqli_query($conn, $sqls);
-        if (mysqli_num_rows($runs) > 0) {
-            echo '<style>.details{display:none;}</style>';
-            echo '<script>alert("Your Request is Still Pending...")</script>';
-            echo '<script>location.href="my-requests.php";</script>';
-            
-        }
+        echo '<script>alert("Your Request is Still Pending...")</script>';
+        echo '<script>location.href="my-requests.php";</script>';
     }
 }
 
@@ -281,7 +276,7 @@ if (isset($csid)) {
                 <tr>
                     <td><b>Assigned Date<b></td>
                     <td>
-                       <b> <?php if (isset($radate)) echo $radate; ?></b>
+                        <b> <?php if (isset($radate)) echo $radate; ?></b>
                     </td>
                 </tr>
                 <tr>

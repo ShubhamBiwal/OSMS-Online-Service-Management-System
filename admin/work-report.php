@@ -9,7 +9,7 @@ if (isset($_POST['search-btn'])) {
     if ($start_date == "" || $end_date == "") {
         echo '<script>alert("Please Select Start and End Date.");</script>';
     } else {
-        $sql = "SELECT * FROM completed_work WHERE work_date BETWEEN '$start_date' AND '$end_date' ORDER BY work_date";
+        $sql = "SELECT * FROM requests_tb WHERE work_date BETWEEN '$start_date' AND '$end_date' ORDER BY work_date";
         $run = mysqli_query($conn, $sql);
         $row = mysqli_num_rows($run);
         if ($run) {

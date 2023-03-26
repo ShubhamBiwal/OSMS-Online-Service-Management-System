@@ -355,7 +355,7 @@ section {
 .contact .row form textarea {
   padding: 1.2rem 1.4rem;
   font-size: 1.6rem;
-  color: #777;
+  color: #222;
   margin: 0.7rem 0;
   border-radius: 0.5rem;
   border: 0.1rem solid var(--blue);
@@ -394,6 +394,7 @@ section {
   padding-right: 0.5rem;
   color: var(--blue);
   transition: 0.2s ease-in-out;
+  
 }
 .footer .box-container .box .link:hover {
   color: var(--blue);
@@ -419,11 +420,12 @@ section {
   height: 4.5rem;
   width: 4.5rem;
   line-height: 4.5rem;
-  font-size: 1.7rem;
+  font-size: 2rem;
   background: var(--blue);
   color: #fff;
   margin-right: 0.3rem;
   text-align: center;
+  border-radius: .5rem;
 }
 .footer .box-container .box .share a:hover {
   background: var(--black);
@@ -831,6 +833,11 @@ section {
   .links button:hover {
     color: var(--black);
   }
+   .overlay .modal-content,
+  .overlay-login .login-modal-content {
+    width: 90vw;
+    height: auto;
+  }
 }
 @media (max-width: 450px) {
   html {
@@ -857,7 +864,7 @@ section {
   }
   .overlay .modal-content,
   .overlay-login .login-modal-content {
-    width: 80vw;
+    width: 90vw;
     height: auto;
   }
 }

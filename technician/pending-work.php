@@ -3,9 +3,9 @@ $page = "pending-work";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$temail = $_SESSION['is_techlogin'];
+$tid = $_SESSION['tech_id'];
 
-$sql  = "SELECT * FROM assign_work WHERE tech_email = '$temail' ORDER BY request_id DESC";
+$sql  = "SELECT request_id, requester_name, requester_mobile, request_info, request_date, assign_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '2' ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
