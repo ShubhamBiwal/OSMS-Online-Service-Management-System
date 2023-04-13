@@ -33,16 +33,25 @@ if (isset($_POST['submitbtn'])) {
       echo '<script>alert("All Fields Are Required!");</script>';
    } else {
       //request code
-      $r_code = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
-      $sql = "INSERT INTO requests_tb(u_id, s_appliance, s_service, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_email, requester_mobile, requester_alt_mobile, request_date, request_code, r_status) VALUES('$uid','$sa', '$ss', '$rdesc','$uname','$raddress1','$raddress2','$rcity','$rstate','$uEmail','$rmobile','$ramobile','$rdate','$r_code', '1')";
-      $run = mysqli_query($conn, $sql);
-      if ($run) {
-         // $genid = mysqli_insert_id($conn)
-         echo '<script>alert("Request Submitted Successfully.");</script>';
-         // $_SESSION['myid'] = $genid;
-         echo '<script>location.href = "my-requests.php";</script>';
-      } else {
-         echo '<script>alert("Unable to Submit Your Request.");</script>';
+      $sqlp = "SELECT service_price FROM services_tb WHERE appliance_name = '$sa' AND `service_name`='$ss'";
+      $runp = mysqli_query($conn, $sqlp);
+      if ($resultp = mysqli_fetch_array($runp)) {
+         $sprice = $resultp['service_price'];
+         $r_code = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
+         $sql = "INSERT INTO requests_tb(u_id, s_appliance, s_service, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_email, requester_mobile, requester_alt_mobile, request_date, s_price, request_code, r_status) VALUES('$uid','$sa', '$ss', '$rdesc','$uname','$raddress1','$raddress2','$rcity','$rstate','$uEmail','$rmobile','$ramobile','$rdate','$sprice','$r_code', '1')";
+         $run = mysqli_query($conn, $sql);
+         if ($run) {
+            // $genid = mysqli_insert_id($conn)
+            echo '<script>alert("Request Submitted Successfully.");</script>';
+            // $_SESSION['myid'] = $genid;
+            echo '<script>location.href = "my-requests.php";</script>';
+         } else {
+            echo '<script>alert("Unable to Submit Your Request.");</script>';
+         }
+      }
+      else{
+         echo '<script>alert("Sorry: This Service is not Available!");</script>';
+
       }
    }
 }

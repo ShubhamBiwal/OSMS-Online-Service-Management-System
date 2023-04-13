@@ -5,19 +5,19 @@ include "include/header-sidebar.php";
 
 $uid = $_SESSION['u_id'];
 //cancelled request
-$sql  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '0' ORDER BY request_id DESC";
+$sql  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '0' ORDER BY request_date ";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 // submit request
-$sql1  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '1' ORDER BY request_id DESC";
+$sql1  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '1' ORDER BY request_date ";
 $run1 = mysqli_query($conn, $sql1);
 $rows1 = mysqli_num_rows($run1);
 // assigned work
-$sql2  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '2' ORDER BY request_id DESC";
+$sql2  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '2' ORDER BY assign_date ";
 $run2 = mysqli_query($conn, $sql2);
 $rows2 = mysqli_num_rows($run2);
 //completed work
-$sql3  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '3' ORDER BY request_id DESC";
+$sql3  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '3' ORDER BY work_date DESC";
 $run3 = mysqli_query($conn, $sql3);
 $rows3 = mysqli_num_rows($run3);
 
@@ -86,6 +86,11 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
             display: flex;
             align-items: center;
             column-gap: 3rem;
+        }
+
+        .price {
+            color: red;
+            font-weight: bold;
         }
 
         form {
@@ -207,7 +212,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                         <th>Service Info:</th>
                         <td class="sinfo"><?php echo ucwords($result1['s_appliance']) . " (" . ucwords($result1['s_service'])  . ")"; ?></td>
                     </tr>
-                   
+
                     <tr>
                         <th>Request Desc:</th>
                         <td><?php echo $result1['request_desc']; ?> </td>
@@ -217,8 +222,8 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                         <td><?php echo $result1['request_date']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Price:</th>
-                        <td><?php echo $result1['request_date']; ?> </td>
+                        <th>Cost (in Rs):</th>
+                        <td class="price"><?php echo "&#8377;" . $result1['s_price']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Code:</th>
@@ -252,11 +257,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     </tr>
                     <tr>
                         <th>Service Info:</th>
-                        <td class="sinfo"><?php echo ucwords($result2['s_appliance']). " (" . $result2['s_service'] . ")"; ?></td>
-                    </tr>
-                    <tr>
-                        <th>Request Date:</th>
-                        <td><?php echo $result2['request_date']; ?> </td>
+                        <td class="sinfo"><?php echo ucwords($result2['s_appliance']) . " (" . $result2['s_service'] . ")"; ?></td>
                     </tr>
                     <tr>
                         <th>Assigned Date:</th>
@@ -269,6 +270,10 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     <tr>
                         <th>Technician Mobile:</th>
                         <td><?php echo $result2['tech_mobile']; ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Cost (in Rs):</th>
+                        <td class="price"><?php echo "&#8377;" . $result2['s_price']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Code:</th>
@@ -340,7 +345,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     </tr>
                     <tr>
                         <th>Service Info:</th>
-                        <td class="sinfo"><?php echo ucwords($result3['s_appliance']) . " (" . ucwords($result3['s_service']). ")"; ?></td>
+                        <td class="sinfo"><?php echo ucwords($result3['s_appliance']) . " (" . ucwords($result3['s_service']) . ")"; ?></td>
                     </tr>
 
                     <tr>
@@ -356,8 +361,8 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                         <td><?php echo $result3['request_date']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Assigned Date:</th>
-                        <td><?php echo $result3['assign_date']; ?> </td>
+                        <th>Payment (in Rs):</th>
+                        <td class="price"><?php echo "&#8377;" . $result3['s_price']; ?> </td>
                     </tr>
                 </table>
                 <form action="view-completed-work.php" method="post">

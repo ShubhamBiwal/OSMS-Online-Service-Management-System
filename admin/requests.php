@@ -258,6 +258,16 @@ if (isset($_POST['assign-btn'])) {
             display: none;
         }
 
+        .price-show {
+            color: red;
+            padding: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .price-show span{
+            color: var(--black);
+        }
+
         .buttons {
             display: flex;
             justify-content: flex-end;
@@ -356,7 +366,7 @@ if (isset($_POST['assign-btn'])) {
                     </div>
                     <div class="card-body">
                         <p><b>Service Info :</b>
-                            <span> <?php echo ucwords($result['s_appliance']). " (" . ucwords($result['s_service']). ")"; ?></span>
+                            <span> <?php echo ucwords($result['s_appliance']) . " (" . ucwords($result['s_service']) . ")"; ?></span>
                         </p>
                         <p><b>Request Desc :</b>
                             <?php echo ucwords($result['request_desc']); ?>
@@ -390,7 +400,7 @@ if (isset($_POST['assign-btn'])) {
                     <div class="form-container">
                         <div class="inputbox">
                             <label for="rname"><b>Name</b></label>
-                            <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo ucwords($result1['requester_name']) ; ?>" readonly required>
+                            <input type="text" name="rname" id="rname" value="<?php if (isset($result1['requester_name'])) echo ucwords($result1['requester_name']); ?>" readonly required>
                         </div>
                         <div class="inputbox">
                             <label for="remail"><b>Email</b></label>
@@ -404,7 +414,7 @@ if (isset($_POST['assign-btn'])) {
                         </div>
                         <div class="inputbox">
                             <label for=""><b>Service</b></label>
-                            <input type="text" name="r_service" id="" value="<?php if (isset($result1['s_service'])) echo $result1['s_service']; ?>" readonly required>
+                            <input type="text" name="r_service" id="" value="<?php if (isset($result1['s_service'])) echo ucwords($result1['s_service']); ?>" readonly required>
                         </div>
                     </div>
                     <label for="rdesc"><b>Discription</b></label>
@@ -454,9 +464,9 @@ if (isset($_POST['assign-btn'])) {
                             <label for=""><b>Assign Date</b></label>
                             <input type="date" name="radate" id="" required>
                             <input type="hidden" name="rdate" id="" value="<?php if (isset($result1['request_date'])) echo $result1['request_date']; ?>">
-
                         </div>
                     </div>
+                    <span class="price-show"> <span>Cost (in Rs) :</span><?php if (isset($result1['s_price'])) echo " " . '&#8377;' . $result1['s_price'].""; ?></span>
                     <div class="buttons">
                         <button type="submit" class="submitbtn" name="assign-btn">Assign</button>
                         <button type="reset" class="resetbtn" name="resetbtn">Reset</button>

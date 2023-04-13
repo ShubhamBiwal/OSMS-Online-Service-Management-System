@@ -22,6 +22,7 @@ if (isset($_POST['viewbtn'])) {
         $rdate = $result['request_date'];
         $radate = $result['assign_date'];
         $wdate = $result['work_date'];
+        $sprice = $result['s_price'];
     }
 }
 
@@ -58,6 +59,11 @@ if (isset($_POST['viewbtn'])) {
         td {
             border: .1rem solid rgba(0, 0, 0, 0.2);
             padding: 1rem;
+        }
+
+        .price {
+            color: red;
+            font-weight: bold;
         }
 
         .printbtn {
@@ -237,6 +243,10 @@ if (isset($_POST['viewbtn'])) {
                     <td>
                         <?php if (isset($wdate)) echo $wdate; ?>
                     </td>
+                </tr>
+                <tr>
+                    <td>Payment</td>
+                    <td class="price"><?php if (isset($sprice)) echo "&#8377;" . $sprice; ?> </td>
                 </tr>
 
             </table>

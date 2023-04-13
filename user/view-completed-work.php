@@ -24,6 +24,7 @@ if (isset($_POST['view-btn'])) {
         $rmobile = $result['requester_mobile'];
         $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
+        $sprice = $result['s_price'];
         $radate = $result['assign_date'];
         $wdate = $result['work_date'];
         $ratech = ucwords($result['assign_tech']);
@@ -72,6 +73,11 @@ if (isset($_POST['view-btn'])) {
         td {
             border: .1rem solid rgba(0, 0, 0, 0.2);
             padding: 1rem;
+        }
+
+        .price {
+            color: red;
+            font-weight: bold;
         }
 
         .printbtn {
@@ -262,6 +268,10 @@ if (isset($_POST['view-btn'])) {
                     <td>
                         <b><?php if (isset($techmobile)) echo $techmobile; ?></b>
                     </td>
+                </tr>
+                <tr>
+                    <td><b>Cost (in Rs):</b></td>
+                    <td class="price"><?php echo "&#8377;" . $sprice; ?> </td>
                 </tr>
             </table>
             <div class="btns">

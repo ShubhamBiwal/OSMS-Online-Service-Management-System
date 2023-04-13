@@ -64,6 +64,7 @@ if (isset($_POST['delete-btn'])) {
         td span{
             color: red;
             font-style: italic;
+            font-weight: bold;
         }
 
         .table-data {
@@ -148,6 +149,7 @@ if (isset($_POST['delete-btn'])) {
                         <th>Request Date</th>
                         <th>Assign Date</th>
                         <th>Payment</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -165,7 +167,7 @@ if (isset($_POST['delete-btn'])) {
                                 <b> <?php echo $result['request_id']; ?></b>
                             </td>
                             <td>
-                                <?php echo ucwords($result['s_appliance']) . " (" . $result['s_service'] . ")"; ?>
+                                <?php echo ucwords($result['s_appliance']) . " (" .ucwords($result['s_service']) . ")"; ?>
                             </td>
                             <td>
                                 <?php echo ucwords($result['requester_name']); ?>
@@ -189,7 +191,10 @@ if (isset($_POST['delete-btn'])) {
                                 <?php echo $result['assign_date']; ?>
                             </td>
                             <td>
-                                <span>Pending</span>
+                                <?php echo "&#8377;".$result['s_price']; ?>
+                            </td>
+                            <td>
+                                <span>P</span>
                             </td>
                             <td>
                                 <div class="form-btn">

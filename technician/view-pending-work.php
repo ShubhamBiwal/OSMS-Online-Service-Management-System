@@ -27,6 +27,7 @@ if (isset($_POST['viewbtn']) and $pwid) {
         $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
         $radate = $result['assign_date'];
+        $sprice = $result['s_price'];
     } else {
         $msg = "";
         echo '<style>.details{display:none;}</style>';
@@ -214,6 +215,11 @@ if (isset($_POST['submitbtn'])) {
             opacity: 1;
         }
 
+        .price {
+            color: red;
+            font-weight: bold;
+        }
+
         .btns {
             display: flex;
             align-items: center;
@@ -302,7 +308,7 @@ if (isset($_POST['submitbtn'])) {
                     </tr>
                     <tr>
                         <td>Service Info</td>
-                        <td class="sinfo"><?php if(isset($rappliance)&& $rservice)  echo ucwords($rappliance) . " (" . $rservice . ")"; ?></td>
+                        <td class="sinfo"><?php if (isset($rappliance) && $rservice)  echo ucwords($rappliance) . " (" .ucwords($rservice) . ")"; ?></td>
                     </tr>
                     <tr>
                         <td>Request Description</td>
@@ -370,6 +376,12 @@ if (isset($_POST['submitbtn'])) {
                             <b>
                                 <?php if (isset($radate)) echo $radate; ?>
                             </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Cost (in Rs)<b></td>
+                        <td class="price">
+                            <?php if (isset($sprice)) echo "&#8377;" . $sprice; ?>
                         </td>
                     </tr>
                     <tr>

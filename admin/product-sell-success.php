@@ -132,7 +132,7 @@ if ($result =  mysqli_fetch_array($run)) {
             <h2 class="heading">Customer Bill</h2>
             <table>
                 <tr>
-                    <th><b>Customer ID<b></th>
+                    <th><b>Product ID<b></th>
                     <td>
                         <b> <?php if (isset($cid)) echo $cid; ?><b>
                     </td>

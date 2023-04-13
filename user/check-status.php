@@ -24,6 +24,7 @@ if (isset($_POST['viewbtn']) and $csid) {
         $rmobile = $result['requester_mobile'];
         $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
+        $sprice = $result['s_price'];
         $rcode = $result['request_code'];
         $radate = $result['assign_date'];
         $ratech = $result['assign_tech'];
@@ -95,6 +96,11 @@ if (isset($_POST['cancelbtn']) and $csid) {
         td {
             border: .1rem solid rgba(0, 0, 0, 0.2);
             padding: 1rem;
+        }
+
+        .price {
+            color: red;
+            font-weight: bold;
         }
 
         .printbtn {
@@ -208,7 +214,7 @@ if (isset($_POST['cancelbtn']) and $csid) {
                 </tr>
                 <tr>
                     <td>Service Info</td>
-                    <td><?php if (isset($rappliance) && $rservice)  echo ucwords($result['s_appliance']) . " (" . $result['s_service'] . ")"; ?></td>
+                    <td><?php if (isset($rappliance) && $rservice)  echo ucwords($result['s_appliance']) . " (" . ucwords($result['s_service']) . ")"; ?></td>
                 </tr>
                 <tr>
                     <td>Request Description</td>
@@ -293,6 +299,10 @@ if (isset($_POST['cancelbtn']) and $csid) {
                     <td>
                         <b><?php if (isset($techmobile)) echo $techmobile; ?></b>
                     </td>
+                </tr>
+                <tr>
+                    <td><b>Cost (in Rs):</b></td>
+                    <td class="price"><?php if (isset($sprice)) echo "&#8377;" . $sprice; ?> </td>
                 </tr>
             </table>
             <div class="btns">

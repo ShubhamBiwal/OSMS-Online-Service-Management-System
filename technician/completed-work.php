@@ -5,7 +5,7 @@ include "include/header-sidebar.php";
 
 $tid = $_SESSION['tech_id'];
 
-$sql  = "SELECT request_id, requester_name, requester_mobile, s_appliance, s_service, request_date, work_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' ORDER BY request_id DESC";
+$sql  = "SELECT request_id, requester_name, requester_mobile, s_appliance, s_service,s_price, request_date, work_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' ORDER BY work_date DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
@@ -59,6 +59,11 @@ if ($rows == 0) {
             box-shadow: .1rem .2rem .5rem rgb(0, 0, 0, 0.2);
             margin: 1rem;
 
+        }
+
+        .price {
+            color: red;
+            font-weight: bold;
         }
 
         .pspan {
@@ -119,7 +124,7 @@ if ($rows == 0) {
                     </tr>
                     <tr>
                         <th>Service Info:</th>
-                        <td><?php echo ucwords($result['s_appliance']). " (" . $result['s_service'] . ")"; ?></td>
+                        <td><?php echo ucwords($result['s_appliance']) . " (" . $result['s_service'] . ")"; ?></td>
                     </tr>
                     <tr>
                         <th>Name:</th>
@@ -137,6 +142,10 @@ if ($rows == 0) {
                     <tr>
                         <th>Work Date:</th>
                         <td><?php echo $result['work_date']; ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Payment:</th>
+                        <td class="price"><?php echo "&#8377;" . $result['s_price']; ?> </td>
                     </tr>
 
                 </table>

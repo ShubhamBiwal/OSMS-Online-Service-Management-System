@@ -10,7 +10,7 @@ $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
 //cpending
-$sql1  = "SELECT request_id,s_appliance, s_service, requester_name, requester_mobile, request_date, assign_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '2' ORDER BY request_id DESC";
+$sql1  = "SELECT request_id,s_appliance, s_service, requester_name, requester_mobile, request_date, s_price, assign_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '2' ORDER BY assign_date";
 $run1 = mysqli_query($conn, $sql1);
 $rows1 = mysqli_num_rows($run1);
 
@@ -36,7 +36,7 @@ if ($rows1 == 0) {
 
         th {
             text-align: left;
-            border-bottom: .15rem solid rgb(0, 0, 0, 0.2);
+            border-top: .15rem solid rgb(0, 0, 0, 0.2);
             padding: 1rem;
             font-size: 1.5rem;
             width: 30%;
@@ -44,12 +44,13 @@ if ($rows1 == 0) {
         }
 
         td {
-            border-bottom: .15rem solid rgb(0, 0, 0, 0.2);
+            border-top: .15rem solid rgb(0, 0, 0, 0.2);
             padding: 1rem;
             width: 70%;
             font-size: 1.5rem;
         }
-        .sinfo{
+
+        .sinfo {
             color: var(--blue);
             font-weight: 550;
         }
@@ -58,6 +59,12 @@ if ($rows1 == 0) {
             display: flex;
             align-items: center;
         }
+
+        .price {
+            color: red;
+            font-weight: bold;
+        }
+
 
         form {
             padding: 1.5rem 5rem 1rem 1rem;
@@ -165,7 +172,7 @@ if ($rows1 == 0) {
                     </tr>
                     <tr>
                         <th>Service Info:</th>
-                        <td class="sinfo"><?php echo ucwords($result1['s_appliance']). " (" . $result1['s_service'] . ")"; ?></td>
+                        <td class="sinfo"><?php echo ucwords($result1['s_appliance']) . " (" . ucwords($result1['s_service']) . ")"; ?></td>
                     </tr>
 
                     <tr>
@@ -180,10 +187,13 @@ if ($rows1 == 0) {
                         <th>Request Date:</th>
                         <td><?php echo $result1['request_date']; ?> </td>
                     </tr>
-
                     <tr>
                         <th>Assigned Date:</th>
                         <td><b><?php echo $result1['assign_date']; ?><b> </td>
+                    </tr>
+                    <tr>
+                        <th>Cost (in Rs):</th>
+                        <td class="price"><?php echo "&#8377;" . $result1['s_price']; ?> </td>
                     </tr>
 
                 </table>
