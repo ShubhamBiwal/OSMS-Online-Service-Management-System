@@ -6,43 +6,38 @@ include "include/header-sidebar.php";
 //show profile data
 $uEmail = $_SESSION['is_login'];
 $uid = $_SESSION['u_id'];
-
-
-$sql  = "SELECT * FROM user_login WHERE u_email = '$uEmail'";
+$sql  = "SELECT * FROM user_login WHERE u_id = '$uid'";
 $run = mysqli_query($conn, $sql);
 if ($result = mysqli_fetch_array($run)) {
    $uname = $result['u_name'];
-   $uadd1 = $result['u_add1'];
-   $uadd2 = $result['u_add2'];
-   $ucity = $result['u_city'];
-   $ustate = $result['u_state'];
-   $uzip = $result['u_zip'];
    $umobile = $result['u_mobile'];
 }
+//show service info
+$sqls = "SELECT DISTINCT(appliance_name) FROM services_tb ORDER BY appliance_name";
+$runs = mysqli_query($conn, $sqls);
 
 //insert data
 if (isset($_POST['submitbtn'])) {
-   $rinfo = $_POST['rinfo'];
+   $sa = strtolower($_POST['sa']);
+   $ss = strtolower($_POST['ss']);
    $rdesc = $_POST['rdesc'];
-   $rname = $_POST['rname'];
+   $rstate = $_POST['rstate'];
+   $rcity = $_POST['rcity'];
    $raddress1 = $_POST['raddress1'];
    $raddress2 = $_POST['raddress2'];
-   $rcity = $_POST['rcity'];
-   $rstate = $_POST['rstate'];
-   $rzip = $_POST['rzip'];
-   $remail = $_POST['remail'];
    $rmobile = $_POST['rmobile'];
+   $ramobile = $_POST['ramobile'];
    $rdate = date('Y-m-d');
 
-   if ($rinfo == "" || $rdesc == "" || $rname == "" || $raddress1 == "" || $raddress2 == "" || $rcity == "" || $rstate == "" || $rzip == "" || $remail == "" || $rmobile == "" || $rdate == "") {
+   if ($sa == "" || $ss == "" || $rdesc == "" || $rstate == "" || $rcity == "" || $raddress1 == "" || $raddress2 == "" || $rmobile == "") {
       echo '<script>alert("All Fields Are Required!");</script>';
    } else {
       //request code
       $r_code = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 10);
-      $sql = "INSERT INTO requests_tb(u_id, request_info, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_zip, requester_email, requester_mobile, request_date, request_code, r_status) VALUES ('$uid','$rinfo','$rdesc','$rname','$raddress1','$raddress2','$rcity','$rstate','$rzip','$remail','$rmobile','$rdate','$r_code', 1)";
+      $sql = "INSERT INTO requests_tb(u_id, s_appliance, s_service, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_email, requester_mobile, requester_alt_mobile, request_date, request_code, r_status) VALUES('$uid','$sa', '$ss', '$rdesc','$uname','$raddress1','$raddress2','$rcity','$rstate','$uEmail','$rmobile','$ramobile','$rdate','$r_code', '1')";
       $run = mysqli_query($conn, $sql);
       if ($run) {
-         // $genid = mysqli_insert_id($conn);
+         // $genid = mysqli_insert_id($conn)
          echo '<script>alert("Request Submitted Successfully.");</script>';
          // $_SESSION['myid'] = $genid;
          echo '<script>location.href = "my-requests.php";</script>';
@@ -51,11 +46,6 @@ if (isset($_POST['submitbtn'])) {
       }
    }
 }
-
-
-
-
-
 
 ?>
 
@@ -72,6 +62,10 @@ if (isset($_POST['submitbtn'])) {
    <!-- external stylesheet -->
    <link rel="stylesheet" href="../css/user-style.css">
    <style>
+      input::-webkit-inner-spin-button {
+         display: none;
+      }
+
       .container {
          padding: 1.6rem;
          box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.4);
@@ -79,47 +73,49 @@ if (isset($_POST['submitbtn'])) {
       }
 
       label {
-         font-size: 1.5rem;
+         font-size: 1.7rem;
          color: var(--black);
       }
 
       input[type="text"],
-      input[type="date"],
       input[type="number"] {
+         text-transform: capitalize;
          width: 100%;
          padding: 1rem;
          margin: 1.5rem 0;
          background: #f8f8ff;
          border: .1rem solid rgba(0, 0, 0, 0.05);
+         font-size: 1.4rem;
 
       }
 
       input[type="text"]:focus,
-      input[type="number"]:focus {
+      input[type="number"]:focus,
+      .container .selectbox:focus {
          outline: .1rem solid rgba(0, 0, 0, 0.4);
 
       }
 
-      .address,
-      .address2,
-      .address3 {
+      .input-container {
          display: flex;
          flex-direction: row;
-         gap: 2rem;
+         column-gap: 2rem;
       }
 
       .inputbox {
          width: 50%;
       }
 
-      .inputbox2 {
-         width: 33%;
+      .container .selectbox {
+         text-transform: capitalize;
+         font-size: 1.5rem;
+         width: 100%;
+         margin: 1.5rem 0;
+         padding: 1rem;
+         background: #f8f8ff;
+         border: .1rem solid rgba(0, 0, 0, 0.05);
+         cursor: pointer;
       }
-
-      input::-webkit-inner-spin-button {
-         display: none;
-      }
-
 
       .submitbtn {
          background-color: var(--blue);
@@ -160,16 +156,20 @@ if (isset($_POST['submitbtn'])) {
          opacity: 1;
       }
 
-      @media (max-width: 750px) {
+      .required::after {
+         content: " *";
+         color: red;
+         font-weight: bolder;
+      }
 
-         .address,
-         .address2,
-         .address3 {
+      @media (max-width:750px) {
+
+         .input-container {
             flex-direction: column;
+            column-gap: 0;
          }
 
-         .inputbox,
-         .inputbox2 {
+         .inputbox {
             width: 100%;
          }
 
@@ -185,48 +185,62 @@ if (isset($_POST['submitbtn'])) {
    <div class="content">
       <div class="container">
          <form action="" method="post">
-            <label for="rinfo"><b>Request Info</b></label>
-            <input type="text" name="rinfo" id="rinfo" placeholder="Enter Issue" required>
-            <label for="rdesc"><b>Discription</b></label>
+            <label for="sinfo" class="required"><b>Service Info</b></label>
+            <div class="input-container">
+               <div class="inputbox">
+                  <select name="sa" id="sa" class="selectbox" required>
+                     <option value="">Select Appliance</option>
+                     <?php while ($results = mysqli_fetch_array($runs)) { ?>
+                        <option value="<?php echo $results['appliance_name']; ?>"><?php echo $results['appliance_name']; ?></option>
+                     <?php } ?>
+                  </select>
+               </div>
+               <div class="inputbox">
+                  <select name="ss" id="ss" class="selectbox" required>
+                     <option value="">Select Service</option>
+                     <option value="Installation">Installation</option>
+                     <option value="Maintenance">Maintenance</option>
+                     <option value="Fault Repair">Fault Repair</option>
+                  </select>
+               </div>
+            </div>
+
+            <label for="rdesc" class="required"><b>Discription</b></label>
             <input type="text" name="rdesc" id="rdesc" placeholder="Write Discription" required>
-            <label for="rname"><b>Name</b></label>
-            <input type="text" name="rname" id="rname" value="<?php echo $uname; ?>" required>
 
-            <div class="address">
+            <div class="input-container">
                <div class="inputbox">
-                  <label for="raddress1"><b>Address Line 1</b></label>
-                  <input type="text" name="raddress1" id="raddress1" placeholder="House No. / Street" value="<?php echo $uadd1; ?>" required>
+                  <label for="rstate" class="required"><b>State</b></label>
+                  <select name="rstate" id="" class="selectbox" required>
+                     <option value="Rajasthan">Rajasthan</option>
+                  </select>
                </div>
                <div class="inputbox">
-                  <label for="raddress2"><b>Address Line 2</b></label>
-                  <input type="text" name="raddress2" id="raddress2" placeholder="Area / Villege" value="<?php echo $uadd2; ?>" required>
+                  <label for="rcity" class="required"><b>City</b></label>
+                  <select name="rcity" id="" class="selectbox" required>
+                     <option value="Pilani">Pilani</option>
+                  </select>
+               </div>
+            </div>
+            <div class="input-container">
+               <div class="inputbox">
+                  <label for="raddress1" class="required"><b>Address Line 1</b></label>
+                  <input type="text" name="raddress1" id="raddress1" placeholder="House No. / Street" value="" required>
+               </div>
+               <div class="inputbox">
+                  <label for="raddress2" class="required"><b>Address Line 2</b></label>
+                  <input type="text" name="raddress2" id="raddress2" placeholder="Landmark / Area" value="" required>
                </div>
             </div>
 
-            <div class="address2">
-               <div class="inputbox2">
-                  <label for="rcity"><b>City</b></label>
-                  <input type="text" name="rcity" id="rcity" value="<?php echo $ucity; ?>" required>
-               </div>
-               <div class="inputbox2">
-                  <label for="rstate"><b>State</b></label>
-                  <input type="text" name="rstate" id="rstate" value="<?php echo $ustate; ?>" required>
-               </div>
-
-               <div class="inputbox2">
-                  <label for="rzip"><b>Zip</b></label>
-                  <input type="number" name="rzip" id="rzip" value="<?php echo $uzip; ?>" required>
-               </div>
-            </div>
-            <div class="address3">
+            <div class="input-container">
                <div class="inputbox">
-                  <label for="remail"><b>Email</b></label>
-                  <input type="text" name="remail" id="remail" value="<?php echo $uEmail ?>" required>
+                  <label for="rmobile" class="required"><b>Mobile No.</b></label>
+                  <input type="number" name="rmobile" id="rmobile" value="<?php echo $umobile; ?>" placeholder="Enter Mobile Number" required>
                </div>
                <div class="inputbox">
-
-                  <label for="rmobile"><b>Mobile</b></label>
-                  <input type="number" name="rmobile" id="rmobile" value="<?php echo $umobile ?>" required>
+                  <label for="ramobile"><b>Alternate Contact</b></label>
+                  <input type="number" name="ramobile" id="ramobile" value="" placeholder="Alternate Mobile Number">
                </div>
 
             </div>

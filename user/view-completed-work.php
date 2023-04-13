@@ -2,28 +2,32 @@
 include "../connection.php";
 include "include/header-sidebar.php";
 
+echo '<style>.details{display:none;}</style>';
+
 if (isset($_POST['view-btn'])) {
     $cwid = $_POST['cwid'];
     $sql = "SELECT * FROM requests_tb WHERE request_id = '$cwid' AND r_status = '3'";
     $run = mysqli_query($conn, $sql);
     if ($result =  mysqli_fetch_array($run)) {
+        echo '<style>.details{display:block;}</style>';
+
         $rid = $result['request_id'];
-        $rinfo = $result['request_info'];
+        $rappliance = ucwords($result['s_appliance']);
+        $rservice = $result['s_service'];
         $rdesc = $result['request_desc'];
-        $rname = $result['requester_name'];
+        $rname =   ucwords($result['requester_name']);
         $radd1 = $result['requester_add1'];
         $radd2 = $result['requester_add2'];
         $rcity = $result['requester_city'];
         $rstate = $result['requester_state'];
-        $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
+        $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
         $radate = $result['assign_date'];
         $wdate = $result['work_date'];
-        $ratech = $result['assign_tech'];
+        $ratech = ucwords($result['assign_tech']);
         $techmobile = $result['tech_mobile'];
-        $techemail = $result['tech_email'];
     }
 }
 
@@ -67,7 +71,7 @@ if (isset($_POST['view-btn'])) {
         tr,
         td {
             border: .1rem solid rgba(0, 0, 0, 0.2);
-            padding:1rem;
+            padding: 1rem;
         }
 
         .printbtn {
@@ -172,10 +176,8 @@ if (isset($_POST['view-btn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Request Info</td>
-                    <td>
-                        <?php if (isset($rinfo)) echo $rinfo; ?>
-                    </td>
+                    <td>Service Info</td>
+                    <td class="sinfo"><?php if (isset($rappliance) && $rservice)  echo $rappliance . " (" . $rservice . ")"; ?></td>
                 </tr>
                 <tr>
                     <td>Request Description</td>
@@ -214,12 +216,6 @@ if (isset($_POST['view-btn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Pin Code</td>
-                    <td>
-                        <?php if (isset($rzip)) echo $rzip; ?>
-                    </td>
-                </tr>
-                <tr>
                     <td>Email</td>
                     <td>
                         <?php if (isset($remail)) echo $remail; ?>
@@ -229,6 +225,12 @@ if (isset($_POST['view-btn'])) {
                     <td>Mobile</td>
                     <td>
                         <?php if (isset($rmobile)) echo $rmobile; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alternate Mobile</td>
+                    <td>
+                        <?php if (isset($raltmobile)) echo $raltmobile; ?>
                     </td>
                 </tr>
                 <tr>
@@ -253,12 +255,6 @@ if (isset($_POST['view-btn'])) {
                     <td><b>Technician Name<b></td>
                     <td>
                         <b><?php if (isset($ratech)) echo $ratech; ?></b>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Technician Email</b></td>
-                    <td>
-                        <b><?php if (isset($techemail)) echo $techemail; ?></b>
                     </td>
                 </tr>
                 <tr>

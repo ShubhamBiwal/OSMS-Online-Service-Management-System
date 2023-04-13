@@ -3,11 +3,11 @@ $page = "workorder";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM requests_tb WHERE r_status = '3' ORDER BY request_id DESC";
+$sql = "SELECT * FROM requests_tb WHERE r_status = '2' ORDER BY request_date, assign_date ";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if ($rows == 0) {
-    $msg = "No Result Found";
+    $msg = "No Pending Work";
 } else {
     echo '<style>#msg{display:none;}</style>';
 }
@@ -61,6 +61,10 @@ if (isset($_POST['delete-btn'])) {
             padding: 1rem;
 
         }
+        td span{
+            color: red;
+            font-style: italic;
+        }
 
         .table-data {
             overflow-x: scroll;
@@ -91,8 +95,24 @@ if (isset($_POST['delete-btn'])) {
 
         }
 
+        .confirm-btn {
+            background: green;
+            color: white;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: .5rem;
+            font-size: 1.5rem;
+            opacity: .8;
+
+        }
+
         .delete-btn:hover {
             background: #333;
+        }
+
+        .confirm-btn:hover {
+            opacity: 1;
+            scale: 1.02;
         }
 
         .view-btn:hover {
@@ -119,13 +139,15 @@ if (isset($_POST['delete-btn'])) {
                     <tr>
                         <th>S No</th>
                         <th>Req ID</th>
-                        <th>Request info</th>
+                        <th>Service info</th>
                         <th>Name</th>
                         <th>Address</th>
-                        <th>City</th>
                         <th>Mobile</th>
                         <th>Technician</th>
-                        <th>Work Date</th>
+                        <th>Tech Mobile</th>
+                        <th>Request Date</th>
+                        <th>Assign Date</th>
+                        <th>Payment</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -143,25 +165,31 @@ if (isset($_POST['delete-btn'])) {
                                 <b> <?php echo $result['request_id']; ?></b>
                             </td>
                             <td>
-                                <?php echo $result['request_info']; ?>
+                                <?php echo ucwords($result['s_appliance']) . " (" . $result['s_service'] . ")"; ?>
                             </td>
                             <td>
-                                <?php echo $result['requester_name']; ?>
+                                <?php echo ucwords($result['requester_name']); ?>
                             </td>
                             <td>
-                                <?php echo $result['requester_add2']; ?>
-                            </td>
-                            <td>
-                                <?php echo $result['requester_city']; ?>
+                                <?php echo $result['requester_add1']; ?>
                             </td>
                             <td>
                                 <?php echo $result['requester_mobile']; ?>
                             </td>
                             <td>
-                                <?php echo $result['assign_tech']; ?>
+                                <?php echo ucwords($result['assign_tech']); ?>
                             </td>
                             <td>
-                                <?php echo $result['work_date']; ?>
+                                <?php echo $result['tech_mobile']; ?>
+                            </td>
+                            <td>
+                                <?php echo $result['request_date']; ?>
+                            </td>
+                            <td>
+                                <?php echo $result['assign_date']; ?>
+                            </td>
+                            <td>
+                                <span>Pending</span>
                             </td>
                             <td>
                                 <div class="form-btn">
@@ -172,6 +200,10 @@ if (isset($_POST['delete-btn'])) {
                                     <form action="" method="post">
                                         <input type="hidden" name="rid" value="<?php echo $result['request_id']; ?>">
                                         <button type="submit" name="delete-btn" class="delete-btn" Onclick="return ConfirmDelete();"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                    <form action="" method="post">
+                                        <input type="hidden" name="rid" value="<?php echo $result['request_id']; ?>">
+                                        <button type="submit" name="confirm-btn" class="confirm-btn" Onclick="ConfirmPayment()"><i class="fa-solid fa-check"></i></button>
                                     </form>
                                 </div>
                             </td>
@@ -188,5 +220,9 @@ if (isset($_POST['delete-btn'])) {
 <script>
     function ConfirmDelete() {
         return confirm("Are You Sure to Delete this?");
+    }
+
+    function ConfirmPayment() {
+        return confirm("Payment Received?");
     }
 </script>

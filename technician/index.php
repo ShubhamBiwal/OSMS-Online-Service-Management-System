@@ -49,17 +49,16 @@ if (isset($_POST['tLogin'])) {
     $sql = "SELECT tech_id, tech_email, tech_password FROM technician_tb WHERE tech_email = '$tEmail' AND tech_password = '$tPassword' ";
     $run = mysqli_query($conn, $sql);
     $result = mysqli_fetch_array($run);
-    $tid = $result['tech_id'];
     if ($row  = mysqli_num_rows($run) == 1) {
+        $tid = $result['tech_id'];
         $_SESSION['is_techlogin'] = $tEmail;
         $_SESSION['tech_id'] = $tid;
-        echo "<script> location.href='requests.php';</script>";
+        echo "<script> location.href='pending-work.php';</script>";
         exit;
     } else {
         echo '<script>alert("Login Failed: Invalid Email or Password.");</script>';
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -403,7 +402,7 @@ if (isset($_POST['tLogin'])) {
                                 <input type="submit" value="Login" name="tLogin">
                             </div>
                             <div class="links">
-                                <span>Don't have an account? <button onclick="open_register_modal()">Register Here</button></span>
+                                <!-- <span>Don't have an account? <button onclick="open_register_modal()">Register Here</button></span> -->
                                 <a href="password-reset.php">Forgot Password?</a>
                             </div>
                         </div>

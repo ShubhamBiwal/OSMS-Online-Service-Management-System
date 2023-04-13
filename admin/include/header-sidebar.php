@@ -66,17 +66,27 @@ $aname = $result['a_name'];
                 </a>
             </li>
             <li>
+                <a href="requests.php" class="<?php if ($page == "requests") echo 'nav-active'; ?>">
+                    <span class="icon"><i class="fa-solid fa-align-center"></i></span>
+                    <span class="item">Requests</span>
+                </a>
+            </li>
+            <li>
                 <a href="work-order.php" class="<?php if ($page == "workorder") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-brands fa-accessible-icon"></i></span>
                     <span class="item">Work Order</span>
                 </a>
             </li>
-
-
             <li>
                 <a href="assets.php" class="<?php if ($page == "assets") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
                     <span class="item">Assets</span>
+                </a>
+            </li>
+            <li>
+                <a href="services.php" class="<?php if ($page == "services") echo 'nav-active'; ?>">
+                    <span class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></span>
+                    <span class="item">Services</span>
                 </a>
             </li>
             <li>

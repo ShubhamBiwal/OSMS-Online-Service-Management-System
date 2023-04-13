@@ -64,16 +64,6 @@ $tname = $result['tech_name'];
                     <span class="item">Profile</span>
                 </a>
             </li>
-
-
-            <li>
-                <a href="requests.php" class="<?php if ($page == "requests") echo 'nav-active'; ?>">
-                    <span class="icon"><i class="fa-solid fa-align-center"></i></span>
-                    <span class="item">Requests</span>
-                </a>
-            </li>
-
-
             <li>
                 <a href="pending-work.php" class="<?php if ($page == "pending-work") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-hourglass-half"></i></span>

@@ -3,6 +3,10 @@ include "../connection.php";
 session_start();
 echo '<style>#passbox{display:none;}</style>';
 echo '<style>#otpbox{display:none;}</style>';
+
+
+
+
 //send mail function
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -79,9 +83,6 @@ if (isset($_POST['otpbtn'])) {
         echo '<script>alert("Incorrect OTP");</script>';
     }
 }
-
-
-
 
 
 //password change

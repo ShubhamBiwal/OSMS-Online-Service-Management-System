@@ -2,9 +2,40 @@
 
 include "../connection.php";
 include "include/header-sidebar.php";
+echo '<style>.details{display:none;}</style>';
+echo '<style>.cdetails{display:none;}</style>';
 
 $pwid = $_POST['pwid'];
-if (isset($pwid)) {
+//pending work details
+if (isset($_POST['viewbtn']) and $pwid) {
+    $sql = "SELECT * FROM requests_tb WHERE request_id =  '$pwid'";
+    $run = mysqli_query($conn, $sql);
+
+    if ($result = mysqli_fetch_array($run)) {
+        echo '<style>.details{display:block;}</style>';
+        $rid = $result['request_id'];
+        $rappliance = $result['s_appliance'];
+        $rservice = $result['s_service'];
+        $rdesc = $result['request_desc'];
+        $rname = $result['requester_name'];
+        $radd1 = $result['requester_add1'];
+        $radd2 = $result['requester_add2'];
+        $rcity = $result['requester_city'];
+        $rstate = $result['requester_state'];
+        $remail = $result['requester_email'];
+        $rmobile = $result['requester_mobile'];
+        $raltmobile = $result['requester_alt_mobile'];
+        $rdate = $result['request_date'];
+        $radate = $result['assign_date'];
+    } else {
+        $msg = "";
+        echo '<style>.details{display:none;}</style>';
+        echo '<style>.printbtn{display:none;}</style>';
+    }
+}
+//cancel request details
+if (isset($_POST['cvbtn']) and $pwid) {
+    echo '<style>.cdetails{display:block;}</style>';
     $sql = "SELECT * FROM requests_tb WHERE request_id =  '$pwid'";
     $run = mysqli_query($conn, $sql);
 
@@ -21,6 +52,7 @@ if (isset($pwid)) {
         $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
+        $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
         $radate = $result['assign_date'];
         $ratech = $result['assign_tech'];
@@ -31,6 +63,8 @@ if (isset($pwid)) {
         echo '<style>.printbtn{display:none;}</style>';
     }
 }
+
+//work submit
 if (isset($_POST['submitbtn'])) {
     $rid = $_POST['r_id'];
     $rcode = trim($_POST['r_code']);
@@ -42,6 +76,7 @@ if (isset($_POST['submitbtn'])) {
     $r_code = $result['request_code'];
     if ($wdate < $rdate) {
         echo '<script>alert("Enter Valid Work Date!");</script>';
+        echo '<script>location.href = "pending-work.php";</script>';
     } else {
         if ($rcode == $r_code) {
             $sql = "UPDATE requests_tb SET work_date = '$wdate', r_status = '3' WHERE request_id = $rid";
@@ -52,7 +87,7 @@ if (isset($_POST['submitbtn'])) {
             }
         } else {
             echo '<script>alert("Incorrect Request Code.");</script>';
-            // echo '<script>location.href = "pending-work.php";</script>';
+            echo '<script>location.href = "pending-work.php";</script>';
         }
     }
 }
@@ -67,6 +102,21 @@ if (isset($_POST['submitbtn'])) {
         }
 
         .details .heading {
+            padding: 1rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            width: 100%;
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .cdetails {
+            width: 70%;
+        }
+
+        .cdetails .heading {
             padding: 1rem 0;
             display: flex;
             justify-content: center;
@@ -247,15 +297,12 @@ if (isset($_POST['submitbtn'])) {
                             <b>
                                 <?php if (isset($rid)) echo $rid; ?>
                                 <input type="hidden" name="r_id" value="<?php if (isset($rid)) echo $rid; ?>">
-                                <input type="hidden" name="r_id" value="<?php if (isset($rid)) echo $rid; ?>">
                             </b>
                         </td>
                     </tr>
                     <tr>
-                        <td>Request Info</td>
-                        <td>
-                            <?php if (isset($rinfo)) echo $rinfo; ?>
-                        </td>
+                        <td>Service Info</td>
+                        <td class="sinfo"><?php if(isset($rappliance)&& $rservice)  echo ucwords($rappliance) . " (" . $rservice . ")"; ?></td>
                     </tr>
                     <tr>
                         <td>Request Description</td>
@@ -266,7 +313,7 @@ if (isset($_POST['submitbtn'])) {
                     <tr>
                         <td>Name</td>
                         <td>
-                            <?php if (isset($rname)) echo $rname; ?>
+                            <?php if (isset($rname)) echo ucwords($rname); ?>
                         </td>
                     </tr>
                     <tr>
@@ -294,12 +341,6 @@ if (isset($_POST['submitbtn'])) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Pin Code</td>
-                        <td>
-                            <?php if (isset($rzip)) echo $rzip; ?>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Email</td>
                         <td>
                             <?php if (isset($remail)) echo $remail; ?>
@@ -309,6 +350,12 @@ if (isset($_POST['submitbtn'])) {
                         <td>Mobile No.</td>
                         <td>
                             <?php if (isset($rmobile)) echo $rmobile; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alternate Mobile No.</td>
+                        <td>
+                            <?php if (isset($raltmobile)) echo $raltmobile; ?>
                         </td>
                     </tr>
                     <tr>
@@ -345,6 +392,104 @@ if (isset($_POST['submitbtn'])) {
                 </div>
             </div>
         </form>
+
+
+        <!-- cancel request details -->
+        <div class="cdetails">
+            <div class="heading">
+                <h3>Cancelled Request Details</h3>
+            </div>
+            <table>
+                <tr>
+                    <td><b>Request ID<b></td>
+                    <td>
+                        <b>
+                            <?php if (isset($rid)) echo $rid; ?>
+                            <input type="hidden" name="r_id" value="<?php if (isset($rid)) echo $rid; ?>">
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Request Info</td>
+                    <td>
+                        <?php if (isset($rinfo)) echo $rinfo; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Request Description</td>
+                    <td>
+                        <?php if (isset($rdesc)) echo $rdesc; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        <?php if (isset($rname)) echo $rname; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address Line 1</td>
+                    <td>
+                        <?php if (isset($radd1)) echo $radd1; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address Line 2</td>
+                    <td>
+                        <?php if (isset($radd2)) echo $radd2; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>
+                        <?php if (isset($rcity)) echo $rcity; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>
+                        <?php if (isset($rstate)) echo $rstate; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pin Code</td>
+                    <td>
+                        <?php if (isset($rzip)) echo $rzip; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>
+                        <?php if (isset($remail)) echo $remail; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Mobile No.</td>
+                    <td>
+                        <?php if (isset($rmobile)) echo $rmobile; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Request Date</b></td>
+                    <td>
+                        <b> <?php if (isset($rdate)) echo $rdate; ?></b>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Assigned Date<b></td>
+                    <td>
+                        <b>
+                            <?php if (isset($radate)) echo $radate; ?>
+                        </b>
+                    </td>
+                </tr>
+
+            </table>
+            <div class="btns">
+                <button type="submit" class="closebtn" name="closebtn" onclick="location.href ='pending-work.php';">Close</button>
+            </div>
+        </div>
+
         <button type="submit" class="printbtn" name="printbtn" onclick="window.print()"><i class="fa-solid fa-print"></i></button>
         <?php if (isset($msg)) echo '<div id="msg">Error: Unable to Show Data.</div>'; ?>
     </div>

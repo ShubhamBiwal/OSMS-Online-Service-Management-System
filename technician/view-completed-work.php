@@ -8,19 +8,19 @@ if (isset($_POST['viewbtn'])) {
     $run = mysqli_query($conn, $sql);
     if ($result =  mysqli_fetch_array($run)) {
         $rid = $result['request_id'];
-        $rinfo = $result['request_info'];
+        $rappliance = $result['s_appliance'];
+        $rservice = $result['s_service'];
         $rdesc = $result['request_desc'];
         $rname = $result['requester_name'];
         $radd1 = $result['requester_add1'];
         $radd2 = $result['requester_add2'];
         $rcity = $result['requester_city'];
         $rstate = $result['requester_state'];
-        $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
+        $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
         $radate = $result['assign_date'];
-        $ratech = $result['assign_tech'];
         $wdate = $result['work_date'];
     }
 }
@@ -162,10 +162,8 @@ if (isset($_POST['viewbtn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Request Info</td>
-                    <td>
-                        <?php if (isset($rinfo)) echo $rinfo; ?>
-                    </td>
+                    <td>Service Info</td>
+                    <td class="sinfo"><?php if (isset($rappliance) && $rservice)  echo ucwords($rappliance) . " (" . $rservice . ")"; ?></td>
                 </tr>
                 <tr>
                     <td>Request Description</td>
@@ -176,7 +174,7 @@ if (isset($_POST['viewbtn'])) {
                 <tr>
                     <td>Name</td>
                     <td>
-                        <?php if (isset($rname)) echo $rname; ?>
+                        <?php if (isset($rname)) echo ucwords($rname); ?>
                     </td>
                 </tr>
                 <tr>
@@ -203,12 +201,7 @@ if (isset($_POST['viewbtn'])) {
                         <?php if (isset($rstate)) echo $rstate; ?>
                     </td>
                 </tr>
-                <tr>
-                    <td>Pin Code</td>
-                    <td>
-                        <?php if (isset($rzip)) echo $rzip; ?>
-                    </td>
-                </tr>
+
                 <tr>
                     <td>Email</td>
                     <td>
@@ -219,6 +212,12 @@ if (isset($_POST['viewbtn'])) {
                     <td>Mobile</td>
                     <td>
                         <?php if (isset($rmobile)) echo $rmobile; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alternate Mobile</td>
+                    <td>
+                        <?php if (isset($raltmobile)) echo $raltmobile; ?>
                     </td>
                 </tr>
                 <tr>
@@ -239,7 +238,7 @@ if (isset($_POST['viewbtn'])) {
                         <?php if (isset($wdate)) echo $wdate; ?>
                     </td>
                 </tr>
-                
+
             </table>
             <div class="btns">
                 <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>

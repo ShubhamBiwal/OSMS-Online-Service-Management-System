@@ -4,27 +4,28 @@ include "../connection.php";
 include "include/header-sidebar.php";
 echo '<style>.details{display:none;}</style>';
 $csid = $_POST['csid'];
-if (isset($csid)) {
-    echo '<style>.details{display:block;}</style>';
-    $sql = "SELECT * FROM requests_tb WHERE request_id =  '$csid' AND r_status = '2' ";
+if (isset($_POST['viewbtn']) and $csid) {
+
+    $sql = "SELECT * FROM requests_tb WHERE request_id = '$csid' AND r_status = '2' ";
     $run = mysqli_query($conn, $sql);
 
     if ($result = mysqli_fetch_array($run)) {
-
+        echo '<style>.details{display:block;}</style>';
         $rid = $result['request_id'];
-        $rinfo = $result['request_info'];
+        $rappliance = $result['s_appliance'];
+        $rservice = $result['s_service'];
         $rdesc = $result['request_desc'];
         $rname = $result['requester_name'];
         $radd1 = $result['requester_add1'];
         $radd2 = $result['requester_add2'];
         $rcity = $result['requester_city'];
         $rstate = $result['requester_state'];
-        $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
+        $raltmobile = $result['requester_alt_mobile'];
         $rdate = $result['request_date'];
-        $radate = $result['assign_date'];
         $rcode = $result['request_code'];
+        $radate = $result['assign_date'];
         $ratech = $result['assign_tech'];
         $techmobile = $result['tech_mobile'];
     } else {
@@ -32,7 +33,25 @@ if (isset($csid)) {
         echo '<script>location.href="my-requests.php";</script>';
     }
 }
+//cancel request
+if (isset($_POST['cancelbtn']) and $csid) {
+    $sql = "UPDATE requests_tb SET r_status = '0' WHERE request_id = '$csid'";
+    $run = mysqli_query($conn, $sql);
+    if ($run) {
+        echo '<script>alert("Request Cancelled.")</script>';
+        echo '<script>location.href="my-requests.php";</script>';
+    }
+}
+// //assigned cancel request
+// if (isset($_POST['acancelbtn']) and $csid) {
 
+//     $sql = "UPDATE requests_tb SET r_status = '0' WHERE request_id = '$csid'";
+//     $run = mysqli_query($conn, $sql);
+//     if ($run) {
+//         echo '<script>alert("Request Cancelled.")</script>';
+//         echo '<script>location.href="my-requests.php";</script>';
+//     }
+// }
 
 ?>
 
@@ -64,15 +83,7 @@ if (isset($csid)) {
             color: #fff;
         }
 
-        #msg {
-            padding: 1rem;
-            background: #e2effa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50%;
-            font-size: 1.6rem;
-        }
+
 
         table {
             width: 100%;
@@ -136,17 +147,11 @@ if (isset($csid)) {
                 width: 100%;
             }
 
-            #msg {
-                width: 100%;
-            }
+
         }
 
         @media(max-width:750px) {
             .details .heading {
-                width: 100%;
-            }
-
-            #msg {
                 width: 100%;
             }
 
@@ -202,10 +207,8 @@ if (isset($csid)) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Request Info</td>
-                    <td>
-                        <?php if (isset($rinfo)) echo $rinfo; ?>
-                    </td>
+                    <td>Service Info</td>
+                    <td><?php if (isset($rappliance) && $rservice)  echo ucwords($result['s_appliance']) . " (" . $result['s_service'] . ")"; ?></td>
                 </tr>
                 <tr>
                     <td>Request Description</td>
@@ -216,7 +219,7 @@ if (isset($csid)) {
                 <tr>
                     <td>Name</td>
                     <td>
-                        <?php if (isset($rname)) echo $rname; ?>
+                        <?php if (isset($rname)) echo ucwords($rname); ?>
                     </td>
                 </tr>
                 <tr>
@@ -244,12 +247,6 @@ if (isset($csid)) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Pin Code</td>
-                    <td>
-                        <?php if (isset($rzip)) echo $rzip; ?>
-                    </td>
-                </tr>
-                <tr>
                     <td>Email</td>
                     <td>
                         <?php if (isset($remail)) echo $remail; ?>
@@ -259,6 +256,12 @@ if (isset($csid)) {
                     <td>Mobile</td>
                     <td>
                         <?php if (isset($rmobile)) echo $rmobile; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alternate Mobile No</td>
+                    <td>
+                        <?php if (isset($raltmobile)) echo $raltmobile; ?>
                     </td>
                 </tr>
                 <tr>
@@ -282,7 +285,7 @@ if (isset($csid)) {
                 <tr>
                     <td><b>Technician Name<b></td>
                     <td>
-                        <b><?php if (isset($ratech)) echo $ratech; ?></b>
+                        <b><?php if (isset($ratech)) echo ucwords($ratech); ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -298,7 +301,6 @@ if (isset($csid)) {
             </div>
         </div>
 
-        <?php if (isset($msg)) echo '<div id="msg">Your Request is Still Pending...</div>'; ?>
     </div>
 
 

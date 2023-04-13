@@ -43,7 +43,6 @@ if (isset($_POST['uSignup'])) {
         }
     }
 }
-
 //login
 if (isset($_POST['uLogin'])) {
     $uEmail = strtolower(trim($_POST['uEmail']));
@@ -52,8 +51,8 @@ if (isset($_POST['uLogin'])) {
     $sql = "SELECT u_id, u_email, u_password FROM user_login WHERE u_email = '$uEmail' AND u_password = '$uPassword' ";
     $run = mysqli_query($conn, $sql);
     $result = mysqli_fetch_array($run);
-    $uid = $result['u_id'];
     if ($row  = mysqli_num_rows($run) == 1) {
+        $uid = $result['u_id'];
         $_SESSION['is_login'] = $uEmail;
         $_SESSION['u_id'] = $uid;
         echo "<script> location.href='user/';</script>";
@@ -64,13 +63,11 @@ if (isset($_POST['uLogin'])) {
 }
 
 //total requests completed
-$sql1 = "SELECT max(c_id) FROM completed_work";
+$sql1 = "SELECT r_status FROM requests_tb WHERE r_status = '3'";
 $run1 = mysqli_query($conn, $sql1);
-$row1 = mysqli_fetch_row($run1);
-$total_completed_work = $row1[0];
-if($total_completed_work==0){
-    $total_completed_work =0;
-}
+$row1 = mysqli_num_rows($run1);
+$total_completed_work = $row1;
+
 //total users
 $sql2 = "SELECT * FROM user_login";
 $run2 = mysqli_query($conn, $sql2);
@@ -81,10 +78,6 @@ $sql3 = "SELECT * FROM technician_tb";
 $run3 = mysqli_query($conn, $sql3);
 $row3 = mysqli_num_rows($run3);
 $total_technicians = $row3;
-
-
-
-
 ?>
 
 
@@ -96,7 +89,7 @@ $total_technicians = $row3;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#2597f4">
-    <title>OSMS | Online Service Maintenance System</title>
+    <title>OSMS | Online Service Management System</title>
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -114,9 +107,8 @@ $total_technicians = $row3;
     <header class="header">
 
         <nav class="navbar">
-
             <a href="/osms" class="logo"> <i class="fas fa-tools"></i> OSMS </a>
-
+            <span class="location"><i class="fa-solid fa-location-dot"></i> Pilani</span>
             <div class="links">
                 <a href="index.php">home</a>
                 <a href="#AboutUs">about</a>
@@ -145,6 +137,7 @@ $total_technicians = $row3;
         </div>
 
         <div class="content">
+            <div class="location2"><i class="fa-solid fa-location-dot"></i><span> Pilani</span></div>
             <h3>Why fix it yourself? Leave it to the pros!</h3>
             <p>Your city’s best electronic appliances service provider. Bringing your home appliances back to your life.
             </p>

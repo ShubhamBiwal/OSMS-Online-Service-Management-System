@@ -89,6 +89,37 @@ section {
 .header .navbar .logo i {
   color: var(--blue);
 }
+.location {
+  background: #fff;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--blue);
+  border-radius: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  user-select: none;
+  margin-left: -15%;
+}
+.location2 {
+  display: flex;
+  padding: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  color: var(--blue);
+}
+.location2 span {
+  font-weight: bolder;
+  font-size: 2.5rem;
+  color: var(--blue);
+  padding: 0.3rem .7rem;
+  letter-spacing: 0.1rem;
+  user-select: none;
+  border-bottom: 0.5rem solid var(--blue);
+  border-radius: 0.5rem;
+}
+.location2 i {
+  font-size: 5rem;
+}
 .header .navbar .links a {
   margin-left: 3rem;
   font-size: 1.8rem;
@@ -379,7 +410,7 @@ section {
   color: var(--black);
   padding: 1rem 0;
 }
-.footer .box-container .box button{
+.footer .box-container .box button {
   cursor: pointer;
   background: transparent;
 }
@@ -394,7 +425,6 @@ section {
   padding-right: 0.5rem;
   color: var(--blue);
   transition: 0.2s ease-in-out;
-  
 }
 .footer .box-container .box .link:hover {
   color: var(--blue);
@@ -425,7 +455,7 @@ section {
   color: #fff;
   margin-right: 0.3rem;
   text-align: center;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 .footer .box-container .box .share a:hover {
   background: var(--black);
@@ -730,7 +760,7 @@ section {
   text-decoration: none;
   color: var(--blue);
 }
-.login-modal-content .forms .form-content .text a:hover{
+.login-modal-content .forms .form-content .text a:hover {
   text-decoration: underline;
 }
 .login-modal-content .forms .form-content .text button:hover {
@@ -816,6 +846,12 @@ section {
   .header .navbar .links a:hover {
     color: var(--blue);
   }
+  .location {
+    display: block;
+  }
+  .location2 {
+    display: none;
+  }
   .fun-fact {
     padding: 5rem 2rem;
   }
@@ -833,7 +869,7 @@ section {
   .links button:hover {
     color: var(--black);
   }
-   .overlay .modal-content,
+  .overlay .modal-content,
   .overlay-login .login-modal-content {
     width: 90vw;
     height: auto;

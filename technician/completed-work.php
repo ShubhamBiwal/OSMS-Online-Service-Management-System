@@ -5,7 +5,7 @@ include "include/header-sidebar.php";
 
 $tid = $_SESSION['tech_id'];
 
-$sql  = "SELECT request_id, requester_name, requester_mobile, requester_email, request_info, work_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' ORDER BY request_id DESC";
+$sql  = "SELECT request_id, requester_name, requester_mobile, s_appliance, s_service, request_date, work_date FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
@@ -38,8 +38,12 @@ if ($rows == 0) {
             padding: 1rem;
         }
 
+        th {
+            width: 40%;
+        }
+
         td {
-            padding: 1rem;
+            width: 60%;
         }
 
         button {
@@ -113,22 +117,22 @@ if ($rows == 0) {
                         <th>Request ID:</th>
                         <td><?php echo $result['request_id']; ?></td>
                     </tr>
-
+                    <tr>
+                        <th>Service Info:</th>
+                        <td><?php echo ucwords($result['s_appliance']). " (" . $result['s_service'] . ")"; ?></td>
+                    </tr>
                     <tr>
                         <th>Name:</th>
-                        <td><?php echo $result['requester_name']; ?> </td>
+                        <td><?php echo ucwords($result['requester_name']); ?> </td>
                     </tr>
                     <tr>
                         <th>Mobile No:</th>
                         <td><?php echo $result['requester_mobile']; ?> </td>
                     </tr>
+
                     <tr>
-                        <th>Email ID:</th>
-                        <td><?php echo $result['requester_email']; ?> </td>
-                    </tr>
-                    <tr>
-                        <th>Request Info:</th>
-                        <td><?php echo $result['request_info']; ?> </td>
+                        <th>Request Date:</th>
+                        <td><?php echo $result['request_date']; ?> </td>
                     </tr>
                     <tr>
                         <th>Work Date:</th>

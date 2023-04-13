@@ -4,20 +4,25 @@ include "../connection.php";
 include "include/header-sidebar.php";
 
 $uid = $_SESSION['u_id'];
-//in submit request
+//cancelled request
+$sql  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '0' ORDER BY request_id DESC";
+$run = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($run);
+// submit request
 $sql1  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '1' ORDER BY request_id DESC";
 $run1 = mysqli_query($conn, $sql1);
 $rows1 = mysqli_num_rows($run1);
-// in assigned work
+// assigned work
 $sql2  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '2' ORDER BY request_id DESC";
 $run2 = mysqli_query($conn, $sql2);
 $rows2 = mysqli_num_rows($run2);
-//in completed work
+//completed work
 $sql3  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '3' ORDER BY request_id DESC";
 $run3 = mysqli_query($conn, $sql3);
 $rows3 = mysqli_num_rows($run3);
 
-if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
+
+if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
     $msg = "No Request Found";
 }
 
@@ -54,7 +59,22 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
         td {
             text-align: left;
             border-top: .15rem solid rgb(0, 0, 0, 0.2);
+            font-size: 1.5rem;
             padding: 1rem;
+        }
+
+        th {
+            font-weight: 700;
+            width: 40%;
+        }
+
+        td {
+            width: 60%;
+        }
+
+        .sinfo {
+            color: black;
+            font-weight: 500;
         }
 
         .rcode {
@@ -106,13 +126,15 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
             background: var(--blue);
             color: white;
         }
-        .viewbtn:hover{
+
+
+        .viewbtn:hover {
             opacity: 1;
         }
 
         .pspan {
             color: #f29339;
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-style: oblique;
             font-weight: bolder;
         }
@@ -127,6 +149,12 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
         .cspan {
             color: green;
             font-size: 1.7rem;
+            font-weight: bolder;
+        }
+
+        .ccspan {
+            color: #c70000;
+            font-size: 1.8rem;
             font-weight: bolder;
         }
 
@@ -164,8 +192,6 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
 </head>
 
 <body>
-
-
     <div class="content">
 
         <!-- for submit request -->
@@ -178,15 +204,20 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
                         <td><?php echo $result1['request_id']; ?></td>
                     </tr>
                     <tr>
-                        <th>Email ID:</th>
-                        <td><?php echo $result1['requester_email']; ?> </td>
+                        <th>Service Info:</th>
+                        <td class="sinfo"><?php echo ucwords($result1['s_appliance']) . " (" . ucwords($result1['s_service'])  . ")"; ?></td>
                     </tr>
+                   
                     <tr>
-                        <th>Request Info:</th>
-                        <td><?php echo $result1['request_info']; ?> </td>
+                        <th>Request Desc:</th>
+                        <td><?php echo $result1['request_desc']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Date:</th>
+                        <td><?php echo $result1['request_date']; ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Price:</th>
                         <td><?php echo $result1['request_date']; ?> </td>
                     </tr>
                     <tr>
@@ -197,15 +228,18 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
                 <form action="check-status.php" method="post">
                     <input type="hidden" value="<?php echo $result1['request_id']; ?>" name="csid">
                     <div class="btns">
-                        <button type="submit" name="cancelbtn" class="cancelbtn">Cancel</button>
+                        <button type="submit" name="cancelbtn" class="cancelbtn" onclick=" return confirmation()">Cancel</button>
                         <button type="submit" name="viewbtn" class="viewbtn">View</button>
                     </div>
-                    <span class="pspan">Pending...</span>
+                    <span class="pspan"><i class="fa-regular fa-hourglass-half"></i> Pending...</span>
 
 
                 </form>
             </div>
         <?php } ?>
+
+
+
         <!-- for assigned request -->
 
         <?php while ($result2 = mysqli_fetch_array($run2)) { ?>
@@ -217,12 +251,8 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
                         <td><?php echo $result2['request_id']; ?></td>
                     </tr>
                     <tr>
-                        <th>Email ID:</th>
-                        <td><?php echo $result2['requester_email']; ?> </td>
-                    </tr>
-                    <tr>
-                        <th>Request Info:</th>
-                        <td><?php echo $result2['request_info']; ?> </td>
+                        <th>Service Info:</th>
+                        <td class="sinfo"><?php echo ucwords($result2['s_appliance']). " (" . $result2['s_service'] . ")"; ?></td>
                     </tr>
                     <tr>
                         <th>Request Date:</th>
@@ -233,6 +263,14 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
                         <td><?php echo $result2['assign_date']; ?> </td>
                     </tr>
                     <tr>
+                        <th>Assigned Technician:</th>
+                        <td><?php echo ucwords($result2['assign_tech']); ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Technician Mobile:</th>
+                        <td><?php echo $result2['tech_mobile']; ?> </td>
+                    </tr>
+                    <tr>
                         <th>Request Code:</th>
                         <td class="rcode"><?php echo $result2['request_code']; ?> </td>
                     </tr>
@@ -240,56 +278,108 @@ if ($rows1 == 0 AND $rows2==0 AND $rows3 ==0) {
                 <form action="check-status.php" method="post">
                     <input type="hidden" value="<?php echo $result2['request_id']; ?>" name="csid">
                     <div class="btns">
-                        <button type="submit" name="cancelbtn" class="cancelbtn">Cancel</button>
+                        <button type="submit" name="cancelbtn" class="cancelbtn" onclick=" return confirmation()">Cancel</button>
                         <button type="submit" name="viewbtn" class="viewbtn">View</button>
                     </div>
-                    <span class="aspan">Assigned</span>
-
+                    <span class="aspan"><i class="fa-solid fa-business-time"></i> Assigned</span>
                 </form>
 
             </div>
         <?php } ?>
+
+
+        <!-- for cancelled request -->
+
+        <?php while ($result = mysqli_fetch_array($run)) { ?>
+
+            <div class="table-data">
+                <table>
+                    <tr>
+                        <th>Request ID:</th>
+                        <td><?php echo $result['request_id']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Email ID:</th>
+                        <td><?php echo $result['requester_email']; ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Request Info:</th>
+                        <td><?php echo $result['request_info']; ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Request Date:</th>
+                        <td><?php echo $result['request_date']; ?> </td>
+                    </tr>
+
+
+                </table>
+                <form action="">
+                    <span class="ccspan"><i class="fa-sharp fa-regular fa-circle-xmark"></i> Cancelled</span>
+                </form>
+
+            </div>
+        <?php } ?>
+
+
         <!-- for completed request -->
 
         <?php while ($result3 = mysqli_fetch_array($run3)) { ?>
 
             <div class="table-data">
                 <table>
+
+
+
                     <tr>
                         <th>Request ID:</th>
                         <td><?php echo $result3['request_id']; ?></td>
                     </tr>
                     <tr>
-                        <th>Email ID:</th>
-                        <td><?php echo $result3['requester_email']; ?> </td>
+                        <th>Work Date:</th>
+                        <td><b><?php echo $result3['work_date']; ?></b> </td>
                     </tr>
                     <tr>
-                        <th>Request Info:</th>
-                        <td><?php echo $result3['request_info']; ?> </td>
+                        <th>Service Info:</th>
+                        <td class="sinfo"><?php echo ucwords($result3['s_appliance']) . " (" . ucwords($result3['s_service']). ")"; ?></td>
+                    </tr>
+
+                    <tr>
+                        <th>Assigned Technician:</th>
+                        <td><?php echo ucwords($result3['assign_tech']); ?> </td>
+                    </tr>
+                    <tr>
+                        <th>Technician Mobile:</th>
+                        <td><?php echo $result3['tech_mobile']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Date:</th>
                         <td><?php echo $result3['request_date']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Work Date:</th>
-                        <td><?php echo $result3['work_date']; ?> </td>
+                        <th>Assigned Date:</th>
+                        <td><?php echo $result3['assign_date']; ?> </td>
                     </tr>
-
                 </table>
                 <form action="view-completed-work.php" method="post">
                     <input type="hidden" value="<?php echo $result3['request_id']; ?>" name="cwid">
-                    <button type="submit" name="view-btn" class="viewtbtn">View</button>
+                    <button type="submit" name="view-btn" class="viewbtn">View</button>
                     <span class="cspan"><i class="fa-solid fa-circle-check"></i> Completed</span>
 
                 </form>
 
             </div>
         <?php } ?>
+
+
+
         <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
     </div>
 
-
+    <script>
+        function confirmation() {
+            return confirm("Are you sure! you want to cancel this Request?");
+        }
+    </script>
 </body>
 
 </html>
