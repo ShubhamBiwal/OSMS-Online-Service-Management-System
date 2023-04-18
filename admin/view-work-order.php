@@ -4,37 +4,35 @@ include "include/header-sidebar.php";
 
 if (isset($_POST['view-btn'])) {
     $r_id = $_POST['rid'];
-    $sql = "SELECT * FROM requests_tb WHERE request_id = '$r_id' AND r_status = '3'";
+    $sql = "SELECT * FROM requests_tb WHERE request_id = '$r_id' AND r_status = '3' OR r_status = '2'";
     $run = mysqli_query($conn, $sql);
     if ($result =  mysqli_fetch_array($run)) {
         $rid = $result['request_id'];
-        $rinfo = $result['request_info'];
+        $sappliance = $result['s_appliance'];
+        $sservice = $result['s_service'];
         $rdesc = $result['request_desc'];
-        $rid = $result['u_id'];
         $rname = $result['requester_name'];
         $radd1 = $result['requester_add1'];
         $radd2 = $result['requester_add2'];
         $rcity = $result['requester_city'];
         $rstate = $result['requester_state'];
-        $rzip = $result['requester_zip'];
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
-        $rdate = $result['request_date'];
-        $radate = $result['assign_date'];
-        $wdate = $result['work_date'];
-        $techid = $result['tech_id'];
+        $ramobile = $result['requester_alt_mobile'];
+        $rdate = date("j-n-Y", strtotime($result['request_date']));
+        $radate = date("j-n-Y", strtotime($result['assign_date']));
+        $wdate = ($result['work_date']);
         $ratech = $result['assign_tech'];
         $techmobile = $result['tech_mobile'];
-        $techemail = $result['tech_email'];
+        $sprice = $result['s_price'];
     }
 }
 
 ?>
 
-
 <head>
-    
-    <title>View Completed Work </title>
+
+    <title>View Work Order</title>
 
     <style>
         .details {
@@ -156,7 +154,7 @@ if (isset($_POST['view-btn'])) {
 
         <div class="details">
             <div class="heading">
-                <h3>Completed Work Details</h3>
+                <h3>Work Order Details</h3>
             </div>
             <table>
                 <tr>
@@ -166,21 +164,16 @@ if (isset($_POST['view-btn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Request Info</td>
+                    <td>Service Info</td>
                     <td>
-                        <?php if (isset($rinfo)) echo $rinfo; ?>
+                        <?php if (isset($sappliance) AND $sservice) echo ucwords($sappliance) . " (" . ucwords($sservice) . ")"; ?>
+
                     </td>
                 </tr>
                 <tr>
                     <td>Request Description</td>
                     <td>
                         <?php if (isset($rdesc)) echo $rdesc; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Requester ID</td>
-                    <td>
-                        <?php if (isset($rid)) echo $rid; ?>
                     </td>
                 </tr>
                 <tr>
@@ -214,12 +207,6 @@ if (isset($_POST['view-btn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Pin Code</td>
-                    <td>
-                        <?php if (isset($rzip)) echo $rzip; ?>
-                    </td>
-                </tr>
-                <tr>
                     <td>Email</td>
                     <td>
                         <?php if (isset($remail)) echo $remail; ?>
@@ -229,6 +216,12 @@ if (isset($_POST['view-btn'])) {
                     <td>Mobile</td>
                     <td>
                         <?php if (isset($rmobile)) echo $rmobile; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Alternate Mobile</td>
+                    <td>
+                        <?php if (isset($ramobile)) echo $ramobile; ?>
                     </td>
                 </tr>
                 <tr>
@@ -246,13 +239,7 @@ if (isset($_POST['view-btn'])) {
                 <tr>
                     <td><b>Work Date</b></td>
                     <td>
-                        <b><?php if (isset($wdate)) echo $wdate; ?><b>
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Tech ID</b></td>
-                    <td>
-                        <b><?php if (isset($techid)) echo $techid; ?><b>
+                        <b><?php if($wdate == "0000-00-00"){ echo "N/A";}else{echo date("j-n-Y", strtotime($wdate));}?><b>
                     </td>
                 </tr>
                 <tr>
@@ -262,15 +249,15 @@ if (isset($_POST['view-btn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td><b>Technician Email</b></td>
-                    <td>
-                        <b><?php if (isset($techemail)) echo $techemail; ?></b>
-                    </td>
-                </tr>
-                <tr>
                     <td><b>Technician Mobile No.</b></td>
                     <td>
                         <b><?php if (isset($techmobile)) echo $techmobile; ?></b>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Payment</b></td>
+                    <td>
+                        <b><?php if (isset($sprice)) echo "&#8377;".$sprice; ?></b>
                     </td>
                 </tr>
             </table>

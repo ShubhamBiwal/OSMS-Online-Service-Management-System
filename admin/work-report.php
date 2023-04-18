@@ -4,7 +4,7 @@ include "../connection.php";
 include "include/header-sidebar.php";
 echo '<style>.table{display:none;}</style>';
 
-$sql1 = "SELECT * FROM requests_tb WHERE r_status = '3' ORDER BY work_date";
+$sql1 = "SELECT * FROM requests_tb WHERE r_status = '3' AND admin_status = '2' ORDER BY work_date";
 $run1 = mysqli_query($conn, $sql1);
 $row1 = mysqli_num_rows($run1);
 if ($row1 == 0) {
@@ -21,7 +21,7 @@ if (isset($_POST['search-btn'])) {
         echo '<script>alert("Please Select Start and End Date.");</script>';
         echo '<script>location.href = "work-report.php"</script>';
     } else {
-        $sql = "SELECT * FROM requests_tb WHERE work_date BETWEEN '$start_date' AND '$end_date' AND r_status = '3' ORDER BY work_date";
+        $sql = "SELECT * FROM requests_tb WHERE work_date BETWEEN '$start_date' AND '$end_date' AND r_status = '3' AND admin_status = '2' ORDER BY work_date";
         $run = mysqli_query($conn, $sql);
         $row = mysqli_num_rows($run);
         if ($run) {
@@ -283,7 +283,7 @@ if (isset($_POST['search-btn'])) {
                                 <?php echo $result1['assign_tech']; ?>
                             </td>
                             <td>
-                                <?php echo $result1['work_date']; ?>
+                                <?php echo date("j/n/Y", strtotime($result1['work_date'])); ?>
                             </td>
                             <td>
                                 <?php echo "&#8377;" . $result1['s_price']; ?>
@@ -300,11 +300,9 @@ if (isset($_POST['search-btn'])) {
 
     <!-- search button -->
     <div class="table">
-
         <div class="heading">
-            <p>Work Details</p>
+            <p><?php echo "Work Details From"." ".date("j/n/Y", strtotime($start_date)) . " To " . date("j/n/Y", strtotime($end_date)); ?></p>
             <button class="c-btn" onClick="location.href = location.href">&#9587;</button>
-
         </div>
         <div class="table-data">
             <table>
@@ -359,7 +357,7 @@ if (isset($_POST['search-btn'])) {
                                 <?php echo $result['assign_tech']; ?>
                             </td>
                             <td>
-                                <?php echo $result['work_date']; ?>
+                                <?php echo date("j/n/Y", strtotime($result['work_date'])); ?>
                             </td>
                             <td>
                                 <?php echo "&#8377;" . $result['s_price']; ?>

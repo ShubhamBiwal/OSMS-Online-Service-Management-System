@@ -219,7 +219,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     </tr>
                     <tr>
                         <th>Request Date:</th>
-                        <td><?php echo $result1['request_date']; ?> </td>
+                        <td><?php echo date("j-n-Y", strtotime($result1['request_date'])); ?> </td>
                     </tr>
                     <tr>
                         <th>Cost (in Rs):</th>
@@ -261,7 +261,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     </tr>
                     <tr>
                         <th>Assigned Date:</th>
-                        <td><?php echo $result2['assign_date']; ?> </td>
+                        <td><?php echo date("j-n-Y", strtotime($result2['assign_date'])); ?> </td>
                     </tr>
                     <tr>
                         <th>Assigned Technician:</th>
@@ -341,7 +341,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     </tr>
                     <tr>
                         <th>Work Date:</th>
-                        <td><b><?php echo $result3['work_date']; ?></b> </td>
+                        <td><b><?php echo date("j-n-Y", strtotime($result3['work_date'])); ?></b> </td>
                     </tr>
                     <tr>
                         <th>Service Info:</th>
@@ -358,7 +358,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     </tr>
                     <tr>
                         <th>Request Date:</th>
-                        <td><?php echo $result3['request_date']; ?> </td>
+                        <td><?php echo date("j-n-Y", strtotime($result3['request_date'])); ?> </td>
                     </tr>
                     <tr>
                         <th>Payment (in Rs):</th>

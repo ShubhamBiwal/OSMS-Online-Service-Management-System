@@ -353,7 +353,7 @@ if (isset($_POST['uSubmit'])) {
                                 <?php echo $result['pname']; ?>
                             </td>
                             <td>
-                                <?php echo $result['pdop']; ?>
+                                <?php echo date("j M Y", strtotime($result['pdop'])); ?>
                             </td>
                             <td>
                                 <?php echo $result['pavail']; ?>

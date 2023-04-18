@@ -51,7 +51,7 @@ if (isset($_POST['assign-btn'])) {
             $techid = $result1['tech_id'];
             $techmobile = $result1['tech_mobile'];
             $techemail = $result1['tech_email'];
-            $sql2 = "UPDATE requests_tb SET tech_id = '$techid', assign_tech = '$rtechnician', tech_mobile = '$techmobile', tech_email = '$techemail',assign_date = '$radate', r_status = '2' WHERE request_id = '$rid'";
+            $sql2 = "UPDATE requests_tb SET tech_id = '$techid', assign_tech = '$rtechnician', tech_mobile = '$techmobile', tech_email = '$techemail',assign_date = '$radate', r_status = '2', admin_status = '1' WHERE request_id = '$rid'";
             $run2 = mysqli_query($conn, $sql2);
 
             if ($run2) {
@@ -375,7 +375,7 @@ if (isset($_POST['assign-btn'])) {
                             <?php echo $result['requester_mobile']; ?>
                         </p>
                         <p><b>Request Date :</b>
-                            <?php echo $result['request_date']; ?>
+                            <?php echo date("j-n-Y", strtotime($result['request_date'])); ?>
                         </p>
                         <form action="" method="post">
                             <input type="hidden" name="r_id" value="<?php echo $result['request_id']; ?>">

@@ -80,7 +80,7 @@ if (isset($_POST['submitbtn'])) {
         echo '<script>location.href = "pending-work.php";</script>';
     } else {
         if ($rcode == $r_code) {
-            $sql = "UPDATE requests_tb SET work_date = '$wdate', r_status = '3' WHERE request_id = $rid";
+            $sql = "UPDATE requests_tb SET work_date = '$wdate', r_status = '3', admin_status = '1' WHERE request_id = $rid";
             $run = mysqli_query($conn, $sql);
             if ($run) {
                 echo '<script> alert("Success: Work Completed.");</script>';
@@ -367,14 +367,14 @@ if (isset($_POST['submitbtn'])) {
                     <tr>
                         <td><b>Request Date</b></td>
                         <td>
-                            <b> <?php if (isset($rdate)) echo $rdate; ?></b>
+                            <b> <?php if (isset($rdate))  echo date("j-n-Y", strtotime($rdate)); ?></b>
                         </td>
                     </tr>
                     <tr>
                         <td><b>Assigned Date<b></td>
                         <td>
                             <b>
-                                <?php if (isset($radate)) echo $radate; ?>
+                                <?php if (isset($radate)) echo date("j-n-Y", strtotime($radate));  ?>
                             </b>
                         </td>
                     </tr>

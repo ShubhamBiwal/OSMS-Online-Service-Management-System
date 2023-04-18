@@ -407,7 +407,7 @@ if (isset($_POST['send-btn'])) {
                             <?php echo $result['m_subject']; ?>
                         </p>
                         <p><b>Date:</b>
-                            <?php echo $result['m_date']; ?>
+                            <?php echo date("j-n-Y", strtotime($result['m_date'])); ?>
                         </p>
                         <form action="" method="post">
                             <input type="hidden" name="m_id" value="<?php echo $result['m_id']; ?>">

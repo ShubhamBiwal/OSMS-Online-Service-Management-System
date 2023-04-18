@@ -245,7 +245,7 @@ if (isset($_POST['search-btn'])) {
                         <th>Quantity</th>
                         <th>Price(1)</th>
                         <th>Total</th>
-                        <th>Date</th>
+                        <th>Purchase Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -280,7 +280,7 @@ if (isset($_POST['search-btn'])) {
                                 <?php echo $result1['cptotal']; ?>
                             </td>
                             <td>
-                                <?php echo $result1['cpdate']; ?>
+                                <?php echo date("j-n-Y", strtotime($result1['cpdate'])); ?>
                             </td>
 
                         </tr>
@@ -297,7 +297,7 @@ if (isset($_POST['search-btn'])) {
     <div class="table">
 
         <div class="heading">
-            <p><?php echo $start_date . " To " . $end_date; ?></p>
+            <p><?php echo "Sell Details From"." ".date("j/n/Y", strtotime($start_date)) . " To " . date("j/n/Y", strtotime($end_date)); ?></p>
             <button class="c-btn" onClick="location.href = location.href">&#9587;</button>
         </div>
         <div class="table-data">
@@ -312,7 +312,7 @@ if (isset($_POST['search-btn'])) {
                         <th>Quantity</th>
                         <th>Price(1)</th>
                         <th>Total</th>
-                        <th>Date</th>
+                        <th>Purchase Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -347,7 +347,7 @@ if (isset($_POST['search-btn'])) {
                                 <?php echo $result['cptotal']; ?>
                             </td>
                             <td>
-                                <?php echo $result['cpdate']; ?>
+                                <?php echo date("j-n-Y", strtotime($result['cpdate'])); ?>
                             </td>
 
                         </tr>

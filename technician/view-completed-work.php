@@ -19,9 +19,9 @@ if (isset($_POST['viewbtn'])) {
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
         $raltmobile = $result['requester_alt_mobile'];
-        $rdate = $result['request_date'];
-        $radate = $result['assign_date'];
-        $wdate = $result['work_date'];
+        $rdate = date("j-n-Y", strtotime($result['request_date']));
+        $radate = date("j-n-Y", strtotime($result['assign_date']));
+        $wdate = date("j-n-Y", strtotime($result['work_date']));
         $sprice = $result['s_price'];
     }
 }
@@ -239,9 +239,9 @@ if (isset($_POST['viewbtn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Work Date</td>
+                    <td><b>Work Date</b></td>
                     <td>
-                        <?php if (isset($wdate)) echo $wdate; ?>
+                        <b><?php if (isset($wdate)) echo $wdate; ?></b>
                     </td>
                 </tr>
                 <tr>

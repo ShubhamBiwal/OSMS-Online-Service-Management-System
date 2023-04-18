@@ -185,11 +185,12 @@ if ($rows1 == 0) {
                     </tr>
                     <tr>
                         <th>Request Date:</th>
-                        <td><?php echo $result1['request_date']; ?> </td>
+                        <td><?php
+                            echo date("j-n-Y", strtotime($result1['request_date']));  ?> </td>
                     </tr>
                     <tr>
                         <th>Assigned Date:</th>
-                        <td><b><?php echo $result1['assign_date']; ?><b> </td>
+                        <td><b><?php echo date("j-n-Y", strtotime($result1['assign_date'])); ?><b> </td>
                     </tr>
                     <tr>
                         <th>Cost (in Rs):</th>

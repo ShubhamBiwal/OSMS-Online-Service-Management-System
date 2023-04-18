@@ -3,7 +3,7 @@ $page = "workorder";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM requests_tb WHERE r_status = '2' ORDER BY request_date, assign_date ";
+$sql = "SELECT * FROM requests_tb WHERE (r_status = '2' OR r_status = '3') AND admin_status = '1' ORDER BY assign_date ";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if ($rows == 0) {
@@ -15,7 +15,7 @@ if ($rows == 0) {
 //delete data
 if (isset($_POST['delete-btn'])) {
     $r_id = $_POST['rid'];
-    $sql = "DELETE FROM requests_tb WHERE request_id = '$r_id' AND r_status = '3'";
+    $sql = "DELETE FROM requests_tb WHERE request_id = '$r_id' AND r_status = '3' AND admin_status = '1'";
     $run = mysqli_query($conn, $sql);
     if ($run) {
         echo '<script>location.href="work-order.php";</script>';
@@ -23,7 +23,17 @@ if (isset($_POST['delete-btn'])) {
         echo '<script>alert("Unable to Delete!")</script>';
     }
 }
-
+//payment confirmed
+if (isset($_POST['confirm-btn'])) {
+    $r_id = $_POST['rid'];
+    $sql = "UPDATE requests_tb SET admin_status = '2' WHERE request_id = '$r_id' AND r_status = '3' AND admin_status = '1'";
+    $run = mysqli_query($conn, $sql);
+    if ($run) {
+        echo '<script>location.href="work-order.php";</script>';
+    } else {
+        echo '<script>alert("Unable to Process!")</script>';
+    }
+}
 ?>
 
 <head>
@@ -142,14 +152,13 @@ if (isset($_POST['delete-btn'])) {
                         <th>Req ID</th>
                         <th>Service info</th>
                         <th>Name</th>
-                        <th>Address</th>
                         <th>Mobile</th>
                         <th>Technician</th>
                         <th>Tech Mobile</th>
                         <th>Request Date</th>
                         <th>Assign Date</th>
+                        <th>Work Date</th>
                         <th>Payment</th>
-                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -173,9 +182,6 @@ if (isset($_POST['delete-btn'])) {
                                 <?php echo ucwords($result['requester_name']); ?>
                             </td>
                             <td>
-                                <?php echo $result['requester_add1']; ?>
-                            </td>
-                            <td>
                                 <?php echo $result['requester_mobile']; ?>
                             </td>
                             <td>
@@ -185,20 +191,20 @@ if (isset($_POST['delete-btn'])) {
                                 <?php echo $result['tech_mobile']; ?>
                             </td>
                             <td>
-                                <?php echo $result['request_date']; ?>
+                         <?php if($result['request_date']== "0000-00-00"){ echo "N/A";}else{echo date("j/n/Y", strtotime($result['request_date']));} ?>
                             </td>
                             <td>
-                                <?php echo $result['assign_date']; ?>
+                         <?php if($result['assign_date']== "0000-00-00"){ echo "N/A";}else{echo date("j/n/Y", strtotime($result['assign_date']));} ?>
+                            </td>
+                            <td>
+                                <?php if($result['work_date']== "0000-00-00"){ echo "N/A";}else{echo date("j/n/Y", strtotime($result['work_date']));} ?>
                             </td>
                             <td>
                                 <?php echo "&#8377;".$result['s_price']; ?>
                             </td>
                             <td>
-                                <span>P</span>
-                            </td>
-                            <td>
                                 <div class="form-btn">
-                                    <form action="view-completed-work.php" method="post">
+                                    <form action="view-work-order.php" method="post">
                                         <input type="hidden" name="rid" value="<?php echo $result['request_id']; ?>">
                                         <button type="submit" name="view-btn" class="view-btn"><i class="fa-solid fa-eye"></i></button>
                                     </form>

@@ -279,13 +279,13 @@ if (isset($_POST['cancelbtn']) and $csid) {
                 <tr>
                     <td>Request Date</td>
                     <td>
-                        <?php if (isset($rdate)) echo $rdate; ?>
+                        <?php if (isset($rdate)) echo date("j-n-Y", strtotime($rdate)); ?>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Assigned Date<b></td>
                     <td>
-                        <b> <?php if (isset($radate)) echo $radate; ?></b>
+                        <b> <?php if (isset($radate)) echo date("j-n-Y", strtotime($radate)); ?></b>
                     </td>
                 </tr>
                 <tr>

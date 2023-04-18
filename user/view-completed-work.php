@@ -23,10 +23,10 @@ if (isset($_POST['view-btn'])) {
         $remail = $result['requester_email'];
         $rmobile = $result['requester_mobile'];
         $raltmobile = $result['requester_alt_mobile'];
-        $rdate = $result['request_date'];
+        $rdate = date("j-n-Y", strtotime($result['request_date']));
+        $wdate = date("j-n-Y", strtotime($result['work_date']));
+        $radate = date("j-n-Y", strtotime($result['assign_date']));
         $sprice = $result['s_price'];
-        $radate = $result['assign_date'];
-        $wdate = $result['work_date'];
         $ratech = ucwords($result['assign_tech']);
         $techmobile = $result['tech_mobile'];
     }
