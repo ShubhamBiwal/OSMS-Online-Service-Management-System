@@ -4,7 +4,8 @@ include "../connection.php";
 include "include/header-sidebar.php";
 
 $uid = $_SESSION['u_id'];
-//cancelled request
+
+//show cancelled request
 $sql  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '0' ORDER BY request_date ";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
@@ -237,13 +238,9 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                         <button type="submit" name="viewbtn" class="viewbtn">View</button>
                     </div>
                     <span class="pspan"><i class="fa-regular fa-hourglass-half"></i> Pending...</span>
-
-
                 </form>
             </div>
         <?php } ?>
-
-
 
         <!-- for assigned request -->
 
@@ -304,20 +301,24 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                         <td><?php echo $result['request_id']; ?></td>
                     </tr>
                     <tr>
-                        <th>Email ID:</th>
-                        <td><?php echo $result['requester_email']; ?> </td>
+                        <th>Service Info:</th>
+                        <td class="sinfo"><?php echo ucwords($result['s_appliance']) . " (" . ucwords($result['s_service'])  . ")"; ?></td>
                     </tr>
+
                     <tr>
-                        <th>Request Info:</th>
-                        <td><?php echo $result['request_info']; ?> </td>
+                        <th>Request Desc:</th>
+                        <td><?php echo $result['request_desc']; ?> </td>
                     </tr>
                     <tr>
                         <th>Request Date:</th>
-                        <td><?php echo $result['request_date']; ?> </td>
+                        <td><?php echo date("j-n-Y", strtotime($result['request_date'])); ?> </td>
                     </tr>
-
-
+                    <tr>
+                        <th>Cost (in Rs):</th>
+                        <td class="price"><?php echo "&#8377;" . $result['s_price']; ?> </td>
+                    </tr>
                 </table>
+
                 <form action="">
                     <span class="ccspan"><i class="fa-sharp fa-regular fa-circle-xmark"></i> Cancelled</span>
                 </form>
@@ -332,9 +333,6 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
 
             <div class="table-data">
                 <table>
-
-
-
                     <tr>
                         <th>Request ID:</th>
                         <td><?php echo $result3['request_id']; ?></td>
@@ -369,14 +367,10 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
                     <input type="hidden" value="<?php echo $result3['request_id']; ?>" name="cwid">
                     <button type="submit" name="view-btn" class="viewbtn">View</button>
                     <span class="cspan"><i class="fa-solid fa-circle-check"></i> Completed</span>
-
                 </form>
 
             </div>
         <?php } ?>
-
-
-
         <div id="msg"><?php if (isset($msg)) echo $msg; ?></div>
     </div>
 
@@ -385,6 +379,23 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
             return confirm("Are you sure! you want to cancel this Request?");
         }
     </script>
+       <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            })
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
+
 </body>
 
 </html>

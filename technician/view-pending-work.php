@@ -35,35 +35,35 @@ if (isset($_POST['viewbtn']) and $pwid) {
     }
 }
 //cancel request details
-if (isset($_POST['cvbtn']) and $pwid) {
-    echo '<style>.cdetails{display:block;}</style>';
-    $sql = "SELECT * FROM requests_tb WHERE request_id =  '$pwid'";
-    $run = mysqli_query($conn, $sql);
+// if (isset($_POST['cvbtn']) and $pwid) {
+//     echo '<style>.cdetails{display:block;}</style>';
+//     $sql = "SELECT * FROM requests_tb WHERE request_id =  '$pwid'";
+//     $run = mysqli_query($conn, $sql);
 
-    if ($result = mysqli_fetch_array($run)) {
+//     if ($result = mysqli_fetch_array($run)) {
 
-        $rid = $result['request_id'];
-        $rinfo = $result['request_info'];
-        $rdesc = $result['request_desc'];
-        $rname = $result['requester_name'];
-        $radd1 = $result['requester_add1'];
-        $radd2 = $result['requester_add2'];
-        $rcity = $result['requester_city'];
-        $rstate = $result['requester_state'];
-        $rzip = $result['requester_zip'];
-        $remail = $result['requester_email'];
-        $rmobile = $result['requester_mobile'];
-        $raltmobile = $result['requester_alt_mobile'];
-        $rdate = $result['request_date'];
-        $radate = $result['assign_date'];
-        $ratech = $result['assign_tech'];
-        $techmobile = $result['tech_mobile'];
-    } else {
-        $msg = "";
-        echo '<style>.details{display:none;}</style>';
-        echo '<style>.printbtn{display:none;}</style>';
-    }
-}
+//         $rid = $result['request_id'];
+//         $rinfo = $result['request_info'];
+//         $rdesc = $result['request_desc'];
+//         $rname = $result['requester_name'];
+//         $radd1 = $result['requester_add1'];
+//         $radd2 = $result['requester_add2'];
+//         $rcity = $result['requester_city'];
+//         $rstate = $result['requester_state'];
+//         $rzip = $result['requester_zip'];
+//         $remail = $result['requester_email'];
+//         $rmobile = $result['requester_mobile'];
+//         $raltmobile = $result['requester_alt_mobile'];
+//         $rdate = $result['request_date'];
+//         $radate = $result['assign_date'];
+//         $ratech = $result['assign_tech'];
+//         $techmobile = $result['tech_mobile'];
+//     } else {
+//         $msg = "";
+//         echo '<style>.details{display:none;}</style>';
+//         echo '<style>.printbtn{display:none;}</style>';
+//     }
+// }
 
 //work submit
 if (isset($_POST['submitbtn'])) {
@@ -83,12 +83,14 @@ if (isset($_POST['submitbtn'])) {
             $sql = "UPDATE requests_tb SET work_date = '$wdate', r_status = '3', admin_status = '1' WHERE request_id = $rid";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                echo '<script> alert("Success: Work Completed.");</script>';
-                echo "<script> location.href = 'completed-work.php';</script>";
+                $_SESSION['status_title'] = "Congrats!";
+                $_SESSION['status_text'] = "Work Completed.";
+                $_SESSION['status_icon'] = "success";
             }
         } else {
-            echo '<script>alert("Incorrect Request Code.");</script>';
-            echo '<script>location.href = "pending-work.php";</script>';
+            $_SESSION['status_title2'] = "Error!";
+            $_SESSION['status_text2'] = "Incorrect Request Code";
+            $_SESSION['status_icon2'] = "error";
         }
     }
 }
@@ -308,7 +310,7 @@ if (isset($_POST['submitbtn'])) {
                     </tr>
                     <tr>
                         <td>Service Info</td>
-                        <td class="sinfo"><?php if (isset($rappliance) && $rservice)  echo ucwords($rappliance) . " (" .ucwords($rservice) . ")"; ?></td>
+                        <td class="sinfo"><?php if (isset($rappliance) && $rservice)  echo ucwords($rappliance) . " (" . ucwords($rservice) . ")"; ?></td>
                     </tr>
                     <tr>
                         <td>Request Description</td>
@@ -422,10 +424,8 @@ if (isset($_POST['submitbtn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Request Info</td>
-                    <td>
-                        <?php if (isset($rinfo)) echo $rinfo; ?>
-                    </td>
+                    <td>Service Info</td>
+                    <td class="sinfo"><?php if (isset($rappliance) && $rservice)  echo ucwords($rappliance) . " (" . ucwords($rservice) . ")"; ?></td>
                 </tr>
                 <tr>
                     <td>Request Description</td>
@@ -436,7 +436,7 @@ if (isset($_POST['submitbtn'])) {
                 <tr>
                     <td>Name</td>
                     <td>
-                        <?php if (isset($rname)) echo $rname; ?>
+                        <?php if (isset($rname)) echo ucwords($rname); ?>
                     </td>
                 </tr>
                 <tr>
@@ -464,12 +464,6 @@ if (isset($_POST['submitbtn'])) {
                     </td>
                 </tr>
                 <tr>
-                    <td>Pin Code</td>
-                    <td>
-                        <?php if (isset($rzip)) echo $rzip; ?>
-                    </td>
-                </tr>
-                <tr>
                     <td>Email</td>
                     <td>
                         <?php if (isset($remail)) echo $remail; ?>
@@ -482,19 +476,32 @@ if (isset($_POST['submitbtn'])) {
                     </td>
                 </tr>
                 <tr>
+                    <td>Alternate Mobile No.</td>
+                    <td>
+                        <?php if (isset($raltmobile)) echo $raltmobile; ?>
+                    </td>
+                </tr>
+                <tr>
                     <td><b>Request Date</b></td>
                     <td>
-                        <b> <?php if (isset($rdate)) echo $rdate; ?></b>
+                        <b> <?php if (isset($rdate))  echo date("j-n-Y", strtotime($rdate)); ?></b>
                     </td>
                 </tr>
                 <tr>
                     <td><b>Assigned Date<b></td>
                     <td>
                         <b>
-                            <?php if (isset($radate)) echo $radate; ?>
+                            <?php if (isset($radate)) echo date("j-n-Y", strtotime($radate));  ?>
                         </b>
                     </td>
                 </tr>
+                <tr>
+                    <td><b>Cost (in Rs)<b></td>
+                    <td class="price">
+                        <?php if (isset($sprice)) echo "&#8377;" . $sprice; ?>
+                    </td>
+                </tr>
+                <tr>
 
             </table>
             <div class="btns">
@@ -506,7 +513,48 @@ if (isset($_POST['submitbtn'])) {
         <?php if (isset($msg)) echo '<div id="msg">Error: Unable to Show Data.</div>'; ?>
     </div>
 
-
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                text: '<?php echo $_SESSION['status_text'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'Done'
+            }).then((result) => {
+                if (result.value) {
+                    location.href = 'completed-work.php'
+                }
+            });
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
+    <!-- sweet alert js2 -->
+    <?php
+    if (isset($_SESSION['status_title2']) && $_SESSION['status_title2'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon2'] ?>',
+                title: '<?php echo $_SESSION['status_title2'] ?>',
+                text: '<?php echo $_SESSION['status_text2'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.value) {
+                    location.href = 'pending-work.php'
+                }
+            });
+        </script>
+    <?php
+        unset($_SESSION['status_title2']);
+    }
+    ?>
 </body>
 
 </html>

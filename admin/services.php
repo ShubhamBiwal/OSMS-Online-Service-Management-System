@@ -38,7 +38,7 @@ if (isset($_POST['uSubmit'])) {
         $sql = "INSERT INTO services_tb (appliance_name, `service_name`, service_price) VALUES('$a_name', '$s_name', '$s_price')";
         $run = mysqli_query($conn, $sql);
         if ($run) {
-            echo '<script>alert("Added Successfully");</script>';
+            echo '<script>alert("Service Added Successfully");</script>';
             echo '<script>location.href = "services.php";</script>';
         } else {
             echo '<script>alert("Unable to Add!");</script>';

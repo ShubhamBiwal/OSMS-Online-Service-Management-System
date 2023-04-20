@@ -3,7 +3,7 @@ $page = "workorder";
 include "../connection.php";
 include "include/header-sidebar.php";
 
-$sql = "SELECT * FROM requests_tb WHERE (r_status = '2' OR r_status = '3') AND admin_status = '1' ORDER BY assign_date ";
+$sql = "SELECT * FROM requests_tb WHERE (r_status = '0' OR r_status = '2' OR r_status = '3') AND admin_status = '1' ORDER BY assign_date ";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 if ($rows == 0) {
@@ -15,7 +15,7 @@ if ($rows == 0) {
 //delete data
 if (isset($_POST['delete-btn'])) {
     $r_id = $_POST['rid'];
-    $sql = "DELETE FROM requests_tb WHERE request_id = '$r_id' AND r_status = '3' AND admin_status = '1'";
+    $sql = "DELETE FROM requests_tb WHERE request_id = '$r_id'";
     $run = mysqli_query($conn, $sql);
     if ($run) {
         echo '<script>location.href="work-order.php";</script>';
@@ -71,9 +71,10 @@ if (isset($_POST['confirm-btn'])) {
             padding: 1rem;
 
         }
-        td span{
+
+        td span {
             color: red;
-            font-style: italic;
+            font-size: 1.5rem;
             font-weight: bold;
         }
 
@@ -85,6 +86,8 @@ if (isset($_POST['confirm-btn'])) {
             display: flex;
             flex-direction: row;
             gap: .5rem;
+
+            align-items: center;
         }
 
         .view-btn {
@@ -115,6 +118,15 @@ if (isset($_POST['confirm-btn'])) {
             font-size: 1.5rem;
             opacity: .8;
 
+        }
+
+        .cancel-btn {
+            background: #eee;
+            color: red;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: .5rem;
+            font-size: 1.5rem;
         }
 
         .delete-btn:hover {
@@ -176,7 +188,7 @@ if (isset($_POST['confirm-btn'])) {
                                 <b> <?php echo $result['request_id']; ?></b>
                             </td>
                             <td>
-                                <?php echo ucwords($result['s_appliance']) . " (" .ucwords($result['s_service']) . ")"; ?>
+                                <?php echo ucwords($result['s_appliance']) . " (" . ucwords($result['s_service']) . ")"; ?>
                             </td>
                             <td>
                                 <?php echo ucwords($result['requester_name']); ?>
@@ -191,16 +203,31 @@ if (isset($_POST['confirm-btn'])) {
                                 <?php echo $result['tech_mobile']; ?>
                             </td>
                             <td>
-                         <?php if($result['request_date']== "0000-00-00"){ echo "N/A";}else{echo date("j/n/Y", strtotime($result['request_date']));} ?>
+                                <?php if ($result['request_date'] == "0000-00-00") {
+                                    echo "N/A";
+                                } else {
+                                    echo date("j/n/Y", strtotime($result['request_date']));
+                                } ?>
                             </td>
                             <td>
-                         <?php if($result['assign_date']== "0000-00-00"){ echo "N/A";}else{echo date("j/n/Y", strtotime($result['assign_date']));} ?>
+                                <?php if ($result['assign_date'] == "0000-00-00") {
+                                    echo "N/A";
+                                } else {
+                                    echo date("j/n/Y", strtotime($result['assign_date']));
+                                } ?>
                             </td>
                             <td>
-                                <?php if($result['work_date']== "0000-00-00"){ echo "N/A";}else{echo date("j/n/Y", strtotime($result['work_date']));} ?>
+                                <?php if ($result['work_date'] == "0000-00-00") {
+                                    echo "N/A";
+                                } else {
+                                    echo date("j/n/Y", strtotime($result['work_date']));
+                                } ?>
                             </td>
-                            <td>
-                                <?php echo "&#8377;".$result['s_price']; ?>
+                            <td> <b>
+                                    <?php if ($result['r_status'] == '0') { ?> <span><?php echo "&#8377;" . $result['s_price']; ?> </span>
+                                    <?php } else {
+                                        echo "&#8377;" . $result['s_price'];
+                                    } ?></b>
                             </td>
                             <td>
                                 <div class="form-btn">
@@ -214,7 +241,13 @@ if (isset($_POST['confirm-btn'])) {
                                     </form>
                                     <form action="" method="post">
                                         <input type="hidden" name="rid" value="<?php echo $result['request_id']; ?>">
-                                        <button type="submit" name="confirm-btn" class="confirm-btn" Onclick="ConfirmPayment()"><i class="fa-solid fa-check"></i></button>
+                                        <?php
+                                        if ($result['r_status'] == '2' || $result['r_status'] == '3') {
+                                        ?>
+                                            <button type="submit" name="confirm-btn" class="confirm-btn" Onclick="return ConfirmPayment();"><i class="fa-solid fa-check"></i></button>
+                                        <?php  } else { ?>
+                                            <button type="button" class="cancel-btn" id="c-button" onclick="CancelAlert()"><i class="fa-solid fa-ban"></i></button>
+                                        <?php } ?>
                                     </form>
                                 </div>
                             </td>
@@ -235,5 +268,9 @@ if (isset($_POST['confirm-btn'])) {
 
     function ConfirmPayment() {
         return confirm("Payment Received?");
+    }
+
+    function CancelAlert() {
+        swal("This is a Cancelled Request!");
     }
 </script>

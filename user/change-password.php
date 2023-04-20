@@ -17,12 +17,18 @@ if (isset($_POST['updatebtn'])) {
             $sql = "UPDATE user_login SET u_password = '$newpass' WHERE u_email = '$remail'";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                echo '<script>alert("Password Updated Succesfully.");</script>';
+                $_SESSION['status_title'] = "Success";
+                $_SESSION['status_text'] = "Your password has been updated.";
+                $_SESSION['status_icon'] = "success";
             } else {
-                echo '<script>alert("Error: Unable to Update.");</script>';
+                $_SESSION['status_title'] = "Error!";
+                $_SESSION['status_text'] = "Something went wrong";
+                $_SESSION['status_icon'] = "error";
             }
         } else {
-            echo '<script>alert("Password Fields Must be Equal!");</script>';
+            $_SESSION['status_title'] = "Error!";
+            $_SESSION['status_text'] = "Password fields must be equal.";
+            $_SESSION['status_icon'] = "error";
         }
     }
 }
@@ -146,7 +152,23 @@ if (isset($_POST['updatebtn'])) {
         </div>
 
     </div>
-
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                text: '<?php echo $_SESSION['status_text'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            })
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
 </body>
 
 </html>

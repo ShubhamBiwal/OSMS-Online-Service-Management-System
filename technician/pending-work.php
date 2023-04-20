@@ -5,7 +5,7 @@ include "include/header-sidebar.php";
 
 $tid = $_SESSION['tech_id'];
 //cancelled by user
-$sql  = "SELECT request_id, requester_name, requester_mobile, request_date, assign_date FROM requests_tb WHERE tech_id = '$tid' AND r_status ='0' ORDER BY request_id DESC";
+$sql  = "SELECT request_id, s_appliance, s_service, requester_name, requester_mobile, request_date, s_price, assign_date FROM requests_tb WHERE tech_id = '$tid' AND r_status ='0' ORDER BY assign_date";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 
@@ -14,7 +14,7 @@ $sql1  = "SELECT request_id,s_appliance, s_service, requester_name, requester_mo
 $run1 = mysqli_query($conn, $sql1);
 $rows1 = mysqli_num_rows($run1);
 
-if ($rows1 == 0) {
+if ($rows == 0 AND $rows1 == 0 ) {
     $msg = "No Pending Work";
 }
 ?>
@@ -217,33 +217,35 @@ if ($rows1 == 0) {
                         <th>Request ID:</th>
                         <td><?php echo $result['request_id']; ?></td>
                     </tr>
+                    <tr>
+                        <th>Service Info:</th>
+                        <td class="sinfo"><?php echo ucwords($result['s_appliance']) . " (" . ucwords($result['s_service']) . ")"; ?></td>
+                    </tr>
 
                     <tr>
                         <th>Name:</th>
-                        <td><?php echo $result['requester_name']; ?> </td>
+                        <td><?php echo ucwords($result['requester_name']); ?> </td>
                     </tr>
                     <tr>
                         <th>Mobile No:</th>
                         <td><?php echo $result['requester_mobile']; ?> </td>
                     </tr>
                     <tr>
-                        <th>Request Info:</th>
-                        <td><?php echo $result['request_info']; ?> </td>
-                    </tr>
-                    <tr>
                         <th>Request Date:</th>
-                        <td><?php echo $result['request_date']; ?> </td>
+                        <td><?php
+                            echo date("j-n-Y", strtotime($result['request_date']));  ?> </td>
                     </tr>
-
                     <tr>
                         <th>Assigned Date:</th>
-                        <td><b><?php echo $result['assign_date']; ?><b> </td>
+                        <td><b><?php echo date("j-n-Y", strtotime($result['assign_date'])); ?><b> </td>
+                    </tr>
+                    <tr>
+                        <th>Cost (in Rs):</th>
+                        <td class="price"><?php echo "&#8377;" . $result['s_price']; ?> </td>
                     </tr>
 
                 </table>
-                <form action="view-pending-work.php" method="post">
-                    <input type="hidden" name="pwid" value="<?php echo $result['request_id']; ?>">
-                    <button type="submit" name="cvbtn" class="viewbtn">View</button>
+                <form action="" method="post">
                     <span class="ccspan"><i class="fa-sharp fa-regular fa-circle-xmark"></i> Cancelled</span>
                 </form>
             </div>

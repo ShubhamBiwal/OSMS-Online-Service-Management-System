@@ -49,23 +49,25 @@ if (isset($_POST['updatebtn'])) {
                     unlink($delimage);
                 }
             }
-
             $sql = "UPDATE user_login SET u_name = '$newname', u_add1 = '$newadd1', u_add2='$newadd2', u_city = '$newcity',u_state = '$newstate', u_zip = '$newzip', u_mobile = '$newmobile', u_image = '$imgpath' WHERE u_email = '$uEmail'";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                echo '<script>alert("Profile Updated Successfully.")</script>';
-                header("Refresh:0");
+                $_SESSION['status_title'] = "Success";
+                $_SESSION['status_text'] = "Your profile has been updated successfully!";
+                $_SESSION['status_icon'] = "success";
             }
         } else {
-            echo '<script>alert("not supported");</script>';
+            $_SESSION['status_title'] = "Error";
+            $_SESSION['status_text'] = "Image format not supported only (jpg, png, jpeg, gif).";
+            $_SESSION['status_icon'] = "error";
         }
     } else {
         $sql = "UPDATE user_login SET u_name = '$newname', u_add1 = '$newadd1', u_add2='$newadd2', u_city = '$newcity',u_state = '$newstate', u_zip = '$newzip', u_mobile = '$newmobile' WHERE u_email = '$uEmail'";
         $run = mysqli_query($conn, $sql);
         if ($run) {
-
-            echo '<script>alert("Profile Updated.");</script>';
-            header("Refresh:0");
+            $_SESSION['status_title'] = "Success";
+            $_SESSION['status_text'] = "Your profile has been updated successfully!";
+            $_SESSION['status_icon'] = "success";
         }
     }
 }
@@ -266,43 +268,42 @@ if (isset($_POST['updatebtn'])) {
                     <div class="inputbox2">
                         <label for="ustate"><b>State</b></label>
                         <select name="ustate" id="state" class="ustate">
-                            <option value=""><?php echo $uState; ?></option>
-                            <option value="Andhra Pradesh">Andhra Pradesh</option>
-                            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                            <option value="Assam">Assam</option>
-                            <option value="Bihar">Bihar</option>
-                            <option value="Chandigarh">Chandigarh</option>
-                            <option value="Chhattisgarh">Chhattisgarh</option>
-                            <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-                            <option value="Daman and Diu">Daman and Diu</option>
-                            <option value="Delhi">Delhi</option>
-                            <option value="Lakshadweep">Lakshadweep</option>
-                            <option value="Puducherry">Puducherry</option>
-                            <option value="Goa">Goa</option>
-                            <option value="Gujarat">Gujarat</option>
-                            <option value="Haryana">Haryana</option>
-                            <option value="Himachal Pradesh">Himachal Pradesh</option>
-                            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                            <option value="Jharkhand">Jharkhand</option>
-                            <option value="Karnataka">Karnataka</option>
-                            <option value="Kerala">Kerala</option>
-                            <option value="Madhya Pradesh">Madhya Pradesh</option>
-                            <option value="Maharashtra">Maharashtra</option>
-                            <option value="Manipur">Manipur</option>
-                            <option value="Meghalaya">Meghalaya</option>
-                            <option value="Mizoram">Mizoram</option>
-                            <option value="Nagaland">Nagaland</option>
-                            <option value="Odisha">Odisha</option>
-                            <option value="Punjab">Punjab</option>
-                            <option value="Rajasthan">Rajasthan</option>
-                            <option value="Sikkim">Sikkim</option>
-                            <option value="Tamil Nadu">Tamil Nadu</option>
-                            <option value="Telangana">Telangana</option>
-                            <option value="Tripura">Tripura</option>
-                            <option value="Uttar Pradesh">Uttar Pradesh</option>
-                            <option value="Uttarakhand">Uttarakhand</option>
-                            <option value="West Bengal">West Bengal</option>
+                            <option value="Andhra Pradesh" <?php if ($uState == "Andhra Pradesh") echo "Selected"; ?>>Andhra Pradesh</option>
+                            <option value="Andaman and Nicobar Islands" <?php if ($uState == "Andaman and Nicobar Islands") echo "Selected"; ?>>Andaman and Nicobar Islands</option>
+                            <option value="Arunachal Pradesh" <?php if ($uState == "Arunachal Pradesh") echo "Selected"; ?>>Arunachal Pradesh</option>
+                            <option value="Assam" <?php if ($uState == "Assam") echo "Selected"; ?>>Assam</option>
+                            <option value="Bihar" <?php if ($uState == "Bihar") echo "Selected"; ?>>Bihar</option>
+                            <option value="Chandigarh" <?php if ($uState == "Chandigarh") echo "Selected"; ?>>Chandigarh</option>
+                            <option value="Chhattisgarh" <?php if ($uState == "Chhattisgarh") echo "Selected"; ?>>Chhattisgarh</option>
+                            <option value="Dadar and Nagar Haveli" <?php if ($uState == "Dadar and Nagar Haveli") echo "Selected"; ?>>Dadar and Nagar Haveli</option>
+                            <option value="Daman and Diu" <?php if ($uState == "Daman and Diu") echo "Selected"; ?>>Daman and Diu</option>
+                            <option value="Delhi" <?php if ($uState == "Delhi") echo "Selected"; ?>>Delhi</option>
+                            <option value="Lakshadweep" <?php if ($uState == "Lakshadweep") echo "Selected"; ?>>Lakshadweep</option>
+                            <option value="Puducherry" <?php if ($uState == "Puducherry") echo "Selected"; ?>>Puducherry</option>
+                            <option value="Goa" <?php if ($uState == "Goa") echo "Selected"; ?>>Goa</option>
+                            <option value="Gujarat" <?php if ($uState == "Gujarat") echo "Selected"; ?>>Gujarat</option>
+                            <option value="Haryana" <?php if ($uState == "Haryana") echo "Selected"; ?>>Haryana</option>
+                            <option value="Himachal Pradesh" <?php if ($uState == "Himachal Pradesh") echo "Selected"; ?>>Himachal Pradesh</option>
+                            <option value="Jammu and Kashmir" <?php if ($uState == "Jammu and Kashmir") echo "Selected"; ?>>Jammu and Kashmir</option>
+                            <option value="Jharkhand" <?php if ($uState == "Jharkhand") echo "Selected"; ?>>Jharkhand</option>
+                            <option value="Karnataka" <?php if ($uState == "Karnataka") echo "Selected"; ?>>Karnataka</option>
+                            <option value="Kerala" <?php if ($uState == "Kerala") echo "Selected"; ?>>Kerala</option>
+                            <option value="Madhya Pradesh" <?php if ($uState == "Madhya Pradesh") echo "Selected"; ?>>Madhya Pradesh</option>
+                            <option value="Maharashtra" <?php if ($uState == "Maharashtra") echo "Selected"; ?>>Maharashtra</option>
+                            <option value="Manipur" <?php if ($uState == "Manipur") echo "Selected"; ?>>Manipur</option>
+                            <option value="Meghalaya" <?php if ($uState == "Meghalaya") echo "Selected"; ?>>Meghalaya</option>
+                            <option value="Mizoram" <?php if ($uState == "Mizoram") echo "Selected"; ?>>Mizoram</option>
+                            <option value="Nagaland" <?php if ($uState == "Nagaland") echo "Selected"; ?>>Nagaland</option>
+                            <option value="Odisha" <?php if ($uState == "Odisha") echo "Selected"; ?>>Odisha</option>
+                            <option value="Punjab" <?php if ($uState == "Punjab") echo "Selected"; ?>>Punjab</option>
+                            <option value="Rajasthan" <?php if ($uState == "Rajasthan") echo "Selected"; ?>>Rajasthan</option>
+                            <option value="Sikkim" <?php if ($uState == "Sikkim") echo "Selected"; ?>>Sikkim</option>
+                            <option value="Tamil Nadu" <?php if ($uState == "Tamil Nadu") echo "Selected"; ?>>Tamil Nadu</option>
+                            <option value="Telangana" <?php if ($uState == "Telangana") echo "Selected"; ?>>Telangana</option>
+                            <option value="Tripura" <?php if ($uState == "Tripura") echo "Selected"; ?>>Tripura</option>
+                            <option value="Uttar Pradesh" <?php if ($uState == "Uttar Pradesh") echo "Selected"; ?>>Uttar Pradesh</option>
+                            <option value="Uttarakhand" <?php if ($uState == "Uttarakhand") echo "Selected"; ?>>Uttarakhand</option>
+                            <option value="West Bengal" <?php if ($uState == "West Bengal") echo "Selected"; ?>>West Bengal</option>
                         </select>
                     </div>
 
@@ -323,16 +324,29 @@ if (isset($_POST['updatebtn'])) {
 
     </div>
 
-    <script>
-        var zip = document.getElementById("uzip").value;
-        var mobile = document.getElementById("umobile").value;
-        if (zip == 0) {
-            document.getElementById("uzip").value = "";
-        }
-        if (mobile == 0) {
-            document.getElementById("umobile").value = "";
-        }
-    </script>
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                text: '<?php echo $_SESSION['status_text'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.value) {
+                    location.href = location.href
+                }
+            });
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
+
+
 
 
 </body>

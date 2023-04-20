@@ -55,10 +55,13 @@ if (isset($_POST['assign-btn'])) {
             $run2 = mysqli_query($conn, $sql2);
 
             if ($run2) {
-                echo '<script> alert("Work Assigned Successfully.");</script>';
-                echo "<script> location.href = 'requests.php';</script>";
+                $_SESSION['status_title'] = "Success";
+                $_SESSION['status_text'] = "Work Assigned.";
+                $_SESSION['status_icon'] = "success";
             } else {
-                echo '<script> alert("Error: Unable to Assign!!");</script>';
+                $_SESSION['status_title'] = "Error";
+                $_SESSION['status_text'] = "Something Went Wrong!";
+                $_SESSION['status_icon'] = "error";
             }
         }
     }
@@ -264,7 +267,8 @@ if (isset($_POST['assign-btn'])) {
             font-size: 1.5rem;
             font-weight: bold;
         }
-        .price-show span{
+
+        .price-show span {
             color: var(--black);
         }
 
@@ -466,7 +470,7 @@ if (isset($_POST['assign-btn'])) {
                             <input type="hidden" name="rdate" id="" value="<?php if (isset($result1['request_date'])) echo $result1['request_date']; ?>">
                         </div>
                     </div>
-                    <span class="price-show"> <span>Cost (in Rs) :</span><?php if (isset($result1['s_price'])) echo " " . '&#8377;' . $result1['s_price'].""; ?></span>
+                    <span class="price-show"> <span>Cost (in Rs) :</span><?php if (isset($result1['s_price'])) echo " " . '&#8377;' . $result1['s_price'] . ""; ?></span>
                     <div class="buttons">
                         <button type="submit" class="submitbtn" name="assign-btn">Assign</button>
                         <button type="reset" class="resetbtn" name="resetbtn">Reset</button>
@@ -485,3 +489,24 @@ if (isset($_POST['assign-btn'])) {
         return confirm("Are you sure you want to delete this Request?");
     }
 </script>
+<!-- sweet alert js -->
+<?php
+if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+?>
+    <script>
+        Swal.fire({
+            icon: '<?php echo $_SESSION['status_icon'] ?>',
+            title: '<?php echo $_SESSION['status_title'] ?>',
+            text: '<?php echo $_SESSION['status_text'] ?>',
+            confirmButtonColor: '#2597f4',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.value) {
+                location.href = location.href
+            }
+        });
+    </script>
+<?php
+    unset($_SESSION['status_title']);
+}
+?>

@@ -41,17 +41,16 @@ if (isset($_POST['submitbtn'])) {
          $sql = "INSERT INTO requests_tb(u_id, s_appliance, s_service, request_desc, requester_name, requester_add1, requester_add2, requester_city, requester_state, requester_email, requester_mobile, requester_alt_mobile, request_date, s_price, request_code, r_status) VALUES('$uid','$sa', '$ss', '$rdesc','$uname','$raddress1','$raddress2','$rcity','$rstate','$uEmail','$rmobile','$ramobile','$rdate','$sprice','$r_code', '1')";
          $run = mysqli_query($conn, $sql);
          if ($run) {
-            // $genid = mysqli_insert_id($conn)
-            echo '<script>alert("Request Submitted Successfully.");</script>';
-            // $_SESSION['myid'] = $genid;
-            echo '<script>location.href = "my-requests.php";</script>';
+            $_SESSION['status_title'] = "Success";
+            $_SESSION['status_text'] = "Your request has been submitted.";
+            $_SESSION['status_icon'] = "success";
          } else {
             echo '<script>alert("Unable to Submit Your Request.");</script>';
          }
-      }
-      else{
-         echo '<script>alert("Sorry: This Service is not Available!");</script>';
-
+      } else {
+         $_SESSION['status_title2'] = "Oops!";
+         $_SESSION['status_text2'] = "This service is not available.";
+         $_SESSION['status_icon2'] = "info";
       }
    }
 }
@@ -261,16 +260,48 @@ if (isset($_POST['submitbtn'])) {
       </div>
 
    </div>
-   <script>
-      var zip = document.getElementById("rzip").value;
-      var mobile = document.getElementById("rmobile").value;
-      if (zip == 0) {
-         document.getElementById("rzip").value = "";
-      }
-      if (mobile == 0) {
-         document.getElementById("rmobile").value = "";
-      }
-   </script>
+
+
+
+   <!-- sweet alert js -->
+   <?php
+   if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+   ?>
+      <script>
+         Swal.fire({
+            icon: '<?php echo $_SESSION['status_icon'] ?>',
+            title: '<?php echo $_SESSION['status_title'] ?>',
+            text: '<?php echo $_SESSION['status_text'] ?>',
+            confirmButtonColor: '#2597f4',
+            confirmButtonText: 'OK'
+         }).then((result) => {
+            if (result.value) {
+               location.href = 'my-requests.php'
+            }
+         });
+      </script>
+   <?php
+      unset($_SESSION['status_title']);
+   }
+   ?>
+   <!-- sweet alert js2 -->
+   <?php
+   if (isset($_SESSION['status_title2']) && $_SESSION['status_title2'] != '') {
+   ?>
+      <script>
+         Swal.fire({
+            icon: '<?php echo $_SESSION['status_icon2'] ?>',
+            title: '<?php echo $_SESSION['status_title2'] ?>',
+            text: '<?php echo $_SESSION['status_text2'] ?>',
+            confirmButtonColor: '#2597f4',
+            confirmButtonText: 'OK'
+         })
+      </script>
+   <?php
+      unset($_SESSION['status_title2']);
+   }
+   ?>
+
 </body>
 
 </html>

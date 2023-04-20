@@ -30,7 +30,8 @@ if (isset($_POST['viewbtn']) and $csid) {
         $ratech = $result['assign_tech'];
         $techmobile = $result['tech_mobile'];
     } else {
-        echo '<script>alert("Your Request is Still Pending...")</script>';
+        $_SESSION['status_title'] = "Your request is still pending...";
+        $_SESSION['status_icon'] = "info";
         echo '<script>location.href="my-requests.php";</script>';
     }
 }
@@ -313,6 +314,7 @@ if (isset($_POST['cancelbtn']) and $csid) {
 
     </div>
 
+ 
 
 </body>
 

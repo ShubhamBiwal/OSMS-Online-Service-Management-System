@@ -12,6 +12,11 @@ if ($rows == 0) {
     echo '<style>#msg{display:none;}</style>';
 }
 //dynamic card data
+//payment pending
+$sql4 = "SELECT * FROM requests_tb WHERE r_status = '3' AND admin_status = '1'";
+$run4 = mysqli_query($conn, $sql4);
+$row4 = mysqli_num_rows($run4);
+$total_payment_pending = $row4;
 //total requester
 $sql1 = "SELECT * FROM user_login";
 $run1 = mysqli_query($conn, $sql1);
@@ -145,6 +150,17 @@ $total_technicians = $row3;
 <div class="content">
     <div class="info-data">
         <a href="work-order.php">
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <p>Panding Payment</p>
+                        <h2><?php echo $total_payment_pending; ?></h2>
+                    </div>
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+            </div>
+        </a>
+        <a href="work-report.php">
             <div class="card">
                 <div class="head">
                     <div>
