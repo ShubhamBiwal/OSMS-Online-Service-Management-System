@@ -47,19 +47,23 @@ if (isset($_POST['updatebtn'])) {
             $run = mysqli_query($conn, $sql);
             if ($run) {
                 $_SESSION['is_adminlogin'] = $newemail;
-                echo '<script>alert("Profile Updated Successfully.")</script>';
-                echo '<script>window.location = "profile.php";</script>';
+                $_SESSION['status_title'] = "Success";
+                $_SESSION['status_text'] = "Your profile has been updated successfully!";
+                $_SESSION['status_icon'] = "success";
             }
         } else {
-            echo '<script>alert("not supported");</script>';
+            $_SESSION['status_title'] = "Error";
+            $_SESSION['status_text'] = "Image format not supported only (jpg, png, jpeg, gif).";
+            $_SESSION['status_icon'] = "error";
         }
     } else {
         $sql = "UPDATE admin_login SET a_name = '$newname', a_email = '$newemail', a_contact='$newcontact', a_address = '$newaddress' WHERE a_email = '$aEmail'";
         $run = mysqli_query($conn, $sql);
         if ($run) {
             $_SESSION['is_adminlogin'] = $newemail;
-            echo '<script>alert("Profile Updated.");</script>';
-            echo '<script>window.location = "profile.php";</script>';
+            $_SESSION['status_title'] = "Success";
+            $_SESSION['status_text'] = "Your profile has been updated successfully!";
+            $_SESSION['status_icon'] = "success";
         }
     }
 }
@@ -208,5 +212,27 @@ if (isset($_POST['updatebtn'])) {
         </div>
 
     </div>
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                text: '<?php echo $_SESSION['status_text'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.value) {
+                    location.href = location.href
+                }
+            });
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
+
 
 </body>

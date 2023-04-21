@@ -9,6 +9,45 @@ $rows = mysqli_num_rows($run);
 if ($rows == 0) {
     $msg = "No Request Found";
 }
+//php mailer
+//send mail function
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+function sendMail($techemail, $rtechnician)
+{
+    require '../phpmailer/Exception.php';
+    require '../phpmailer/PHPMailer.php';
+    require '../phpmailer/SMTP.php';
+
+    $mail = new PHPMailer(true);
+    try {
+        //Server settings
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+        $mail->Username   = 'shubhambiwal21042003@gmail.com';                     //SMTP username
+        $mail->Password   = 'layllemfzdliahlg';                               //SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+        //Recipients
+        $mail->setFrom('shubhambiwal21042003@gmail.com', 'OSMS');
+        $mail->addAddress($techemail);     //Add a recipient
+
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = 'New Work Assigned';
+        $mail->Body    = "Hello $rtechnician, <br> New work assigned to you by Admin. For more info <a href ='http://localhost/osms/technician/pending-work.php'> Click Here<a>";
+        $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
 
 
 //show data in assign form
@@ -44,7 +83,6 @@ if (isset($_POST['assign-btn'])) {
         if ($radate < $rdate) {
             echo '<script> alert("Enter a Valid Date");</script>';
         } else {
-
             $sql1 = "SELECT * FROM technician_tb WHERE tech_name = '$rtechnician'";
             $run1 = mysqli_query($conn, $sql1);
             $result1 = mysqli_fetch_array($run1);
@@ -54,7 +92,7 @@ if (isset($_POST['assign-btn'])) {
             $sql2 = "UPDATE requests_tb SET tech_id = '$techid', assign_tech = '$rtechnician', tech_mobile = '$techmobile', tech_email = '$techemail',assign_date = '$radate', r_status = '2', admin_status = '1' WHERE request_id = '$rid'";
             $run2 = mysqli_query($conn, $sql2);
 
-            if ($run2) {
+            if ($run2 && sendMail($techemail, $rtechnician)) {
                 $_SESSION['status_title'] = "Success";
                 $_SESSION['status_text'] = "Work Assigned.";
                 $_SESSION['status_icon'] = "success";

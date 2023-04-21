@@ -33,15 +33,21 @@ if (isset($_POST['uSubmit'])) {
     $runc = mysqli_query($conn, $sqlc);
 
     if (mysqli_num_rows($runc) > 0) {
-        echo '<script>alert("Error: Service is Already exist!");</script>';
+        $_SESSION['status_title'] = "Oops...";
+        $_SESSION['status_text'] = "This service is already exist.";
+        $_SESSION['status_icon'] = "info";
     } else {
         $sql = "INSERT INTO services_tb (appliance_name, `service_name`, service_price) VALUES('$a_name', '$s_name', '$s_price')";
         $run = mysqli_query($conn, $sql);
         if ($run) {
-            echo '<script>alert("Service Added Successfully");</script>';
-            echo '<script>location.href = "services.php";</script>';
+            $_SESSION['status_title'] = "Good Job!";
+            $_SESSION['status_text'] = "New service has been added successfully.";
+            $_SESSION['status_icon'] = "success";
+            echo '<script>location.href = location.href</script>';
         } else {
-            echo '<script>alert("Unable to Add!");</script>';
+            $_SESSION['status_title'] = "Error!";
+            $_SESSION['status_text'] = "Unable to Add! Something went wrong.";
+            $_SESSION['status_icon'] = "error";
         }
     }
 }
@@ -471,3 +477,20 @@ if (isset($_POST['uSubmit'])) {
         }
     }
 </script>
+<!-- sweet alert js -->
+<?php
+if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+?>
+    <script>
+        Swal.fire({
+            icon: '<?php echo $_SESSION['status_icon'] ?>',
+            title: '<?php echo $_SESSION['status_title'] ?>',
+            text: '<?php echo $_SESSION['status_text'] ?>',
+            confirmButtonColor: '#2597f4',
+            confirmButtonText: 'OK'
+        });
+    </script>
+<?php
+    unset($_SESSION['status_title']);
+}
+?>

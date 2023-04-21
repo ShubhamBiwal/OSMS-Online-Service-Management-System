@@ -43,10 +43,6 @@ function sendMail($email, $areply)
 }
 
 
-
-
-
-
 //for message card
 $sql = "SELECT m_id, f_name, m_subject, email, mobile, `message`, m_date FROM messages";
 $run = mysqli_query($conn, $sql);
@@ -94,15 +90,20 @@ if (isset($_POST['send-btn'])) {
     $areply = nl2br($text);
 
     if ($mid == "" || $email == "" || $_POST['msub'] == "" || $_POST['msg'] == "" || $areply == "") {
-        echo '<script> alert("Error: All Fields are Required.");</script>';
+        $_SESSION['status_title'] = "Error!";
+        $_SESSION['status_text'] = "All fields are required to filled.";
+        $_SESSION['status_icon'] = "info";
     } else {
         if (sendMail($email, $areply)) {
             $sqldel = "DELETE FROM messages WHERE m_id = '$mid' ";
             $rundel  = mysqli_query($conn, $sqldel);
-            echo '<script> alert("Message Sent");</script>';
-            echo "<script> location.href = 'messages.php';</script>";
+            $_SESSION['status_title'] = "Done";
+            $_SESSION['status_text'] = "Message has been sent successfully.";
+            $_SESSION['status_icon'] = "success";
         } else {
-            echo '<script> alert("Error: Unable to Sent Message!!");</script>';
+            $_SESSION['status_title'] = "Error!";
+            $_SESSION['status_text'] = "unable to sent message! Something went wrong.";
+            $_SESSION['status_icon'] = "error";
         }
     }
 }
@@ -458,3 +459,24 @@ if (isset($_POST['send-btn'])) {
         return confirm("Are Your Sure to Delete?");
     }
 </script>
+<!-- sweet alert js -->
+<?php
+if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+?>
+    <script>
+        Swal.fire({
+            icon: '<?php echo $_SESSION['status_icon'] ?>',
+            title: '<?php echo $_SESSION['status_title'] ?>',
+            text: '<?php echo $_SESSION['status_text'] ?>',
+            confirmButtonColor: '#2597f4',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.value) {
+                location.href = location.href
+            }
+        });
+    </script>
+<?php
+    unset($_SESSION['status_title']);
+}
+?>

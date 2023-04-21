@@ -11,18 +11,27 @@ if (isset($_POST['updatebtn'])) {
     $confirmpass = $_POST['confirmpass'];
 
     if ($newpass == "" || $confirmpass == "") {
-        echo '<script>alert("All Fields Are Required!");</script>';
+        $_SESSION['status_title'] = "Error!";
+        $_SESSION['status_text'] = "All fields are required!";
+        $_SESSION['status_icon'] = "info";
     } else {
         if ($newpass == $confirmpass) {
             $sql = "UPDATE admin_login SET a_password = '$newpass' WHERE a_email = '$aemail'";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                echo '<script>alert("Password Updated Succesfully.");</script>';
+                $_SESSION['status_title'] = "Done";
+                $_SESSION['status_text'] = "Your password has been updated.";
+                $_SESSION['status_icon'] = "success";
             } else {
-                echo '<script>alert("Error: Unable to Update.");</script>';
+                $_SESSION['status_title'] = "Error!";
+                $_SESSION['status_text'] = "Unable to update. Something went wrong!!";
+                $_SESSION['status_icon'] = "error";
+                echo '<script>alert("Error: ");</script>';
             }
         } else {
-            echo '<script>alert("Password Fields Must be Equal!");</script>';
+            $_SESSION['status_title'] = "Error!";
+            $_SESSION['status_text'] = "Password fields must be equal.";
+            $_SESSION['status_icon'] = "error";
         }
     }
 }
@@ -109,8 +118,9 @@ if (isset($_POST['updatebtn'])) {
         .updatebtn:hover {
             opacity: 1;
         }
-        @media(max-width:750px){
-            .content{
+
+        @media(max-width:750px) {
+            .content {
                 padding: 1.5rem;
             }
         }
@@ -134,7 +144,23 @@ if (isset($_POST['updatebtn'])) {
         </div>
 
     </div>
-
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                text: '<?php echo $_SESSION['status_text'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            })
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
 </body>
 
 </html>

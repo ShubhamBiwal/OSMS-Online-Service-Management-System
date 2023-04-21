@@ -52,17 +52,21 @@
         date_default_timezone_set("Asia/Kolkata");
         $mdate = date("Y-m-d");
         if ($fname == "" || $subject == "" || $semail == "" || $smobile == "" | $message == "") {
-            $msg = "All fields are required";
+            $_SESSION['status_title'] = "Oops...";
+            $_SESSION['status_text'] = "All fields are required to be filled.";
+            $_SESSION['status_icon'] = "info";
             echo '<script>location.href ="#contact"</script>';
         } else {
             $sql = "INSERT INTO messages(`f_name`, `m_subject`, `email`, `mobile`, `message`, `m_date`) VALUES ('$fname','$subject','$semail','$smobile','$message','$mdate')";
             $run = mysqli_query($conn, $sql);
             if ($run && sendMail($fname, $subject, $semail, $smobile, $message)) {
-
-                echo '<script>alert("Your message has been sent successfully.");</script>';
-
+                $_SESSION['status_title'] = "Good job!";
+                $_SESSION['status_text'] = "Thank you for your message. It has been sent.";
+                $_SESSION['status_icon'] = "success";
             } else {
-                echo '<script>alert("Error: Unable to Send Message!");</script>';
+                $_SESSION['status_title'] = "Error!";
+                $_SESSION['status_text'] = "Unable to send message. Something went wrong!!";
+                $_SESSION['status_icon'] = "error";
             }
         }
     }
@@ -90,3 +94,21 @@
      <textarea name="message" placeholder="Message" id="" cols="30" rows="10" required></textarea>
      <input type="submit" value="send message" class="btn" name="sendbtn">
  </form>
+ <!-- sweet alert -->
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+     <script>
+         Swal.fire({
+             icon: '<?php echo $_SESSION['status_icon'] ?>',
+             title: '<?php echo $_SESSION['status_title'] ?>',
+             text: '<?php echo $_SESSION['status_text'] ?>',
+             confirmButtonColor: '#2597f4',
+             confirmButtonText: 'OK'
+         })
+     </script>
+ <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>

@@ -11,13 +11,15 @@ if (isset($_POST['updatebtn'])) {
     $confirmpass = $_POST['confirmpass'];
 
     if ($newpass == "" || $confirmpass == "") {
-        echo '<script>alert("All Fields Are Required!");</script>';
+         $_SESSION['status_title'] = "Error!";
+        $_SESSION['status_text'] = "All fields are required!";
+        $_SESSION['status_icon'] = "info";
     } else {
         if ($newpass == $confirmpass) {
             $sql = "UPDATE user_login SET u_password = '$newpass' WHERE u_email = '$remail'";
             $run = mysqli_query($conn, $sql);
             if ($run) {
-                $_SESSION['status_title'] = "Success";
+                $_SESSION['status_title'] = "Done";
                 $_SESSION['status_text'] = "Your password has been updated.";
                 $_SESSION['status_icon'] = "success";
             } else {

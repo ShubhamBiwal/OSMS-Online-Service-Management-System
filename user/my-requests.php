@@ -379,7 +379,7 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
             return confirm("Are you sure! you want to cancel this Request?");
         }
     </script>
-       <!-- sweet alert js -->
+    <!-- sweet alert js -->
     <?php
     if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
     ?>
@@ -395,6 +395,27 @@ if ($rows == 0 and $rows1 == 0 and $rows2 == 0 and $rows3 == 0) {
         unset($_SESSION['status_title']);
     }
     ?>
+
+
+
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title2']) && $_SESSION['status_title2'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon2'] ?>',
+                title: '<?php echo $_SESSION['status_title2'] ?>',
+                text: '<?php echo $_SESSION['status_text2'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            })
+        </script>
+    <?php
+        unset($_SESSION['status_title2']);
+    }
+    ?>
+
 
 </body>
 

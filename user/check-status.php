@@ -40,7 +40,9 @@ if (isset($_POST['cancelbtn']) and $csid) {
     $sql = "UPDATE requests_tb SET r_status = '0' WHERE request_id = '$csid'";
     $run = mysqli_query($conn, $sql);
     if ($run) {
-        echo '<script>alert("Request Cancelled.")</script>';
+        $_SESSION['status_title2'] = "Cancelled!";
+        $_SESSION['status_text2'] = "Your request has been cancelled.";
+        $_SESSION['status_icon2'] = "success";
         echo '<script>location.href="my-requests.php";</script>';
     }
 }
@@ -314,7 +316,7 @@ if (isset($_POST['cancelbtn']) and $csid) {
 
     </div>
 
- 
+
 
 </body>
 

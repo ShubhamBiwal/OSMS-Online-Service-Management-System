@@ -23,22 +23,28 @@ if (isset($_POST['uSignup'])) {
         $sql = "SELECT u_email FROM user_login WHERE u_email = '$uEmail' ";
         $result = mysqli_query($conn, $sql);
         if ($row = mysqli_num_rows($result) == 1) {
-            echo '<script> alert("Email ID Already Registered.");</script>';
+            $_SESSION['status_title'] = "Error!";
+            $_SESSION['status_text'] = "Email address is already Registered.";
+            $_SESSION['status_icon'] = "info";
         } else {
             //insert data
             $sql = "INSERT INTO user_login(u_name, u_email, u_mobile, u_password) VALUES ('$uName', '$uEmail','$uMobile', '$uPassword') ";
             $result = mysqli_query($conn, $sql);
             if ($result) {
-                echo '<script> alert("Account Created Successfully.");</script>';
+                $_SESSION['status_title2'] = "Awesome!";
+                $_SESSION['status_text2'] = "Your account has been created successfully.";
+                $_SESSION['status_icon2'] = "success";
                 $sqlq = "SELECT u_id FROM user_login WHERE u_email = '$uEmail'";
                 $runq = mysqli_query($conn, $sqlq);
                 $resultq = mysqli_fetch_array($runq);
                 $uid = $resultq['u_id'];
                 $_SESSION['is_login'] = $uEmail;
                 $_SESSION['u_id'] = $uid;
-                echo "<script> location.href='user/';</script>";
+                // echo "<script> location.href='user/';</script>";
             } else {
-                echo '<script> alert("Error: Unable to Create Account.");</script>';
+                $_SESSION['status_title'] = "Oh no!";
+                $_SESSION['status_text'] = "Something went wrong.";
+                $_SESSION['status_icon'] = "error";
             }
         }
     }
@@ -560,6 +566,48 @@ $total_technicians = $row3;
             modal.style.display = "block";
         }
     </script>
+    <!-- sweet alert js -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title']) && $_SESSION['status_title'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon'] ?>',
+                title: '<?php echo $_SESSION['status_title'] ?>',
+                text: '<?php echo $_SESSION['status_text'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    <?php
+        unset($_SESSION['status_title']);
+    }
+    ?>
+    <!-- sweet alert js -->
+    <?php
+    if (isset($_SESSION['status_title2']) && $_SESSION['status_title2'] != '') {
+    ?>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $_SESSION['status_icon2'] ?>',
+                title: '<?php echo $_SESSION['status_title2'] ?>',
+                text: '<?php echo $_SESSION['status_text2'] ?>',
+                confirmButtonColor: '#2597f4',
+                confirmButtonText: 'OK & Continue'
+            }).then((result) => {
+                if (result.value) {
+                    location.href = 'user/'
+                }
+            });
+        </script>
+    <?php
+        unset($_SESSION['status_title2']);
+    }
+    ?>
+
+
 </body>
 
 </html>
