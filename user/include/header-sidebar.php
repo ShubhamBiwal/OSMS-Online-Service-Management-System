@@ -26,7 +26,7 @@ $uname = $result['u_name'];
 
         <ul class="links">
             <li>
-                <a href="http://localhost/osms/user/" class="<?php if ($page == "userprofile") echo 'nav-active'; ?>">
+                <a href="../../../osms/user/" class="<?php if ($page == "userprofile") echo 'nav-active'; ?>">
                     <span class="icon"><i class="fa-solid fa-user"></i></span>
                     <span class="item">Profile</span>
                 </a>

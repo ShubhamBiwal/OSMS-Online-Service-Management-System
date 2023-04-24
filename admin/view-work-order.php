@@ -27,6 +27,18 @@ if (isset($_POST['view-btn'])) {
         $sprice = $result['s_price'];
     }
 }
+//reassign work
+if (isset($_POST['reassign-btn'])) {
+    $rerid = $_POST['re-rid'];
+        $sql = "UPDATE requests_tb SET tech_id = '0', assign_tech = Null, tech_mobile = '0', tech_email = null, assign_date = null, r_status = '1' WHERE request_id = '$rerid' ";
+        $run = mysqli_query($conn, $sql);
+        if ($run) {
+            echo '<script>alert("You can re-assign this request from requests section.")</script>';
+            echo '<script>location.href = "requests.php";</script>';
+        } else {
+            echo '<script>alert("Error: Something went wrong.")</script>';
+        }
+    }
 
 ?>
 
@@ -74,7 +86,20 @@ if (isset($_POST['view-btn'])) {
             border-radius: .2rem;
             font-weight: 500;
             box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
+        }
 
+        .reassign-btn {
+            background-color: red;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border: none;
+            opacity: 0.8;
+            color: white;
+            font-size: 1.6rem;
+            letter-spacing: 0.1rem;
+            border-radius: .2rem;
+            font-weight: 500;
+            box-shadow: .2rem .2rem .5rem rgba(0, 0, 0, 0.5);
         }
 
         .closebtn {
@@ -93,7 +118,8 @@ if (isset($_POST['view-btn'])) {
         }
 
         .printbtn:hover,
-        .closebtn:hover {
+        .closebtn:hover,
+        .reassign-btn:hover {
             opacity: 1;
         }
 
@@ -142,7 +168,8 @@ if (isset($_POST['view-btn'])) {
 
             .head-sidebar,
             .btns,
-            .check-id {
+            .check-id,
+            .reassign-btn {
                 display: none;
             }
         }
@@ -166,7 +193,7 @@ if (isset($_POST['view-btn'])) {
                 <tr>
                     <td>Service Info</td>
                     <td>
-                        <?php if (isset($sappliance) AND $sservice) echo ucwords($sappliance) . " (" . ucwords($sservice) . ")"; ?>
+                        <?php if (isset($sappliance) and $sservice) echo ucwords($sappliance) . " (" . ucwords($sservice) . ")"; ?>
 
                     </td>
                 </tr>
@@ -239,7 +266,11 @@ if (isset($_POST['view-btn'])) {
                 <tr>
                     <td><b>Work Date</b></td>
                     <td>
-                        <b><?php if($wdate == "0000-00-00"){ echo "N/A";}else{echo date("j-n-Y", strtotime($wdate));}?><b>
+                        <b><?php if ($wdate == "0000-00-00") {
+                                echo "N/A";
+                            } else {
+                                echo date("j-n-Y", strtotime($wdate));
+                            } ?><b>
                     </td>
                 </tr>
                 <tr>
@@ -257,17 +288,30 @@ if (isset($_POST['view-btn'])) {
                 <tr>
                     <td><b>Payment</b></td>
                     <td>
-                        <b><?php if (isset($sprice)) echo "&#8377;".$sprice; ?></b>
+                        <b><?php if (isset($sprice)) echo "&#8377;" . $sprice; ?></b>
                     </td>
                 </tr>
             </table>
             <div class="btns">
                 <button type="submit" class="printbtn" name="printbtn" onclick="window.print()">Print</button>
+                <form action="" method="POST">
+                    <input type="hidden" value="<?php if (isset($r_id)) echo $r_id; ?>" name="re-rid">
+                    <?php
+                    if($result['r_status'] == '2'){ 
+                     ?>
+                    <button type="submit" class="reassign-btn" name="reassign-btn" Onclick="return ConfirmReassign();">Re-Assign</button>
+                    <?php } ?>
+                </form>
                 <button type=" reset" class="closebtn" name="closebtn" onclick="location.href = 'work-order.php';">Close</button>
             </div>
         </div>
 
     </div>
+    <script>
+        function ConfirmReassign() {
+            return confirm("Are You Sure to Re-assign the Work?");
+        }
+    </script>
 
 
 </body>

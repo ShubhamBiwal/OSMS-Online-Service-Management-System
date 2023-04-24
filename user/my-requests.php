@@ -10,7 +10,7 @@ $sql  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '0' ORDER 
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 // submit request
-$sql1  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '1' ORDER BY request_date ";
+$sql1  = "SELECT * FROM requests_tb WHERE u_id = '$uid' AND r_status = '1' ORDER BY request_id DESC ";
 $run1 = mysqli_query($conn, $sql1);
 $rows1 = mysqli_num_rows($run1);
 // assigned work

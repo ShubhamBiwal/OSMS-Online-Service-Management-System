@@ -69,7 +69,7 @@ if (isset($_POST['uLogin'])) {
 }
 
 //total requests completed
-$sql1 = "SELECT r_status FROM requests_tb WHERE r_status = '3'";
+$sql1 = "SELECT r_status FROM requests_tb WHERE r_status = '3' AND admin_status = '2'";
 $run1 = mysqli_query($conn, $sql1);
 $row1 = mysqli_num_rows($run1);
 $total_completed_work = $row1;

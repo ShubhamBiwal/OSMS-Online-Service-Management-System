@@ -2,7 +2,7 @@
 include"../connection.php";
 session_start();
 if (isset($_SESSION['is_techlogin'])) {
-    header("Location: requests.php");
+    header("Location: pending-work.php");
 }
 //signup
 if (isset($_POST['tSignup'])) {

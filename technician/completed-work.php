@@ -5,7 +5,7 @@ include "include/header-sidebar.php";
 
 $tid = $_SESSION['tech_id'];
 
-$sql  = "SELECT request_id, requester_name, requester_mobile, s_appliance, s_service,s_price, request_date, work_date, admin_status FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' AND (admin_status = '1' OR admin_status = '2') ORDER BY work_date DESC";
+$sql  = "SELECT request_id, requester_name, requester_mobile, s_appliance, s_service,s_price, request_date, work_date, admin_status FROM requests_tb WHERE tech_id = '$tid' AND r_status = '3' AND (admin_status = '1' OR admin_status = '2') ORDER BY request_id DESC";
 $run = mysqli_query($conn, $sql);
 $rows = mysqli_num_rows($run);
 

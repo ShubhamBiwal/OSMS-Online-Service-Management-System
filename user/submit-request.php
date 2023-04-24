@@ -206,9 +206,9 @@ if (isset($_POST['submitbtn'])) {
                <div class="inputbox">
                   <select name="ss" id="ss" class="selectbox" required>
                      <option value="">Select Service</option>
+                     <option value="Fault Repair">Fault Repair</option>
                      <option value="Installation">Installation</option>
                      <option value="Maintenance">Maintenance</option>
-                     <option value="Fault Repair">Fault Repair</option>
                   </select>
                </div>
             </div>

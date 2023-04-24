@@ -13,10 +13,15 @@ if ($rows == 0) {
 }
 //dynamic card data
 //payment pending
-$sql4 = "SELECT * FROM requests_tb WHERE r_status = '3' AND admin_status = '1'";
+$sql4 = "SELECT * FROM requests_tb WHERE admin_status = '1'";
 $run4 = mysqli_query($conn, $sql4);
 $row4 = mysqli_num_rows($run4);
 $total_payment_pending = $row4;
+//total cancelled requests
+$sql5 = "SELECT * FROM requests_tb WHERE r_status = '0'";
+$run5 = mysqli_query($conn, $sql5);
+$row5 = mysqli_num_rows($run5);
+$total_cancelled_work = $row5;
 //total requester
 $sql1 = "SELECT * FROM user_login";
 $run1 = mysqli_query($conn, $sql1);
@@ -25,7 +30,7 @@ $total_requester = $row1;
 
 
 //total completed work
-$sql2 = "SELECT r_status FROM requests_tb WHERE r_status = '3'";
+$sql2 = "SELECT r_status FROM requests_tb WHERE r_status = '3' AND admin_status = '2'";
 $run2 = mysqli_query($conn, $sql2);
 $row2 = mysqli_num_rows($run2);
 $total_completed_work = $row2;
@@ -44,7 +49,7 @@ $total_technicians = $row3;
     <style>
         .info-data {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
             grid-gap: 3rem;
 
         }
@@ -157,6 +162,17 @@ $total_technicians = $row3;
                         <h2><?php echo $total_payment_pending; ?></h2>
                     </div>
                     <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+            </div>
+        </a>
+        <a href="work-order.php">
+            <div class="card">
+                <div class="head">
+                    <div>
+                        <p>Request Cancelled</p>
+                        <h2><?php echo $total_cancelled_work; ?></h2>
+                    </div>
+                    <i class="fa-solid fa-ban"></i>
                 </div>
             </div>
         </a>

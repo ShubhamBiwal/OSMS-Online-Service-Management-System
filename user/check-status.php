@@ -37,7 +37,7 @@ if (isset($_POST['viewbtn']) and $csid) {
 }
 //cancel request
 if (isset($_POST['cancelbtn']) and $csid) {
-    $sql = "UPDATE requests_tb SET r_status = '0' WHERE request_id = '$csid'";
+    $sql = "UPDATE requests_tb SET r_status = '0', admin_status = '0' WHERE request_id = '$csid'";
     $run = mysqli_query($conn, $sql);
     if ($run) {
         $_SESSION['status_title2'] = "Cancelled!";
