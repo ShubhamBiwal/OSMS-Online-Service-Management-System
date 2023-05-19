@@ -26,7 +26,7 @@ function sendMail($email, $code)
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('shubhambiwa.com', 'OSMS');
+        $mail->setFrom('', 'OSMS');
         $mail->addAddress($email);     //Add a recipient
 
         //Content
